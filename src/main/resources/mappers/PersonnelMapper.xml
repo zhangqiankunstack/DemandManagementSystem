@@ -15,4 +15,13 @@
             id, name, introduction, display
 		</sql>
 
+
+
+
+	<select id="page" resultType="com.rengu.entity.PersonnelModel">
+		SELECT *
+		FROM personnel
+			${ew.customSqlSegment}
+	</select>
+
 </mapper>

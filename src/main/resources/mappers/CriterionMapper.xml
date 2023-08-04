@@ -17,4 +17,11 @@
             id, criterion_name, review_points, review_criteria, review_process, display
 		</sql>
 
+
+	<select id="page" resultType="com.rengu.entity.CriterionModel">
+		SELECT *
+		FROM criterion
+				 ${ew.customSqlSegment}
+	</select>
+
 </mapper>
