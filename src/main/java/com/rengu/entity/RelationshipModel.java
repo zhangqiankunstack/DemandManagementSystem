@@ -27,7 +27,7 @@ public class RelationshipModel implements Serializable{
 private static final long serialVersionUID=1L;
 
                     @TableId(value = "relationship_id", type = IdType.UUID)
-                private String relationshipId;
+        private String relationshipId;
 
         private String entityId1;
 

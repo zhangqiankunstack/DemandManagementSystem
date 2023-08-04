@@ -2,14 +2,14 @@ package com.rengu.service.impl;
 
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.rengu.entity.EntityModel;
-import com.rengu.entity.HostInfoModel;
+import com.rengu.entity.*;
+import com.rengu.entity.vo.EntityRelationship;
 import com.rengu.entity.vo.ValueAttribute;
 import com.rengu.mapper.EntityMapper;
 import com.rengu.mapper.HostInfoMapper;
 import com.rengu.mapper.ValueAttributeMapper;
-import com.rengu.service.EntityService;
-import com.rengu.service.HostInfoService;
+import com.rengu.service.*;
+import com.rengu.util.RedisTemplateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +31,16 @@ import java.util.List;
 	private EntityService entityService;
 	@Autowired
 	private ValueAttributeMapper valueAttributeMapper;
+	@Autowired
+	private EntityMapper entityMapper;
+	@Autowired
+	private  RedisTemplateUtil redisTemplateUtil;
+	@Autowired
+	private RelationshipService relationshipService;
+	@Autowired
+	private ValueService valueService;
+	@Autowired
+	private AttributeService attributeService;
 
 	@Override
 	public boolean databaseTest(HostInfoModel hostInfo) {
@@ -91,6 +101,49 @@ import java.util.List;
 		List<ValueAttribute> valueAttributeList = valueAttributeMapper.findValueAttributesByEntityId(entityId);
 
 		return valueAttributeList;
+
+	}
+
+	@Override
+	public List<EntityRelationship> getEntityRelationships(String entityId1) {
+		List<EntityRelationship> list = entityMapper.getEntityRelationships(entityId1);
+
+			boolean entityRelationship = redisTemplateUtil.lSet("entityRelationship", list, 6000);
+
+			return list;
+
+	}
+
+	@Override
+	public void insertAll(String id) {
+		List<EntityModel> list = entityService.list();
+		for (EntityModel entityModel :list) {
+			if (entityModel.getEntityId()==id){
+				entityService.save(entityModel);
+
+			}
+		}
+		List<RelationshipModel> list1 = relationshipService.list();
+		for (RelationshipModel relationshipModel :list1) {
+			if (relationshipModel.getEntityId1()==id){
+				relationshipService.save(relationshipModel);
+
+			}
+		}
+		List<ValueModel> list2 = valueService.list();
+		for (ValueModel valueModel :list2) {
+			if (valueModel.getEntityId()==id){
+				valueService.save(valueModel);
+
+			}
+		}
+		List<AttributeModel> list3 = attributeService.list();
+		for (AttributeModel attributeModel :list3) {
+			if (attributeModel.getAttributeId()==id){
+				attributeService.save(attributeModel);
+//这里的添加不符合
+			}
+		}
 
 	}
 }

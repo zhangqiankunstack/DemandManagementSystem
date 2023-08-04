@@ -37,8 +37,7 @@ import java.util.List;
 
 @Autowired
 public HostInfoService hostInfoModelService;
-@Autowired
-private EntityService entityService;
+
 
 @RequestMapping(value = "list", method = RequestMethod.GET)
 @ApiOperation(value = "展示列表")
@@ -83,20 +82,20 @@ public RR saveOrUpdate(@RequestBody HostInfoModel hostInfoModel){
 
 	/**
 	 * 分页函数
-	 * @param currentPage   当前页数
+	 * @param pageNum   当前页数
 	 * @param pageSize  每一页的数据条数
 //	 * @param list  要进行分页的数据列表
 	 * @return  当前页要展示的数据
 	 */
 	@ApiOperation(value = "连接后分页查询集合", notes = "查询集合")
 	@PostMapping("/test-online")
-	public RR testOnline(@RequestBody HostInfoModel hostInfo,@RequestParam Integer currentPage, @RequestParam Integer pageSize) {
+	public RR testOnline(@RequestBody HostInfoModel hostInfo,@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
 
 
 
 		List<EntityModel> list = hostInfoModelService.connect(hostInfo);
 		if (list==null){
-			return null;
+			return RR.fail("连接失败了");
 		}
 
 //        Entity entity = new Entity();
@@ -115,12 +114,12 @@ public RR saveOrUpdate(@RequestBody HostInfoModel hostInfoModel){
 		// 求出最大页数，防止currentPage越界
 		int maxPage = size % pageSize == 0 ? size / pageSize : size / pageSize + 1;
 
-		if(currentPage > maxPage) {
-			currentPage = maxPage;
+		if(pageNum > maxPage) {
+			pageNum = maxPage;
 		}
 
 		// 当前页第一条数据的下标
-		int curIdx = currentPage > 1 ? (currentPage - 1) * pageSize : 0;
+		int curIdx = pageNum > 1 ? (pageNum - 1) * pageSize : 0;
 
 		List pageList = new ArrayList();
 
@@ -129,7 +128,7 @@ public RR saveOrUpdate(@RequestBody HostInfoModel hostInfoModel){
 			pageList.add(list.get(curIdx + i));
 		}
 
-		page.setCurrent(currentPage).setSize(pageSize).setTotal(list.size()).setRecords(pageList);
+		page.setCurrent(pageNum).setSize(pageSize).setTotal(list.size()).setRecords(pageList);
 		return RR.success(page);
 
 
@@ -138,10 +137,37 @@ public RR saveOrUpdate(@RequestBody HostInfoModel hostInfoModel){
 
 	@ApiOperation(value = "查实体属性", notes = "查实体属性")
 	@PostMapping("/findById/{entityId}")
-	public R findValue(@PathVariable String entityId){
+	public RR findValue(@PathVariable String entityId,@RequestParam Integer pageNum, @RequestParam Integer pageSize){
 
 		List<ValueAttribute> list = hostInfoModelService.findValueAttributesByEntityId(entityId);
-		return R.ok(list);
+		Page page = new Page();
+		int size = list.size();
+
+		if(pageSize > size) {
+			pageSize = size;
+		}
+
+		// 求出最大页数，防止currentPage越界
+		int maxPage = size % pageSize == 0 ? size / pageSize : size / pageSize + 1;
+
+		if(pageNum > maxPage) {
+			pageNum = maxPage;
+		}
+
+		// 当前页第一条数据的下标
+		int curIdx = pageNum > 1 ? (pageNum - 1) * pageSize : 0;
+
+		List pageList = new ArrayList();
+
+		// 将当前页的数据放进pageList
+		for(int i = 0; i < pageSize && curIdx + i < size; i++) {
+			pageList.add(list.get(curIdx + i));
+		}
+
+		page.setCurrent(pageNum).setSize(pageSize).setTotal(list.size()).setRecords(pageList);
+
+
+		return RR.success(page);
 	}
 
 	/**
@@ -149,14 +175,41 @@ public RR saveOrUpdate(@RequestBody HostInfoModel hostInfoModel){
 	 * @param entityId1
 	 * @return
 	 */
-//	@ApiOperation(value = "查关联实体", notes = "查关联实体")
-//	@PostMapping("/entity/{entityId1}")
-//	public R getEntityId2ByEntityName(@PathVariable String entityId1) {
-//
-//		List<EntityRelationship> list = hostInfoModelService.getEntityRelationships(entityId1);
-//		return R(list);
-//
-//	}
+	@ApiOperation(value = "查关联实体", notes = "查关联实体")
+	@PostMapping("/entity/{entityId1}")
+	public RR getEntityId2ByEntityName(@PathVariable String entityId1,@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+
+		List<EntityRelationship> list = hostInfoModelService.getEntityRelationships(entityId1);
+		Page page = new Page();
+		int size = list.size();
+
+		if(pageSize > size) {
+			pageSize = size;
+		}
+
+		// 求出最大页数，防止currentPage越界
+		int maxPage = size % pageSize == 0 ? size / pageSize : size / pageSize + 1;
+
+		if(pageNum > maxPage) {
+			pageNum = maxPage;
+		}
+
+		// 当前页第一条数据的下标
+		int curIdx = pageNum > 1 ? (pageNum - 1) * pageSize : 0;
+
+		List pageList = new ArrayList();
+
+		// 将当前页的数据放进pageList
+		for(int i = 0; i < pageSize && curIdx + i < size; i++) {
+			pageList.add(list.get(curIdx + i));
+		}
+
+		page.setCurrent(pageNum).setSize(pageSize).setTotal(list.size()).setRecords(pageList);
+
+
+		return RR.success(page);
+
+	}
 
 		}
 

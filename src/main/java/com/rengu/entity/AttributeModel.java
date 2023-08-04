@@ -26,7 +26,7 @@ public class AttributeModel implements Serializable{
 private static final long serialVersionUID=1L;
 
                     @TableId(value = "attribute_id", type = IdType.UUID)
-                private String attributeId;
+        private String attributeId;
 
         private String attributeName;
 

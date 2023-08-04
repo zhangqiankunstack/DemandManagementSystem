@@ -4,6 +4,7 @@ package com.rengu.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rengu.entity.EntityModel;
 import com.rengu.entity.HostInfoModel;
+import com.rengu.entity.vo.EntityRelationship;
 import com.rengu.entity.vo.ValueAttribute;
 
 import java.util.List;
@@ -36,8 +37,10 @@ public interface HostInfoService extends IService<HostInfoModel> {
         public List<ValueAttribute> findValueAttributesByEntityId(String entityId);
 
 
+        List<EntityRelationship> getEntityRelationships(String entityId1);
 
 
-        }
+        void insertAll(String id);
+}
 
 
