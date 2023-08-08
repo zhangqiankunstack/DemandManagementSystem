@@ -37,7 +37,7 @@ import java.util.List;
 @Service
 public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoModel> implements HostInfoService {
 
-    @Value("${mysql.sql}")
+    @Value("${mysql.entitySql}")
     private String sql;
 
     @Autowired
