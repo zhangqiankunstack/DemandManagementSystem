@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rengu.mapper.CriterionMapper">
+
+		<!-- 通用查询映射结果 -->
+		<resultMap id="BaseResultMap" type="com.rengu.entity.CriterionModel">
+					<id column="id" property="id"/>
+					<result column="criterion_name" property="criterionName"/>
+					<result column="review_points" property="reviewPoints"/>
+					<result column="review_criteria" property="reviewCriteria"/>
+					<result column="review_process" property="reviewProcess"/>
+					<result column="display" property="display"/>
+		</resultMap>
+
+		<!-- 通用查询结果列 -->
+		<sql id="Base_Column_List">
+            id, criterion_name, review_points, review_criteria, review_process, display
+		</sql>
+
+
+	<select id="page" resultType="com.rengu.entity.CriterionModel">
+		SELECT *
+		FROM criterion
+				 ${ew.customSqlSegment}
+	</select>
+
+</mapper>
