@@ -2,13 +2,11 @@ package com.rengu.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.rengu.entity.EntityModel;
-import com.rengu.entity.HostInfoModel;
+import com.rengu.entity.*;
 import com.rengu.entity.vo.EntityRelationship;
 import com.rengu.entity.vo.ValueAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -45,6 +43,8 @@ public interface HostInfoService extends IService<HostInfoModel> {
     Integer saveOrUpdateDbInfo(HostInfoModel dbInfo);
 
     Object importTaskFiles(MultipartFile multipartFileList);
+
+    List<EntityModel> saveMetadata(List<EntityModel> entity, List<RelationshipModel> relationship, List<AttributeModel> attributeModel, List<ValueModel> valueModels,List<String> entityIds);
 }
 
 

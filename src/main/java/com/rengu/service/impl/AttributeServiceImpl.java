@@ -14,6 +14,6 @@ import org.springframework.stereotype.Service;
  * @Date 2023/08/02 18:02
  **/
 @Service
-		public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, AttributeModel> implements AttributeService {
+public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, AttributeModel> implements AttributeService {
 
-		}
+}

@@ -1,6 +1,7 @@
 package com.rengu.service.impl;
 
-
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Filter;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.*;
 import com.rengu.entity.vo.EntityRelationship;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName HostInfoServiceImpl
@@ -38,7 +40,7 @@ import java.util.List;
 public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoModel> implements HostInfoService {
 
     @Value("${mysql.entitySql}")
-    private String sql;
+    private String entitySql;
 
     @Autowired
     private EntityService entityService;
@@ -83,13 +85,12 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
     @Override
     public List<EntityModel> connect(HostInfoModel hostInfo) {
         String databaseUrl = "jdbc:mysql://" + hostInfo.getHostIp() + ":" + hostInfo.getPort() + "/" + hostInfo.getNewDatabase() + "?serverTimezone=GMT";
-        String sql1 = sql;
+        String sql = entitySql;
         try (Connection connection = DriverManager.getConnection(databaseUrl, hostInfo.getUsername(), hostInfo.getPassword())) {
             if (connection != null) {
-                System.out.println("连接成功");
                 // 创建 Statement 对象
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(sql1);
+                ResultSet resultSet = statement.executeQuery(sql);
                 List<EntityModel> resultList = new ArrayList<>();
                 while (resultSet.next()) {
                     EntityModel entity = new EntityModel();
@@ -108,7 +109,7 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
         } catch (SQLException e) {
             System.out.println("Database connection error: " + e.getMessage());
         }
-        return null;
+        return new ArrayList<>();
     }
 
     /**
@@ -292,5 +293,44 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    /**
+     * 保存元数据实体、关联关系、属性
+     *
+     * @param entity
+     * @param relationship
+     * @param attributeModel
+     * @param entityIds
+     * @return
+     */
+    @Override
+    public List<EntityModel> saveMetadata(List<EntityModel> entity, List<RelationshipModel> relationship, List<AttributeModel> attributeModel, List<ValueModel> valueModels, List<String> entityIds) {
+        List<EntityModel> commonEntityList = entity.stream().filter(entityModel -> entityIds.contains(entityModel.getEntityId())).collect(Collectors.toList());
+        //保存实体表
+        commonEntityList.stream().forEach(entityModel -> {
+            entityMapper.insert(entityModel);
+            List<RelationshipModel> commonRelationList = CollUtil.filter(relationship, getRelationshipByParams(entityModel.getEntityId()));
+            relationshipService.saveBatch(commonRelationList);
+            List<ValueModel> commonValues = CollUtil.filter(valueModels, getValueModelByParams(entityModel.getEntityId()));
+            valueService.saveBatch(commonValues);
+            List<AttributeModel> commonAttributeModels = CollUtil.filter(attributeModel, getByParams(commonValues));
+            attributeService.saveBatch(commonAttributeModels);
+        });
+        return commonEntityList;
+    }
+
+    // 定义Lambda表达式，判断RelationshipModel对象的EntityId1或EntityId2是否与目标ID满足其一相同
+    private static Filter<RelationshipModel> getRelationshipByParams(String targetId) {
+        return relationshipModel -> relationshipModel.getEntityId1().equals(targetId) || relationshipModel.getEntityId2().equals(targetId);
+    }
+
+    private static Filter<ValueModel> getValueModelByParams(String targetId) {
+        return valueModel -> valueModel.getEntityId().equals(targetId);
+    }
+
+    // 定义Lambda表达式，判断User对象的name在另一个List中是否存在相同值
+    private static Filter<AttributeModel> getByParams(List<ValueModel> attributeModel) {
+        return valueModel -> CollUtil.contains(attributeModel, attribute -> attribute.getAttributeId().equals(valueModel.getAttributeId()));
     }
 }

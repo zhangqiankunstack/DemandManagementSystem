@@ -1,8 +1,10 @@
 package com.rengu.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.rengu.entity.HostInfoModel;
 import com.rengu.entity.ValueModel;
 
+import java.util.List;
 
 
 /**
@@ -13,4 +15,5 @@ import com.rengu.entity.ValueModel;
  **/
 public interface ValueService extends IService<ValueModel> {
 
-        }
+    List<ValueModel> connect(HostInfoModel hostInfo);
+}

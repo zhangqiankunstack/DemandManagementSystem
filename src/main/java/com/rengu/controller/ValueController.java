@@ -3,15 +3,23 @@ package com.rengu.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
+import com.rengu.entity.HostInfoModel;
 import com.rengu.entity.ValueModel;
+import com.rengu.entity.vo.Result;
 import com.rengu.service.ValueService;
+import com.rengu.util.ListPageUtil;
+import com.rengu.util.RedisKeyPrefix;
+import com.rengu.util.RedisUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName ValueController
@@ -21,11 +29,14 @@ import org.springframework.web.bind.annotation.*;
  **/
 @RestController
 @RequestMapping("/value-model")
-@Api(value = "ValueController", tags = {"控制器"})
+@Api(tags = "控制器")
 public class ValueController {
 
     @Autowired
     public ValueService valueModelService;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ApiOperation(value = "展示列表")
@@ -54,5 +65,27 @@ public class ValueController {
     @ApiOperation(value = "保存或更新")
     public boolean saveOrUpdate(@RequestBody ValueModel valueModel) {
         return valueModelService.saveOrUpdate(valueModel);
+    }
+
+    /**
+     * 采集任务展示属性值（未入库数据接口）
+     *
+     * @param hostInfo
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @ApiOperation(value = "查询元数据属性值")
+    @PostMapping("/getValueInfo")
+    public Result getValueInfo(@RequestBody HostInfoModel hostInfo, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        List<ValueModel> values = valueModelService.connect(hostInfo);
+        if (values.size() > 0) {
+            redisUtils.set(RedisKeyPrefix.VALUE, values, 7200L);
+        }
+        Map<String, Object> requestParams = new HashMap<>();
+        requestParams.put("pageNumber", pageNum);
+        requestParams.put("pageSize", pageSize);
+        new ListPageUtil<ValueModel>().separatePageList(values, requestParams);
+        return Result.success(requestParams);
     }
 }

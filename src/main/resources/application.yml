@@ -32,3 +32,4 @@ redis:
 
 mysql:
   entitySql: Select * from entity;
+  valueSql: Select * from value;

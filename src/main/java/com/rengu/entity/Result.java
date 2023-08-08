@@ -8,13 +8,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-/**
- * TODO
- *
- * @author yyc
- * @version 1.0
- * @date 2020/11/3 14:52
- */
 @Data
 public class Result<T> implements Serializable {
 

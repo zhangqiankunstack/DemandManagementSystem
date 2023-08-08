@@ -4,10 +4,7 @@ import com.rengu.entity.HostInfoModel;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.stereotype.Service;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -204,4 +201,21 @@ public class DataBaseFactoryService {
         }
     }
 
+    public ResultSet getResultSetObj(String sql, HostInfoModel hostInfo) {
+        String databaseUrl = "jdbc:mysql://" + hostInfo.getHostIp() + ":" + hostInfo.getPort() + "/" + hostInfo.getNewDatabase() + "?serverTimezone=GMT";
+        String sql1 = sql;
+        ResultSet resultSet = null;
+        try (Connection connection = DriverManager.getConnection(databaseUrl, hostInfo.getUsername(), hostInfo.getPassword())) {
+            if (connection != null) {
+                // 创建 Statement 对象
+                Statement statement = connection.createStatement();
+                resultSet = statement.executeQuery(sql1);
+//                statement.close();
+            }
+//            connection.close();
+        } catch (SQLException e) {
+            System.out.println("Database connection error: " + e.getMessage());
+        }
+        return resultSet;
+    }
 }

@@ -3,19 +3,21 @@ package com.rengu.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import com.rengu.entity.EntityModel;
-import com.rengu.entity.HostInfoModel;
+import com.rengu.entity.*;
 import com.rengu.entity.vo.EntityRelationship;
 import com.rengu.entity.vo.Result;
 import com.rengu.entity.vo.ValueAttribute;
 import com.rengu.service.HostInfoService;
 import com.rengu.util.ListPageUtil;
+import com.rengu.util.RedisKeyPrefix;
+import com.rengu.util.RedisUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +37,8 @@ public class HostInfoController {
 
     @Autowired
     public HostInfoService hostInfoModelService;
+    @Autowired
+    private RedisUtils redisUtils;
 
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
@@ -73,10 +77,8 @@ public class HostInfoController {
     public Result dataTest(@RequestBody HostInfoModel hostInfo) {
         if (hostInfo.getStatus() == 1) {
             hostInfoModelService.databaseTest(hostInfo);
-
         }
         if (hostInfo.getStatus() == 2) {
-
         }
         return Result.success(hostInfoModelService.databaseTest(hostInfo));
     }
@@ -89,16 +91,31 @@ public class HostInfoController {
      * @param pageSize
      * @return
      */
-    @ApiOperation(value = "连接后分页查询集合")
+    @ApiOperation(value = "查询元数据实体列表")
     @PostMapping("/test-online")
     public Result testOnline(@RequestBody HostInfoModel hostInfo, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-        List<EntityModel> list = hostInfoModelService.connect(hostInfo);
+        List<EntityModel> entityModels = hostInfoModelService.connect(hostInfo);
+        if (entityModels.size() != 0) {
+            redisUtils.set(RedisKeyPrefix.ENTITY, entityModels, 7200L);
+        }
         Map<String, Object> requestParams = new HashMap<>();
-        requestParams.put("pageNumber",pageNum);
-        requestParams.put("pageSize",pageSize);
-        new ListPageUtil<EntityModel>().separatePageList(list,requestParams);
+        requestParams.put("pageNumber", pageNum);
+        requestParams.put("pageSize", pageSize);
+        new ListPageUtil<EntityModel>().separatePageList(entityModels, requestParams);
         return Result.success(requestParams);
     }
+
+    //保存元数据实体、关联关系、属性
+    @ApiOperation(value = "保存元数据实体、关联关系、属性")
+    @PostMapping("saveMetadata")
+    public Result saveMetadata(@RequestBody List<String> entityIds) {
+        List<EntityModel> entityModels = (List<EntityModel>) redisUtils.get(RedisKeyPrefix.ENTITY);
+        List<RelationshipModel> relationshipModels = (List<RelationshipModel>) redisUtils.get(RedisKeyPrefix.RELATIONSHIP);
+        List<AttributeModel> attributeModels = (List<AttributeModel>) redisUtils.get(RedisKeyPrefix.ATTRIBUTE);
+        List<ValueModel> valueModels = (List<ValueModel>) redisUtils.get(RedisKeyPrefix.VALUE);
+        return Result.success(hostInfoModelService.saveMetadata(entityModels, relationshipModels, attributeModels, valueModels, entityIds));
+    }
+
 
     @ApiOperation(value = "查实体属性", notes = "查实体属性")
     @PostMapping("/findById/{entityId}")
