@@ -3,11 +3,13 @@ package com.rengu.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rengu.entity.*;
+import com.rengu.entity.vo.EntityAndEntityVo;
 import com.rengu.entity.vo.EntityRelationship;
 import com.rengu.entity.vo.ValueAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName HostInfoService
@@ -16,22 +18,11 @@ import java.util.List;
  * @Date 2023/08/02 18:02
  **/
 public interface HostInfoService extends IService<HostInfoModel> {
-    /**
-     * 数据库连接测试
-     *
-     * @param hostInfo
-     * @return
-     */
-    public boolean databaseTest(HostInfoModel hostInfo);
+
+    public List<ValueAttribute> findValueAttributesByEntityId(String entityId,String keyWord);
 
 
-    List<EntityModel> connect(HostInfoModel hostInfo);
-
-
-    public List<ValueAttribute> findValueAttributesByEntityId(String entityId);
-
-
-    List<EntityRelationship> getEntityRelationships(String entityId1);
+    List<EntityRelationship> getEntityRelationships(String entityId, String keyWord);
 
 
     void insertAll(String id);
@@ -40,11 +31,13 @@ public interface HostInfoService extends IService<HostInfoModel> {
 
     HostInfoModel getDbInfoById(String dbInfoId);
 
-    Integer saveOrUpdateDbInfo(HostInfoModel dbInfo);
+    boolean saveOrUpdateDbInfo(HostInfoModel dbInfo);
 
     Object importTaskFiles(MultipartFile multipartFileList);
 
     List<EntityModel> saveMetadata(List<EntityModel> entity, List<RelationshipModel> relationship, List<AttributeModel> attributeModel, List<ValueModel> valueModels,List<String> entityIds);
+
+    Map<String, Object> getDbInfoList(String keyWord, Integer pageNumber, Integer pageSize);
 }
 
 

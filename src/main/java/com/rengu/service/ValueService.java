@@ -3,8 +3,10 @@ package com.rengu.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rengu.entity.HostInfoModel;
 import com.rengu.entity.ValueModel;
+import com.rengu.entity.vo.ValueAttribute;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -15,5 +17,9 @@ import java.util.List;
  **/
 public interface ValueService extends IService<ValueModel> {
 
-    List<ValueModel> connect(HostInfoModel hostInfo);
+    List<ValueAttribute> connect(HostInfoModel hostInfo);
+
+    Map<String, Object> getAllValueInfo(String entityId, String keyWord, Integer pageNumber, Integer pageSize);
+
+    Map<String, Object> findValueInfoByEntityId(String entityId, Integer pageNumber, Integer pageSize);
 }

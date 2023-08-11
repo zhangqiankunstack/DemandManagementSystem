@@ -2,14 +2,17 @@ package com.rengu.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Filter;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.*;
+import com.rengu.entity.vo.EntityAndEntityVo;
 import com.rengu.entity.vo.EntityRelationship;
 import com.rengu.entity.vo.ValueAttribute;
 import com.rengu.mapper.EntityMapper;
 import com.rengu.mapper.HostInfoMapper;
 import com.rengu.mapper.ValueAttributeMapper;
 import com.rengu.service.*;
+import com.rengu.util.ListPageUtil;
 import com.rengu.util.RedisTemplateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,12 +25,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -38,9 +39,6 @@ import java.util.stream.Collectors;
  **/
 @Service
 public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoModel> implements HostInfoService {
-
-    @Value("${mysql.entitySql}")
-    private String entitySql;
 
     @Autowired
     private EntityService entityService;
@@ -57,61 +55,6 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
     @Autowired
     private AttributeService attributeService;
 
-    @Override
-    public boolean databaseTest(HostInfoModel hostInfo) {
-        String databaseUrl = "jdbc:mysql://" + hostInfo.getHostIp() + ":" + hostInfo.getPort() + "/" + hostInfo.getNewDatabase() + "?serverTimezone=GMT";
-        try (Connection connection = DriverManager.getConnection(databaseUrl, hostInfo.getUsername(), hostInfo.getPassword())) {
-            if (connection != null) {
-                System.out.println("Database connection successful!");
-
-                // 执行其他数据库操作
-                // ...
-                connection.close();
-                return true;
-            }
-        } catch (SQLException e) {
-            System.out.println("Database connection error: " + e.getMessage());
-        }
-        return false;
-    }
-
-
-    /**
-     * 连接后查询
-     *
-     * @param hostInfo
-     * @return
-     */
-    @Override
-    public List<EntityModel> connect(HostInfoModel hostInfo) {
-        String databaseUrl = "jdbc:mysql://" + hostInfo.getHostIp() + ":" + hostInfo.getPort() + "/" + hostInfo.getNewDatabase() + "?serverTimezone=GMT";
-        String sql = entitySql;
-        try (Connection connection = DriverManager.getConnection(databaseUrl, hostInfo.getUsername(), hostInfo.getPassword())) {
-            if (connection != null) {
-                // 创建 Statement 对象
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(sql);
-                List<EntityModel> resultList = new ArrayList<>();
-                while (resultSet.next()) {
-                    EntityModel entity = new EntityModel();
-                    entity.setEntityId(resultSet.getString("entity_id"));
-                    entity.setEntityName(resultSet.getString("entity_name"));
-                    entity.setEntityType(resultSet.getString("entity_type"));
-                    resultList.add(entity);
-                }
-                //todo:后期修改
-//                resultList = ResultSetToListConverter.convertToList(resultSet, EntityModel.class);
-                resultSet.close();
-                statement.close();
-                connection.close();
-                return resultList;
-            }
-        } catch (SQLException e) {
-            System.out.println("Database connection error: " + e.getMessage());
-        }
-        return new ArrayList<>();
-    }
-
     /**
      * 查询数据
      *
@@ -119,21 +62,16 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
      * @return
      */
     @Override
-    public List<ValueAttribute> findValueAttributesByEntityId(String entityId) {
-        List<ValueAttribute> valueAttributeList = valueAttributeMapper.findValueAttributesByEntityId(entityId);
-
+    public List<ValueAttribute> findValueAttributesByEntityId(String entityId, String keyWord) {
+        List<ValueAttribute> valueAttributeList = valueAttributeMapper.findValueAttributesByEntityId(entityId, keyWord);
         return valueAttributeList;
-
     }
 
     @Override
-    public List<EntityRelationship> getEntityRelationships(String entityId1) {
-        List<EntityRelationship> list = entityMapper.getEntityRelationships(entityId1);
+    public List<EntityRelationship> getEntityRelationships(String entityId, String keyWord) {
 
-        boolean entityRelationship = redisTemplateUtil.lSet("entityRelationship", list, 6000);
-
+        List<EntityRelationship> list = entityMapper.getEntityRelationships(entityId, keyWord);
         return list;
-
     }
 
     @Override
@@ -169,12 +107,8 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
 
     }
 
-    public Integer saveOrUpdateDbInfo(HostInfoModel dbInfo) {
-        if (StringUtils.isEmpty(dbInfo.getId())) {
-            return baseMapper.insert(dbInfo);
-        } else {
-            return baseMapper.updateById(dbInfo);
-        }
+    public boolean saveOrUpdateDbInfo(HostInfoModel dbInfo) {
+        return this.saveOrUpdate(dbInfo);
     }
 
     public Integer deletedDbInfoById(String dbInfoId) {
@@ -308,16 +242,33 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
     public List<EntityModel> saveMetadata(List<EntityModel> entity, List<RelationshipModel> relationship, List<AttributeModel> attributeModel, List<ValueModel> valueModels, List<String> entityIds) {
         List<EntityModel> commonEntityList = entity.stream().filter(entityModel -> entityIds.contains(entityModel.getEntityId())).collect(Collectors.toList());
         //保存实体表
-        commonEntityList.stream().forEach(entityModel -> {
-            entityMapper.insert(entityModel);
+
+//        commonEntityList.stream().forEach(entityModel -> {
+        for (EntityModel entityModel : commonEntityList) {
+            entityService.saveOrUpdate(entityModel);
+//                entityMapper.insert(entityModel);
             List<RelationshipModel> commonRelationList = CollUtil.filter(relationship, getRelationshipByParams(entityModel.getEntityId()));
-            relationshipService.saveBatch(commonRelationList);
+            relationshipService.saveOrUpdateBatch(commonRelationList);
             List<ValueModel> commonValues = CollUtil.filter(valueModels, getValueModelByParams(entityModel.getEntityId()));
-            valueService.saveBatch(commonValues);
+            valueService.saveOrUpdateBatch(commonValues);
             List<AttributeModel> commonAttributeModels = CollUtil.filter(attributeModel, getByParams(commonValues));
-            attributeService.saveBatch(commonAttributeModels);
-        });
+            attributeService.saveOrUpdateBatch(commonAttributeModels);
+//        });
+        }
         return commonEntityList;
+    }
+
+    @Override
+    public Map<String, Object> getDbInfoList(String keyword, Integer pageNumber, Integer pageSize) {
+        QueryWrapper<HostInfoModel> queryWrap = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(keyword)) {
+            queryWrap.like("new_database", keyword).or().like("host_ip", keyword).or().like("db_name", keyword).or().like("port", keyword);
+        }
+        List<HostInfoModel> hostInfoModels = this.list(queryWrap);
+        Map<String, Object> requestParams = new HashMap<>();
+        requestParams.put("pageNumber", pageNumber);
+        requestParams.put("pageSize", pageSize);
+        return new ListPageUtil<HostInfoModel>().separatePageList(hostInfoModels, requestParams);
     }
 
     // 定义Lambda表达式，判断RelationshipModel对象的EntityId1或EntityId2是否与目标ID满足其一相同
@@ -329,7 +280,7 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
         return valueModel -> valueModel.getEntityId().equals(targetId);
     }
 
-    // 定义Lambda表达式，判断User对象的name在另一个List中是否存在相同值
+    // 定义Lambda表达式，判断AttributeModel对象的id在另一个List中是否存在相同值
     private static Filter<AttributeModel> getByParams(List<ValueModel> attributeModel) {
         return valueModel -> CollUtil.contains(attributeModel, attribute -> attribute.getAttributeId().equals(valueModel.getAttributeId()));
     }

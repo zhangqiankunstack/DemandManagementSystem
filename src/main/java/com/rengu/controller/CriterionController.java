@@ -2,8 +2,9 @@ package com.rengu.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rengu.entity.CriterionModel;
-import com.rengu.entity.vo.Result;
+import com.rengu.entity.Result;
 import com.rengu.service.CriterionService;
+import com.rengu.util.ResultUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,19 +39,19 @@ public class CriterionController {
     @RequestMapping(value = "queryById", method = RequestMethod.GET)
     @ApiOperation(value = "根据Id展示列表")
     public Result get(String Id) {
-        return Result.success(criterionModelService.getById(Id));
+        return ResultUtils.build(criterionModelService.getById(Id));
     }
 
     @RequestMapping(value = "remove", method = RequestMethod.GET)
     @ApiOperation(value = "移除")
     public Result remove(String Id) {
-        return Result.success(criterionModelService.removeById(Id));
+        return ResultUtils.build(criterionModelService.removeById(Id));
     }
 
     @RequestMapping(value = "saveOrUpdate", method = RequestMethod.POST)
     @ApiOperation(value = "保存或更新")
     public Result saveOrUpdate(@RequestBody CriterionModel criterionModel) {
-        return Result.success(criterionModelService.saveOrUpdate(criterionModel));
+        return ResultUtils.build(criterionModelService.saveOrUpdate(criterionModel));
     }
 
 
@@ -63,7 +64,7 @@ public class CriterionController {
                        @RequestParam(value = "reviewCriteria", required = false) String reviewCriteria,
                        @RequestParam(value = "reviewProcess", required = false) String reviewProcess) {
         Page<CriterionModel> page = criterionModelService.page(pageNum, pageSize, criterionName, reviewPoints, reviewCriteria, reviewProcess);
-        return Result.success(page);
+        return ResultUtils.build(page);
     }
 }
 

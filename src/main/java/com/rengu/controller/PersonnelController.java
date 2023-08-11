@@ -2,8 +2,9 @@ package com.rengu.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rengu.entity.PersonnelModel;
-import com.rengu.entity.vo.Result;
+import com.rengu.entity.Result;
 import com.rengu.service.PersonnelService;
+import com.rengu.util.ResultUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +44,13 @@ public class PersonnelController {
     @RequestMapping(value = "remove", method = RequestMethod.GET)
     @ApiOperation(value = "移除")
     public Result remove(String Id) {
-        return Result.success(personnelModelService.removeById(Id));
+        return ResultUtils.build(personnelModelService.removeById(Id));
     }
 
     @RequestMapping(value = "saveOrUpdate", method = RequestMethod.POST)
     @ApiOperation(value = "保存或更新")
     public Result saveOrUpdate(@RequestBody PersonnelModel personnelModel) {
-        return Result.success(personnelModelService.saveOrUpdate(personnelModel));
+        return ResultUtils.build(personnelModelService.saveOrUpdate(personnelModel));
     }
 
 
@@ -63,7 +64,7 @@ public class PersonnelController {
 
         Page<PersonnelModel> page = personnelModelService.page(pageNum, pageSize, name, introduction);
 
-        return Result.success(page);
+        return ResultUtils.build(page);
     }
 
 

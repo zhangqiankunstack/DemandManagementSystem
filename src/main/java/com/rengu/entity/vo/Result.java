@@ -3,7 +3,6 @@ package com.rengu.entity.vo;
 import lombok.Getter;
 
 /**
- * <一句话功能描述>
  *
  * @author CuiYi cuiyi@zbitedu.cn
  * @version 1.0.0

@@ -8,14 +8,14 @@ import java.util.List;
 
 @Mapper
 public interface ValueAttributeMapper {
-    @Select("SELECT v.value, a.attribute_name " +
+    @Select("SELECT v.value, v.attribute_id,a.attribute_name " +
             "FROM value v " +
             "JOIN entity e ON v.entity_id = e.entity_id " +
             "JOIN attribute a ON v.attribute_id = a.attribute_id " +
-            "WHERE e.entity_id = #{entityId}")
+            "WHERE e.entity_id = #{entityId} and (#{keyWord} IS NULL OR a.attribute_name LIKE CONCAT('%', #{keyWord}, '%'))")
     @Results({
             @Result(property = "value", column = "value"),
             @Result(property = "attribute.attributeId", column = "attribute_id")
     })
-    List<ValueAttribute> findValueAttributesByEntityId(@Param("entityId") String entityId);
+    List<ValueAttribute> findValueAttributesByEntityId(@Param("entityId") String entityId,@Param("keyWord") String keyWord);
 }

@@ -126,11 +126,11 @@ public class DataBaseFactoryService {
      *
      * @param dbinfo
      */
-    public void addDataSource(HostInfoModel dbinfo) {
+    public void addDataSource(HostInfoModel dbInfo) {
         synchronized (DataBaseFactoryService.class) {
             //再次判断是否包含
-            if (!dbinfoMap.containsKey(dbinfo.getId())) {
-                dbinfoMap.put(dbinfo.getId(), createDataSource(dbinfo));
+            if (!dbinfoMap.containsKey(dbInfo.getId())) {
+                dbinfoMap.put(dbInfo.getId(), createDataSource(dbInfo));
             }
         }
     }
@@ -202,7 +202,7 @@ public class DataBaseFactoryService {
     }
 
     public ResultSet getResultSetObj(String sql, HostInfoModel hostInfo) {
-        String databaseUrl = "jdbc:mysql://" + hostInfo.getHostIp() + ":" + hostInfo.getPort() + "/" + hostInfo.getNewDatabase() + "?serverTimezone=GMT";
+        String databaseUrl = "jdbc:mysql://" + hostInfo.getHostIp() + ":" + hostInfo.getPort() + "/" + hostInfo.getDbName() + "?serverTimezone=GMT";
         String sql1 = sql;
         ResultSet resultSet = null;
         try (Connection connection = DriverManager.getConnection(databaseUrl, hostInfo.getUsername(), hostInfo.getPassword())) {

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  **/
 @RestController
 @RequestMapping("/attribute-model")
-@Api(value = "AttributeController", tags = {"控制器"})
+@Api(tags = "实体属性控制层")
 public class AttributeController {
 
     @Autowired

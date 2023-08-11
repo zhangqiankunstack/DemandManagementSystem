@@ -13,6 +13,4 @@ public class ValueAttribute extends AttributeModel {
 
     private String value;
 
-    private AttributeModel attribute;
-
 }

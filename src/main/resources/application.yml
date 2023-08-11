@@ -1,3 +1,6 @@
+#server:
+#  port: 8090
+
 spring:
   application:
     name: comprehensiveReqManager
@@ -32,4 +35,7 @@ redis:
 
 mysql:
   entitySql: Select * from entity;
-  valueSql: Select * from value;
+  valueSql: SELECT v.attribute_id,v.entity_id,v.`value`,value_id,a.attribute_id,a.attribute_name FROM `value` v  JOIN attribute a  WHERE v.attribute_id = a.attribute_id;
+  attributeSql: Select * from attribute;
+  relationshipSql: Select * from relationship;
+#  valueSql: Select * from value;

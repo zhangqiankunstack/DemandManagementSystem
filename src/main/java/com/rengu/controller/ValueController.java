@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rengu.entity.HostInfoModel;
 import com.rengu.entity.ValueModel;
-import com.rengu.entity.vo.Result;
+import com.rengu.entity.Result;
+import com.rengu.entity.vo.ValueAttribute;
 import com.rengu.service.ValueService;
 import com.rengu.util.ListPageUtil;
-import com.rengu.util.RedisKeyPrefix;
-import com.rengu.util.RedisUtils;
+import com.rengu.util.ResultUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -29,25 +29,11 @@ import java.util.Map;
  **/
 @RestController
 @RequestMapping("/value-model")
-@Api(tags = "控制器")
+@Api(tags = "属性值控制层-API")
 public class ValueController {
 
     @Autowired
     public ValueService valueModelService;
-
-    @Autowired
-    private RedisUtils redisUtils;
-
-    @RequestMapping(value = "list", method = RequestMethod.GET)
-    @ApiOperation(value = "展示列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "页码", name = "pageNum", dataType = "Integer", required = false, example = "1", defaultValue = "1"),
-            @ApiImplicitParam(value = "每页条数", name = "pageSize", dataType = "Integer", required = false, example = "10", defaultValue = "10")
-    })
-    public IPage<ValueModel> get(@RequestParam(value = "pageNum") Integer pageNum, @RequestParam(value = "pageSize") Integer pageSize) {
-        return valueModelService.page(new Page<>(pageNum, pageSize));
-
-    }
 
     @RequestMapping(value = "queryById", method = RequestMethod.GET)
     @ApiOperation(value = "根据Id展示列表")
@@ -71,21 +57,31 @@ public class ValueController {
      * 采集任务展示属性值（未入库数据接口）
      *
      * @param hostInfo
-     * @param pageNum
+     * @param pageNumber
      * @param pageSize
      * @return
      */
-    @ApiOperation(value = "查询元数据属性值")
-    @PostMapping("/getValueInfo")
-    public Result getValueInfo(@RequestBody HostInfoModel hostInfo, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-        List<ValueModel> values = valueModelService.connect(hostInfo);
-        if (values.size() > 0) {
-            redisUtils.set(RedisKeyPrefix.VALUE, values, 7200L);
-        }
+    @ApiOperation(value = "查询元数据属性值列表(物化采集)")
+    @PostMapping("/findValueInfoList")
+    public Result findValueInfoList(@RequestBody HostInfoModel hostInfo, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        List<ValueAttribute> values = valueModelService.connect(hostInfo);
         Map<String, Object> requestParams = new HashMap<>();
-        requestParams.put("pageNumber", pageNum);
+        requestParams.put("pageNumber", pageNumber);
         requestParams.put("pageSize", pageSize);
-        new ListPageUtil<ValueModel>().separatePageList(values, requestParams);
-        return Result.success(requestParams);
+        new ListPageUtil<ValueAttribute>().separatePageList(values, requestParams);
+        return ResultUtils.build(requestParams);
+    }
+
+    @ApiOperation(value = "根据实体id查询元数据属性(物化查询)")
+    @GetMapping("/findValueInfoByEntityId")
+    public Result findValueInfoByEntityId(@RequestParam String entityId,@RequestParam Integer pageNumber,@RequestParam Integer pageSize){
+        return ResultUtils.build(valueModelService.findValueInfoByEntityId(entityId,pageNumber,pageSize));
+    }
+
+
+    @ApiOperation("查询数据值列表（本地数据）")
+    @GetMapping("/getAllValueInfo")
+    public Result getAllValueInfo(@RequestParam String entityId, @RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        return ResultUtils.build(valueModelService.getAllValueInfo(entityId, keyWord, pageNumber, pageSize));
     }
 }

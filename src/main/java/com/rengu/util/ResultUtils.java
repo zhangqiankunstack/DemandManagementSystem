@@ -7,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * @ClassName ResultUtils
  * @Description TODO
- * @Author yyc
- * @Date 2020/11/18 13:43
  * @Version 1.0
  */
 @Slf4j
