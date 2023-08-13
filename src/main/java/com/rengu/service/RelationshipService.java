@@ -21,4 +21,7 @@ public interface RelationshipService extends IService<RelationshipModel> {
     List<EntityAndEntityVo> connect(HostInfoModel hostInfo);
 
     Map<String, Object> getAllRelationship(String entityId, String keyWord, Integer pageNumber, Integer pageSize);
+
+
+
 }

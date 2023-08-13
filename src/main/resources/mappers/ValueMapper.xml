@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zb.mapper.ValueMapper">
+<mapper namespace="com.rengu.mapper.ValueMapper">
 
-		<!-- 通用查询映射结果 -->
-		<resultMap id="BaseResultMap" type="com.rengu.entity.ValueModel">
-					<id column="value_id" property="valueId"/>
-					<result column="entity_id" property="entityId"/>
-					<result column="attribute_id" property="attributeId"/>
-					<result column="value" property="value"/>
-		</resultMap>
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.rengu.entity.ValueModel">
+		<id column="value_id" property="valueId"/>
+		<result column="entity_id" property="entityId"/>
+		<result column="attribute_id" property="attributeId"/>
+		<result column="value" property="value"/>
+	</resultMap>
 
-		<!-- 通用查询结果列 -->
-		<sql id="Base_Column_List">
-            value_id, entity_id, attribute_id, value
-		</sql>
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		value_id, entity_id, attribute_id, value
+	</sql>
 
+
+	<select id="getAttributeAndValue" resultMap="valueAttributeMap">
+		SELECT attribute.attribute_name, value.value
+		FROM entity
+		JOIN value ON entity.entity_id = value.entity_id
+		JOIN attribute ON value.attribute_id = attribute.attribute_id
+		WHERE entity.entity_id = #{entityId}
+		<if test="attributeName != null and attributeName != ''">
+			AND attribute.attribute_name LIKE CONCAT('%', #{attributeName}, '%')
+		</if>
+		<if test="value != null and value != ''">
+			AND value.value LIKE CONCAT('%', #{value}, '%')
+		</if>
+	</select>
+	<resultMap id="valueAttributeMap" type="com.rengu.entity.vo.ValueAttribute">
+		<result column="attribute_name" property="attributeName"/>
+		<result column="value" property="value"/>
+		<association property="attribute" javaType="com.rengu.entity.AttributeModel">
+			<result column="attribute_name" property="attributeName"/>
+			<!-- 添加其他 attribute 相关字段的映射规则 -->
+		</association>
+	</resultMap>
 </mapper>
