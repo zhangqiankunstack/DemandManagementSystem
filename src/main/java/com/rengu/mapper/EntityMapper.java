@@ -25,4 +25,6 @@ public interface EntityMapper extends BaseMapper<EntityModel> {
 //    @Select("SELECT DISTINCT relationship.relationship_id,relationship.entity_id1,entity.entity_name as entity_name1 ,relationship.entity_id2,entity.entity_name as entity_name2,relationship.relationship_type as relationship_type FROM relationship INNER JOIN entity ON relationship.entity_id2 = entity.entity_id OR relationship.entity_id1 = entity.entity_id WHERE relationship.entity_id1 = #{entityId} AND (#{keyWord} IS NULL OR entity.entity_name LIKE CONCAT('%', #{keyWord}, '%'))")
 @Select("SELECT DISTINCT relationship.relationship_id,relationship.entity_id1,entity.entity_name as entity_name1 ,relationship.entity_id2,entity.entity_name as entity_name2,relationship.relationship_type as relationship_type,entity.entity_type AS entity_type FROM relationship INNER JOIN entity ON relationship.entity_id2 = entity.entity_id OR relationship.entity_id1 = entity.entity_id WHERE entity.entity_id = #{entityId} AND (#{keyWord} IS NULL OR entity.entity_type LIKE CONCAT('%', #{keyWord}, '%'))")
     List<EntityRelationship> getEntityRelationships(@Param("entityId") String entityId,@Param("keyWord")String keyWord);
+
+
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rengu.mapper.OpinionMapper">
+
+		<!-- 通用查询映射结果 -->
+		<resultMap id="BaseResultMap" type="com.rengu.entity.OpinionModel">
+					<id column="id" property="id"/>
+					<result column="name" property="name"/>
+					<result column="expert_opinion" property="expertOpinion"/>
+					<result column="status" property="status"/>
+		</resultMap>
+
+		<!-- 通用查询结果列 -->
+		<sql id="Base_Column_List">
+            id, name, expert_opinion, status
+		</sql>
+
+
+
+<!--	<insert id="batchInsert" useGeneratedKeys="false">-->
+<!--		INSERT INTO your_table (name, expertOpinion, status) VALUES-->
+<!--		<foreach collection="list" item="item" separator=",">-->
+<!--			(#{item.name}, #{item.expertOpinion}, #{item.status})-->
+<!--		</foreach>-->
+
+<!--	</insert>-->
+
+
+
+	<!-- 批量插入 -->
+	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+		INSERT INTO opinion (name, expert_opinion, status, review_id)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.name}, #{item.expertOpinion}, #{item.status}, #{item.reviewId})
+		</foreach>
+	</insert>
+
+
+    <select id="findByReviewId" resultType="com.rengu.entity.OpinionModel">
+		SELECT * FROM opinion WHERE review_id = #{reviewId}
+	</select>
+
+</mapper>

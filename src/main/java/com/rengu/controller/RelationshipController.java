@@ -58,4 +58,5 @@ public class RelationshipController {
     public Result getAllRelationship(@RequestParam String entityId, @RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
         return ResultUtils.build(relationshipModelService.getAllRelationship(entityId, keyWord, pageNumber, pageSize));
     }
+
 }

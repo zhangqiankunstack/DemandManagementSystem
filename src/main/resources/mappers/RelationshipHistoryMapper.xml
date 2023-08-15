@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rengu.mapper.RelationshipHistoryMapper">
+
+		<!-- 通用查询映射结果 -->
+		<resultMap id="BaseResultMap" type="com.rengu.entity.RelationshipHistoryModel">
+					<id column="relationship_id" property="relationshipId"/>
+					<result column="entity_history_id1" property="entityHistoryId1"/>
+					<result column="entity_history_id2" property="entityHistoryId2"/>
+					<result column="relationship_type" property="relationshipType"/>
+		</resultMap>
+
+		<!-- 通用查询结果列 -->
+		<sql id="Base_Column_List">
+            relationship_id, entity_history_id1, entity_history_id2, relationship_type
+		</sql>
+
+</mapper>

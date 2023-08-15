@@ -12,4 +12,5 @@ import com.rengu.entity.AttributeModel;
  **/
 public interface AttributeService extends IService<AttributeModel> {
 
+
         }

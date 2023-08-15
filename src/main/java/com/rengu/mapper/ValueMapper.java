@@ -3,7 +3,11 @@ package com.rengu.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.rengu.entity.ValueModel;
+import com.rengu.entity.vo.ValueAttribute;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @ClassName ValueMapper
@@ -13,5 +17,8 @@ import org.apache.ibatis.annotations.Mapper;
  **/
 @Mapper
 public interface ValueMapper extends BaseMapper<ValueModel> {
+
+    List<ValueAttribute> getAttributeAndValue(@Param("entityId") String entityId, @Param("attributeName") String attributeName, @Param("value") String value);
+
 
 }

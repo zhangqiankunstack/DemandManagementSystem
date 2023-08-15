@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.rengu.entity.RelationshipModel;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @ClassName RelationshipMapper
  * @Description mapper接口
@@ -13,5 +15,9 @@ import org.apache.ibatis.annotations.Mapper;
  **/
 @Mapper
 public interface RelationshipMapper extends BaseMapper<RelationshipModel> {
+
+
+
+    List<RelationshipModel> getRelationshipsByEntityIds(List<String> entityIds);
 
 }

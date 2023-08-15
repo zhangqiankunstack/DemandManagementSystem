@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.rengu.mapper.EntityMapper">
+<mapper namespace="com.rengu.mapper.EntityHistoryMapper">
 
 		<!-- 通用查询映射结果 -->
-		<resultMap id="BaseResultMap" type="com.rengu.entity.EntityModel">
-					<id column="entity_id" property="entityId"/>
+		<resultMap id="BaseResultMap" type="com.rengu.entity.EntityHistoryModel">
+					<id column="entity_historyid" property="entityHistoryid"/>
+					<result column="entity_id" property="entityId"/>
+					<result column="version" property="version"/>
 					<result column="entity_name" property="entityName"/>
 					<result column="entity_type" property="entityType"/>
 		</resultMap>
 
 		<!-- 通用查询结果列 -->
 		<sql id="Base_Column_List">
-            entity_id, entity_name, entity_type
+            entity_historyid, entity_id, version, entity_name, entity_type
 		</sql>
-
-
-
 
 </mapper>

@@ -106,10 +106,12 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
 
     }
 
+    @Override
     public boolean saveOrUpdateDbInfo(HostInfoModel dbInfo) {
         return this.saveOrUpdate(dbInfo);
     }
 
+    @Override
     public Integer deletedDbInfoById(String dbInfoId) {
         if (StringUtils.isEmpty(dbInfoId)) {
             return 0;
@@ -118,6 +120,7 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
     }
 
     //通过id获取数据源
+    @Override
     public HostInfoModel getDbInfoById(String dbInfoId) {
         return baseMapper.selectById(dbInfoId);
     }

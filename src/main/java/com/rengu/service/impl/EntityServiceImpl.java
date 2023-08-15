@@ -5,7 +5,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.EntityModel;
 import com.rengu.entity.HostInfoModel;
 import com.rengu.entity.RelationshipModel;
+import com.rengu.entity.ValueModel;
+import com.rengu.entity.vo.EntityQueryVo;
 import com.rengu.mapper.EntityMapper;
+import com.rengu.mapper.RelationshipMapper;
+import com.rengu.mapper.ValueMapper;
 import com.rengu.service.EntityService;
 import com.rengu.service.RelationshipService;
 import com.rengu.util.ListPageUtil;
@@ -35,6 +39,10 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
     @Autowired
     private RelationshipService relationshipService;
 
+    @Autowired
+    private ValueMapper valueMapper;
+    @Autowired
+    private RelationshipMapper relationshipMapper;
     /**
      * 连接后查询
      *
@@ -116,4 +124,38 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
         return list1.stream().flatMap(id1 -> list2.stream().map(id2 -> new RelationshipModel("", id1, id2, ""))).collect(Collectors.toList());
     }
 
+    @Override
+    public EntityQueryVo queryEntities(List<String> entityIdList) {
+
+        // 查询 attributeId 和 valueId
+        QueryWrapper<ValueModel> valueQueryWrapper = new QueryWrapper<>();
+        valueQueryWrapper.in("entity_id", entityIdList);
+        List<ValueModel> valueList = valueMapper.selectList(valueQueryWrapper);
+
+        EntityQueryVo entityQueryVo = new EntityQueryVo();
+        List<String> attributeIdList = new ArrayList<>();
+        List<String> valueIdList = new ArrayList<>();
+        entityQueryVo.setAttributeIdList(attributeIdList);
+        entityQueryVo.setValueIdList(valueIdList);
+
+        for (ValueModel value : valueList) {
+            attributeIdList.add(value.getAttributeId());
+            valueIdList.add(value.getValueId());
+        }
+
+        // 查询 relationshipId
+        QueryWrapper<RelationshipModel> relationshipQueryWrapper = new QueryWrapper<>();
+        relationshipQueryWrapper.in("entity_id1", entityIdList).or().in("entity_id2", entityIdList);
+        List<RelationshipModel> relationshipList = relationshipMapper.selectList(relationshipQueryWrapper);
+
+
+        List<String> relationshipIdList = new ArrayList<>();
+        entityQueryVo.setRelationshipIdList(relationshipIdList);
+//        List<String> relationshipIdList = entityQueryVo.getRelationshipIdList();
+
+        for (RelationshipModel relationship : relationshipList) {
+            relationshipIdList.add(relationship.getRelationshipId());
+        }
+        return entityQueryVo;
+    }
 }
