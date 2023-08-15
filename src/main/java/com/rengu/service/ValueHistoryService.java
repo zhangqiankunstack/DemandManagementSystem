@@ -13,5 +13,5 @@ import java.util.List;
  * @Date 2023/08/08 14:37
  **/
 public interface ValueHistoryService extends IService<ValueHistoryModel> {
-        public void copyDataToValueHistory(List<String> valueIds);
-        }
+    public void copyDataToValueHistory(List<String> valueIds);
+}

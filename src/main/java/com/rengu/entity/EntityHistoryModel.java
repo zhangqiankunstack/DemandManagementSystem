@@ -16,27 +16,27 @@ import java.io.Serializable;
  * @Date 2023/08/08 14:36
  **/
 @Data
-    @EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @TableName("entity_history")
 @ApiModel(value = "EntityHistoryModel", description = "")
-public class EntityHistoryModel implements Serializable{
+public class EntityHistoryModel implements Serializable {
 
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
-                    @TableId(value = "entity_historyid", type = IdType.UUID)
-                private String entityHistoryid;
+    @TableId(value = "entity_historyid", type = IdType.UUID)
+    private String entityHistoryid;
 
-        private String entityId;
+    private String entityId;
 
-        private String version;
+    private String version;
 
-        private String entityName;
+    private String entityName;
 
-        @ApiModelProperty(value = "枚举：mission,activity,capability,function,system,node  没有默认，必填")
-        private String entityType;
+    @ApiModelProperty(value = "枚举：mission,activity,capability,function,system,node  没有默认，必填")
+    private String entityType;
 
 
-        }
+}

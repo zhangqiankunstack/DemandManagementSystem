@@ -14,13 +14,5 @@ import java.util.List;
  **/
 @Mapper
 public interface ReviewEntityMapper extends BaseMapper<ReviewEntityModel> {
-
-
-
-	List<String> selectByReviewId(Integer reviewId);
-
-
-
-
-
-		}
+    List<String> selectByReviewId(Integer reviewId);
+}

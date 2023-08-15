@@ -13,5 +13,5 @@ import java.util.List;
  * @Date 2023/08/08 14:36
  **/
 public interface AttributeHistoryService extends IService<AttributeHistoryModel> {
-        public void copyDataToAttributeHistory(List<String> ids);
-        }
+    public void copyDataToAttributeHistory(List<String> ids);
+}

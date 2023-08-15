@@ -13,6 +13,6 @@ import com.rengu.entity.PersonnelModel;
  * @Date 2023/08/04 09:45
  **/
 public interface CriterionService extends IService<CriterionModel> {
-        Page<CriterionModel> page(Integer index, Integer size, String criterionName,String reviewPoints,String reviewCriteria,String reviewProcess);
+    Page<CriterionModel> page(Integer index, Integer size, String criterionName, String reviewPoints, String reviewCriteria, String reviewProcess);
 
-        }
+}

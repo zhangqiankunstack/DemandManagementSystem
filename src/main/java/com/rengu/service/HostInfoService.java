@@ -18,7 +18,7 @@ import java.util.Map;
  **/
 public interface HostInfoService extends IService<HostInfoModel> {
 
-    public List<ValueAttribute> findValueAttributesByEntityId(String entityId,String keyWord);
+    public List<ValueAttribute> findValueAttributesByEntityId(String entityId, String keyWord);
 
 
     List<EntityRelationship> getEntityRelationships(String entityId, String keyWord);
@@ -34,7 +34,7 @@ public interface HostInfoService extends IService<HostInfoModel> {
 
     Object importTaskFiles(MultipartFile multipartFileList);
 
-    List<EntityModel> saveMetadata(List<EntityModel> entity, List<RelationshipModel> relationship, List<AttributeModel> attributeModel, List<ValueModel> valueModels,List<String> entityIds);
+    List<EntityModel> saveMetadata(List<EntityModel> entity, List<RelationshipModel> relationship, List<AttributeModel> attributeModel, List<ValueModel> valueModels, List<String> entityIds);
 
     Map<String, Object> getDbInfoList(String keyWord, Integer pageNumber, Integer pageSize);
 }

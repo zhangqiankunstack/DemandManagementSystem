@@ -19,7 +19,5 @@ import java.util.List;
  **/
 @Mapper
 public interface CriterionMapper extends BaseMapper<CriterionModel> {
-
-
     List<CriterionModel> page(Page<CriterionModel> page, @Param(Constants.WRAPPER) Wrapper wrapper);
 }

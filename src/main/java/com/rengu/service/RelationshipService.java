@@ -21,7 +21,7 @@ public interface RelationshipService extends IService<RelationshipModel> {
 
     Map<String, Object> getAllRelationship(String entityId, String keyWord, Integer pageNumber, Integer pageSize);
 
-    Map<String, Object> findRelationshipByEntityId(String entityId, String keyWord,Integer pageNumber, Integer pageSize);
+    Map<String, Object> findRelationshipByEntityId(String entityId, String keyWord, Integer pageNumber, Integer pageSize);
 
     RelationshipModel getRelationshnipByEntityIds(String capabilityId, String missionId);
 }

@@ -20,34 +20,37 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/attribute-history-model")
 @Api(value = "AttributeHistoryController", tags = {"控制器"})
-	public class AttributeHistoryController {
+public class AttributeHistoryController {
 
-@Autowired
-public AttributeHistoryService attributeHistoryModelService;
+    @Autowired
+    public AttributeHistoryService attributeHistoryModelService;
 
-@RequestMapping(value = "list", method = RequestMethod.GET)
-@ApiOperation(value = "展示列表")
-@ApiImplicitParams({
-		@ApiImplicitParam(value = "页码", name = "pageNum", dataType = "Integer", required = false,example = "1",defaultValue = "1"),
-		@ApiImplicitParam(value = "每页条数", name = "pageSize", dataType = "Integer", required = false,example = "10",defaultValue = "10")
-})
-public IPage<AttributeHistoryModel> get(@RequestParam(value = "pageNum") Integer pageNum,@RequestParam(value = "pageSize") Integer pageSize){
-		return	attributeHistoryModelService.page(new Page<>(pageNum, pageSize));
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @ApiOperation(value = "展示列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "页码", name = "pageNum", dataType = "Integer", required = false, example = "1", defaultValue = "1"),
+            @ApiImplicitParam(value = "每页条数", name = "pageSize", dataType = "Integer", required = false, example = "10", defaultValue = "10")
+    })
+    public IPage<AttributeHistoryModel> get(@RequestParam(value = "pageNum") Integer pageNum, @RequestParam(value = "pageSize") Integer pageSize) {
+        return attributeHistoryModelService.page(new Page<>(pageNum, pageSize));
 
-		}
-@RequestMapping(value = "queryById", method = RequestMethod.GET)
-@ApiOperation(value = "根据Id展示列表")
-public AttributeHistoryModel get(String Id){
-		return attributeHistoryModelService.getById(Id);
-		}
-@RequestMapping(value = "remove", method = RequestMethod.GET)
-@ApiOperation(value = "移除")
-public boolean remove(String Id){
-		return attributeHistoryModelService.removeById(Id);
-		}
-@RequestMapping(value = "saveOrUpdate", method = RequestMethod.POST)
-@ApiOperation(value = "保存或更新")
-public boolean saveOrUpdate(@RequestBody AttributeHistoryModel attributeHistoryModel){
-		return attributeHistoryModelService.saveOrUpdate(attributeHistoryModel);
-		}
-		}
+    }
+
+    @RequestMapping(value = "queryById", method = RequestMethod.GET)
+    @ApiOperation(value = "根据Id展示列表")
+    public AttributeHistoryModel get(String Id) {
+        return attributeHistoryModelService.getById(Id);
+    }
+
+    @RequestMapping(value = "remove", method = RequestMethod.GET)
+    @ApiOperation(value = "移除")
+    public boolean remove(String Id) {
+        return attributeHistoryModelService.removeById(Id);
+    }
+
+    @RequestMapping(value = "saveOrUpdate", method = RequestMethod.POST)
+    @ApiOperation(value = "保存或更新")
+    public boolean saveOrUpdate(@RequestBody AttributeHistoryModel attributeHistoryModel) {
+        return attributeHistoryModelService.saveOrUpdate(attributeHistoryModel);
+    }
+}

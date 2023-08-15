@@ -17,5 +17,5 @@ public interface ValueAttributeMapper {
 //            @Result(property = "value", column = "value"),
 //            @Result(property = "attribute.attributeId", column = "attribute_id")
 //    })
-    List<ValueAttribute> findValueAttributesByEntityId(@Param("entityId") String entityId,@Param("keyWord") String keyWord);
+    List<ValueAttribute> findValueAttributesByEntityId(@Param("entityId") String entityId, @Param("keyWord") String keyWord);
 }

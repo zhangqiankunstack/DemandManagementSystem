@@ -15,6 +15,6 @@ import java.util.Date;
  **/
 public interface PersonnelService extends IService<PersonnelModel> {
 
-        Page<PersonnelModel> page(Integer index, Integer size, String name,String introduction);
+    Page<PersonnelModel> page(Integer index, Integer size, String name, String introduction);
 
-        }
+}

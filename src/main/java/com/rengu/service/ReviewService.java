@@ -18,41 +18,35 @@ import java.util.List;
  **/
 public interface ReviewService extends IService<ReviewModel> {
 
-        ReviewModel add(String name, String sponsor, List<String> list);
+    ReviewModel add(String name, String sponsor, List<String> list);
 
 
-        public List<ReviewModel> findBy(String name,String type,Integer status);
+    public List<ReviewModel> findBy(String name, String type, Integer status);
 
 
-        Boolean goBy(List<String> ids);
+    Boolean goBy(List<String> ids);
 
 
+    Boolean updateStatusById(Integer id, Integer status);
 
-        Boolean updateStatusById(Integer id,Integer status);
-
-        public Object findEntitiesWithoutRelationship(List<String> entityIds,String name, String sponsor);
-
+    public Object findEntitiesWithoutRelationship(List<String> entityIds, String name, String sponsor);
 
 
-
-        List<EntityModel> findStart(Integer id);
-
+    List<EntityModel> findStart(Integer id);
 
 
-        List<ValueAttribute> getAttributeAndValue( String entityId,String attributeName, String value);
+    List<ValueAttribute> getAttributeAndValue(String entityId, String attributeName, String value);
 
 
+    /**
+     * 给前端四个实体
+     *
+     * @return
+     */
+    List<FourClasses> giveSome();
 
-        /**
-         * 给前端四个实体
-         * @return
-         */
-        List<FourClasses> giveSome();
 
-
-
-        Object saveStatusAndReview(Integer id, Integer status,List<OpinionModel> dataList);
-
+    Object saveStatusAndReview(Integer id, Integer status, List<OpinionModel> dataList);
 
 
 }

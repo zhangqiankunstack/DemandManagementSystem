@@ -19,72 +19,72 @@ import java.util.List;
  * @Date 2023/08/08 14:36
  **/
 @Service
-		public class EntityHistoryServiceImpl extends ServiceImpl<EntityHistoryMapper, EntityHistoryModel>implements EntityHistoryService {
+public class EntityHistoryServiceImpl extends ServiceImpl<EntityHistoryMapper, EntityHistoryModel> implements EntityHistoryService {
 
-	@Autowired
-	private EntityMapper entityMapper;
+    @Autowired
+    private EntityMapper entityMapper;
 
-	@Override
-	public void copyDataToEntityHistory(List<String> ids) {
-		// 遍历传入的实体 ID 列表
-		for (String entityId : ids) {
-			// 查询该实体的历史记录数量
-			int historyCount = baseMapper.selectCount(new QueryWrapper<EntityHistoryModel>()
-					.eq("entity_id", entityId));
+    @Override
+    public void copyDataToEntityHistory(List<String> ids) {
+        // 遍历传入的实体 ID 列表
+        for (String entityId : ids) {
+            // 查询该实体的历史记录数量
+            int historyCount = baseMapper.selectCount(new QueryWrapper<EntityHistoryModel>()
+                    .eq("entity_id", entityId));
 
-			// 判断历史记录数量是否大于等于2，如果是则需要自增版本号
-			if (historyCount >= 2) {
-				// 获取该实体最新的历史记录
-				EntityHistoryModel latestHistory = baseMapper.selectOne(new QueryWrapper<EntityHistoryModel>()
-						.eq("entity_id", entityId)
-						.orderByDesc("id")
-						.last("LIMIT 1"));
+            // 判断历史记录数量是否大于等于2，如果是则需要自增版本号
+            if (historyCount >= 2) {
+                // 获取该实体最新的历史记录
+                EntityHistoryModel latestHistory = baseMapper.selectOne(new QueryWrapper<EntityHistoryModel>()
+                        .eq("entity_id", entityId)
+                        .orderByDesc("id")
+                        .last("LIMIT 1"));
 
-				// 版本号自增
-				String version = incrementVersion(latestHistory.getVersion());
+                // 版本号自增
+                String version = incrementVersion(latestHistory.getVersion());
 
-				// 创建新的历史记录
-				EntityHistoryModel newHistory = new EntityHistoryModel();
-				newHistory.setEntityId(latestHistory.getEntityId());
-				newHistory.setVersion(version);
-				newHistory.setEntityName(latestHistory.getEntityName());
-				newHistory.setEntityType(latestHistory.getEntityType());
+                // 创建新的历史记录
+                EntityHistoryModel newHistory = new EntityHistoryModel();
+                newHistory.setEntityId(latestHistory.getEntityId());
+                newHistory.setVersion(version);
+                newHistory.setEntityName(latestHistory.getEntityName());
+                newHistory.setEntityType(latestHistory.getEntityType());
 
-				// 插入新的历史记录
-				baseMapper.insert(newHistory);
-			} else {
-				// 查询实体数据
-				EntityModel entity = entityMapper.selectById(entityId);
+                // 插入新的历史记录
+                baseMapper.insert(newHistory);
+            } else {
+                // 查询实体数据
+                EntityModel entity = entityMapper.selectById(entityId);
 
-				// 版本号从 v.0.0.0.1 开始
-				String version = "v.0.0.0.1";
+                // 版本号从 v.0.0.0.1 开始
+                String version = "v.0.0.0.1";
 
-				// 创建新的历史记录
-				EntityHistoryModel entityHistory = new EntityHistoryModel();
-				entityHistory.setEntityId(entity.getEntityId());
-				entityHistory.setVersion(version);
-				entityHistory.setEntityName(entity.getEntityName());
-				entityHistory.setEntityType(entity.getEntityType());
+                // 创建新的历史记录
+                EntityHistoryModel entityHistory = new EntityHistoryModel();
+                entityHistory.setEntityId(entity.getEntityId());
+                entityHistory.setVersion(version);
+                entityHistory.setEntityName(entity.getEntityName());
+                entityHistory.setEntityType(entity.getEntityType());
 
-				// 插入新的历史记录
-				baseMapper.insert(entityHistory);
-			}
-		}
-	}
+                // 插入新的历史记录
+                baseMapper.insert(entityHistory);
+            }
+        }
+    }
 
-	private String incrementVersion(String version) {
-		// 将版本号的数字部分提取出来
-		String[] parts = version.split("\\.");
-		int lastPart = Integer.parseInt(parts[parts.length - 1]);
+    private String incrementVersion(String version) {
+        // 将版本号的数字部分提取出来
+        String[] parts = version.split("\\.");
+        int lastPart = Integer.parseInt(parts[parts.length - 1]);
 
-		// 数字自增
-		lastPart++;
+        // 数字自增
+        lastPart++;
 
-		// 更新版本号
-		parts[parts.length - 1] = String.valueOf(lastPart);
+        // 更新版本号
+        parts[parts.length - 1] = String.valueOf(lastPart);
 
-		// 构造新的版本号并返回
-		return String.join(".", parts);
-	}
+        // 构造新的版本号并返回
+        return String.join(".", parts);
+    }
 
 }

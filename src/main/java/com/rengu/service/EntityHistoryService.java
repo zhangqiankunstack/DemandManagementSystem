@@ -14,7 +14,7 @@ import java.util.List;
  **/
 public interface EntityHistoryService extends IService<EntityHistoryModel> {
 
-        public void copyDataToEntityHistory(List<String> ids);
+    public void copyDataToEntityHistory(List<String> ids);
 
 
-        }
+}

@@ -12,4 +12,4 @@ import com.rengu.entity.ReviewEntityModel;
  **/
 public interface ReviewEntityService extends IService<ReviewEntityModel> {
 
-        }
+}

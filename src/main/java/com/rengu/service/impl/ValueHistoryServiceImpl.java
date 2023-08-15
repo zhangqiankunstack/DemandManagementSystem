@@ -18,25 +18,25 @@ import java.util.List;
  * @Date 2023/08/08 14:37
  **/
 @Service
-		public class ValueHistoryServiceImpl extends ServiceImpl<ValueHistoryMapper, ValueHistoryModel>implements ValueHistoryService {
+public class ValueHistoryServiceImpl extends ServiceImpl<ValueHistoryMapper, ValueHistoryModel> implements ValueHistoryService {
 
-	@Autowired
-	private ValueMapper valueMapper;
+    @Autowired
+    private ValueMapper valueMapper;
 
-	@Override
-	public void copyDataToValueHistory(List<String> valueIds) {
-		// 查询第一个表的数据
-		List<ValueModel> values = valueMapper.selectBatchIds(valueIds);
+    @Override
+    public void copyDataToValueHistory(List<String> valueIds) {
+        // 查询第一个表的数据
+        List<ValueModel> values = valueMapper.selectBatchIds(valueIds);
 
-		// 遍历第一个表的数据，将其添加到第二个表中
-		for (ValueModel value : values) {
-			ValueHistoryModel valueHistory = new ValueHistoryModel();
-			valueHistory.setValueId(value.getValueId());
-			valueHistory.setValue(value.getValue());
-			valueHistory.setAttributeId(value.getAttributeId());
-			valueHistory.setEntityHistoryid(value.getEntityId());
-			baseMapper.insert(valueHistory);
+        // 遍历第一个表的数据，将其添加到第二个表中
+        for (ValueModel value : values) {
+            ValueHistoryModel valueHistory = new ValueHistoryModel();
+            valueHistory.setValueId(value.getValueId());
+            valueHistory.setValue(value.getValue());
+            valueHistory.setAttributeId(value.getAttributeId());
+            valueHistory.setEntityHistoryid(value.getEntityId());
+            baseMapper.insert(valueHistory);
 
-		}
-	}
+        }
+    }
 }

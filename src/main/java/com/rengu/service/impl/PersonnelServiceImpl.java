@@ -18,24 +18,24 @@ import java.util.List;
  * @Date 2023/08/04 09:41
  **/
 @Service
-		public class PersonnelServiceImpl extends ServiceImpl<PersonnelMapper, PersonnelModel>implements PersonnelService {
+public class PersonnelServiceImpl extends ServiceImpl<PersonnelMapper, PersonnelModel> implements PersonnelService {
 
-	@Override
-	public Page<PersonnelModel> page(Integer index, Integer size, String name,String introduction) {
-		Page<PersonnelModel> page = new Page<>();
-		QueryWrapper<PersonnelModel> queryWrapper = new QueryWrapper<>();
-		if (name != null && !name.isEmpty()) {
-			queryWrapper.like("name", name);
-		}
-		if (introduction !=null && !introduction.isEmpty()){
-			queryWrapper.like("introduction", introduction);
-		}
-		queryWrapper.orderByAsc("display");
-		List<PersonnelModel> data = baseMapper.page(page,queryWrapper);
-		page.setRecords(data);
+    @Override
+    public Page<PersonnelModel> page(Integer index, Integer size, String name, String introduction) {
+        Page<PersonnelModel> page = new Page<>();
+        QueryWrapper<PersonnelModel> queryWrapper = new QueryWrapper<>();
+        if (name != null && !name.isEmpty()) {
+            queryWrapper.like("name", name);
+        }
+        if (introduction != null && !introduction.isEmpty()) {
+            queryWrapper.like("introduction", introduction);
+        }
+        queryWrapper.orderByAsc("display");
+        List<PersonnelModel> data = baseMapper.page(page, queryWrapper);
+        page.setRecords(data);
 
-		return page;
+        return page;
 
 
-	}
+    }
 }

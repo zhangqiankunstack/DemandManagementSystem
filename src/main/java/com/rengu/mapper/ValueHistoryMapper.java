@@ -13,4 +13,4 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ValueHistoryMapper extends BaseMapper<ValueHistoryModel> {
 
-		}
+}

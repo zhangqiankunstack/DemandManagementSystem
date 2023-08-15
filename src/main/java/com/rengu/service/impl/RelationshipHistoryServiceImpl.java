@@ -18,25 +18,25 @@ import java.util.List;
  * @Date 2023/08/08 14:37
  **/
 @Service
-		public class RelationshipHistoryServiceImpl extends ServiceImpl<RelationshipHistoryMapper, RelationshipHistoryModel>implements RelationshipHistoryService {
+public class RelationshipHistoryServiceImpl extends ServiceImpl<RelationshipHistoryMapper, RelationshipHistoryModel> implements RelationshipHistoryService {
 
-	@Autowired
-	private RelationshipMapper relationshipMapper;
+    @Autowired
+    private RelationshipMapper relationshipMapper;
 
-	@Override
-	public void copyDataToRelationshipHistory(List<String> ids) {
-		// 查询第一个表的数据
-		List<RelationshipModel> relationships = relationshipMapper.selectBatchIds(ids);
+    @Override
+    public void copyDataToRelationshipHistory(List<String> ids) {
+        // 查询第一个表的数据
+        List<RelationshipModel> relationships = relationshipMapper.selectBatchIds(ids);
 
-		// 遍历第一个表的数据，将其添加到第二个表中
-		for (RelationshipModel relationship : relationships) {
-			RelationshipHistoryModel relationshipHistory = new RelationshipHistoryModel();
-			relationshipHistory.setRelationshipId(relationship.getRelationshipId());
-			relationshipHistory.setEntityHistoryId1(relationship.getEntityId1());
-			relationshipHistory.setEntityHistoryId2(relationship.getEntityId2());
-			relationshipHistory.setRelationshipType(relationship.getRelationshipType());
+        // 遍历第一个表的数据，将其添加到第二个表中
+        for (RelationshipModel relationship : relationships) {
+            RelationshipHistoryModel relationshipHistory = new RelationshipHistoryModel();
+            relationshipHistory.setRelationshipId(relationship.getRelationshipId());
+            relationshipHistory.setEntityHistoryId1(relationship.getEntityId1());
+            relationshipHistory.setEntityHistoryId2(relationship.getEntityId2());
+            relationshipHistory.setRelationshipType(relationship.getRelationshipType());
 
-			baseMapper.insert(relationshipHistory);
-		}
-	}
+            baseMapper.insert(relationshipHistory);
+        }
+    }
 }

@@ -24,36 +24,39 @@ import java.util.List;
 @RestController
 @RequestMapping("/opinion-model")
 @Api(value = "OpinionController", tags = {"专家意见表控制器"})
-	public class OpinionController {
+public class OpinionController {
 
-@Autowired
-public OpinionService opinionModelService;
+    @Autowired
+    public OpinionService opinionModelService;
 
-@RequestMapping(value = "list", method = RequestMethod.GET)
-@ApiOperation(value = "展示列表")
-@ApiImplicitParams({
-		@ApiImplicitParam(value = "页码", name = "pageNum", dataType = "Integer", required = false,example = "1",defaultValue = "1"),
-		@ApiImplicitParam(value = "每页条数", name = "pageSize", dataType = "Integer", required = false,example = "10",defaultValue = "10")
-})
-public IPage<OpinionModel> get(@RequestParam(value = "pageNum") Integer pageNum,@RequestParam(value = "pageSize") Integer pageSize){
-		return	opinionModelService.page(new Page<>(pageNum, pageSize));
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @ApiOperation(value = "展示列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "页码", name = "pageNum", dataType = "Integer", required = false, example = "1", defaultValue = "1"),
+            @ApiImplicitParam(value = "每页条数", name = "pageSize", dataType = "Integer", required = false, example = "10", defaultValue = "10")
+    })
+    public IPage<OpinionModel> get(@RequestParam(value = "pageNum") Integer pageNum, @RequestParam(value = "pageSize") Integer pageSize) {
+        return opinionModelService.page(new Page<>(pageNum, pageSize));
 
-		}
-@RequestMapping(value = "queryById", method = RequestMethod.GET)
-@ApiOperation(value = "根据Id展示列表")
-public OpinionModel get(String Id){
-		return opinionModelService.getById(Id);
-		}
-@RequestMapping(value = "remove", method = RequestMethod.GET)
-@ApiOperation(value = "移除")
-public boolean remove(String Id){
-		return opinionModelService.removeById(Id);
-		}
-@RequestMapping(value = "saveOrUpdate", method = RequestMethod.POST)
-@ApiOperation(value = "保存或更新")
-public boolean saveOrUpdate(@RequestBody OpinionModel opinionModel){
-		return opinionModelService.saveOrUpdate(opinionModel);
-		}
+    }
+
+    @RequestMapping(value = "queryById", method = RequestMethod.GET)
+    @ApiOperation(value = "根据Id展示列表")
+    public OpinionModel get(String Id) {
+        return opinionModelService.getById(Id);
+    }
+
+    @RequestMapping(value = "remove", method = RequestMethod.GET)
+    @ApiOperation(value = "移除")
+    public boolean remove(String Id) {
+        return opinionModelService.removeById(Id);
+    }
+
+    @RequestMapping(value = "saveOrUpdate", method = RequestMethod.POST)
+    @ApiOperation(value = "保存或更新")
+    public boolean saveOrUpdate(@RequestBody OpinionModel opinionModel) {
+        return opinionModelService.saveOrUpdate(opinionModel);
+    }
 
 
 //	@PostMapping("/saveThing")

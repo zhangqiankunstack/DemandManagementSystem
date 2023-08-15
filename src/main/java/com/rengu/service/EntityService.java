@@ -17,12 +17,12 @@ import java.util.Map;
  **/
 public interface EntityService extends IService<EntityModel> {
 
-    List<EntityModel> connect(HostInfoModel hostInfo,String keyWord);
+    List<EntityModel> connect(HostInfoModel hostInfo, String keyWord);
 
-    Map<String, Object> getAllEntity(String keyWord,Integer pageNumber, Integer pageSize);
+    Map<String, Object> getAllEntity(String keyWord, Integer pageNumber, Integer pageSize);
 
     Object missionAndCapabilityTrace();
 
-     EntityQueryVo queryEntities(List<String> entityIdList);
+    EntityQueryVo queryEntities(List<String> entityIdList);
 
 }

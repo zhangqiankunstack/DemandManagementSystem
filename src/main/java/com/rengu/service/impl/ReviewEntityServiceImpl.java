@@ -13,11 +13,7 @@ import org.springframework.stereotype.Service;
  * @Date 2023/08/10 17:40
  **/
 @Service
-		public class ReviewEntityServiceImpl extends ServiceImpl<ReviewEntityMapper, ReviewEntityModel>implements ReviewEntityService {
-
-
-
-
+public class ReviewEntityServiceImpl extends ServiceImpl<ReviewEntityMapper, ReviewEntityModel> implements ReviewEntityService {
 
 
 }

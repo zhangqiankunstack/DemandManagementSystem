@@ -138,11 +138,11 @@ public class ValueServiceImpl extends ServiceImpl<ValueMapper, ValueModel> imple
                     valueAttribute.setAttributeId(attributeModel.getAttributeId());
                     valueAttribute.setAttributeName(attributeModel.getAttributeName());
                 });
-                if(!StringUtils.isEmpty(keyWord)){
-                    if(valueAttribute.getValue().contains(keyWord)||valueAttribute.getAttributeName().contains(keyWord)){
+                if (!StringUtils.isEmpty(keyWord)) {
+                    if (valueAttribute.getValue().contains(keyWord) || valueAttribute.getAttributeName().contains(keyWord)) {
                         valueAttributes.add(valueAttribute);
                     }
-                }else {
+                } else {
                     valueAttributes.add(valueAttribute);
                 }
             }

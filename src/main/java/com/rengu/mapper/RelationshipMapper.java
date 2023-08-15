@@ -15,9 +15,6 @@ import java.util.List;
  **/
 @Mapper
 public interface RelationshipMapper extends BaseMapper<RelationshipModel> {
-
-
-
     List<RelationshipModel> getRelationshipsByEntityIds(List<String> entityIds);
 
 }

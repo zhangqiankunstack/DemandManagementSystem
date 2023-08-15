@@ -18,21 +18,22 @@ import java.util.List;
  * @Date 2023/08/08 14:36
  **/
 @Service
-		public class AttributeHistoryServiceImpl extends ServiceImpl<AttributeHistoryMapper, AttributeHistoryModel>implements AttributeHistoryService {
+public class AttributeHistoryServiceImpl extends ServiceImpl<AttributeHistoryMapper, AttributeHistoryModel> implements AttributeHistoryService {
 
-	@Autowired
-	private AttributeMapper attributeMapper;
-	@Override
-	public void copyDataToAttributeHistory(List<String> ids) {
+    @Autowired
+    private AttributeMapper attributeMapper;
 
-		// 查询第一个表的数据
-		List<AttributeModel> attributes = attributeMapper.selectBatchIds(ids);
+    @Override
+    public void copyDataToAttributeHistory(List<String> ids) {
 
-		// 遍历第一个表的数据，将其添加到第二个表中
-		for (AttributeModel attribute : attributes) {
-			AttributeHistoryModel attributeHistory = new AttributeHistoryModel();
-			attributeHistory.setAttributeName(attribute.getAttributeName());
-			baseMapper.insert(attributeHistory);
-		}
-	}
-		}
+        // 查询第一个表的数据
+        List<AttributeModel> attributes = attributeMapper.selectBatchIds(ids);
+
+        // 遍历第一个表的数据，将其添加到第二个表中
+        for (AttributeModel attribute : attributes) {
+            AttributeHistoryModel attributeHistory = new AttributeHistoryModel();
+            attributeHistory.setAttributeName(attribute.getAttributeName());
+            baseMapper.insert(attributeHistory);
+        }
+    }
+}

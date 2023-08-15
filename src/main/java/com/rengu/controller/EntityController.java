@@ -61,7 +61,7 @@ public class EntityController {
     @ApiOperation(value = "查询元数据实体列表(物化采集)")
     @PostMapping("/findEntityModeList")
     public Result findEntityModeList(@RequestBody HostInfoModel hostInfo, @RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        List<EntityModel> entityModels = entityModelService.connect(hostInfo,keyWord);
+        List<EntityModel> entityModels = entityModelService.connect(hostInfo, keyWord);
         if (entityModels.size() != 0) {
             redisUtils.set(RedisKeyPrefix.ENTITY, entityModels, 7200L);
         }
@@ -80,7 +80,7 @@ public class EntityController {
 
     @ApiOperation("根据实体id查询需求描述")
     @GetMapping("/getRequirementByEntityId")
-    public Result getRequirementByEntityId(@RequestParam String entityId){
+    public Result getRequirementByEntityId(@RequestParam String entityId) {
         return ResultUtils.build(requirementService.getRequirementByEntityId(entityId));
     }
 
@@ -98,7 +98,7 @@ public class EntityController {
 
     @ApiOperation("任务需求-能力需求追溯矩阵")
     @GetMapping("/missionAndCapabilityTrace")
-    public Result missionAndCapabilityTrace(){
+    public Result missionAndCapabilityTrace() {
         return ResultUtils.build(entityModelService.missionAndCapabilityTrace());
     }
 }

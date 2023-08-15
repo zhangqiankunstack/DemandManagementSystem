@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 
@@ -59,7 +60,7 @@ public class DataConfigurationController {
     @ApiOperation("分页模糊查询数据配置")
     @GetMapping(value = "/getDbInfoList")
     public Result getDbInfoList(@RequestParam(required = false) String keyWord, @RequestParam() Integer pageNumber, @RequestParam() Integer pageSize) {
-        return ResultUtils.build(hostInfoService.getDbInfoList(keyWord,pageNumber,pageSize));
+        return ResultUtils.build(hostInfoService.getDbInfoList(keyWord, pageNumber, pageSize));
     }
 
     /**

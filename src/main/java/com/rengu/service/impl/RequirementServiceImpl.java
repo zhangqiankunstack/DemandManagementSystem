@@ -53,6 +53,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
             String originalName = multipartFile.getOriginalFilename();
             String fileName = UUID.randomUUID().toString().replace("-", "");
             String picNewName = fileName + originalName.substring(originalName.lastIndexOf("."));
+            //todo:测试功能，临时路径写死，后期修改
             File storageFile = new File("D:\\报销\\壁纸\\" + picNewName);
             FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), storageFile);
             return storageFile.toString();

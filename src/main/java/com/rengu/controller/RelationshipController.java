@@ -49,8 +49,8 @@ public class RelationshipController {
 
     @ApiOperation(value = "/根据实体id查询关联关系（物化采集）")
     @GetMapping("/findRelationshipByEntityId")
-    public Result findRelationshipByEntityId(@RequestParam String entityId, @RequestParam(required = false)String keyWord,@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        return ResultUtils.build(relationshipModelService.findRelationshipByEntityId(entityId,keyWord, pageNumber,pageSize));
+    public Result findRelationshipByEntityId(@RequestParam String entityId, @RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        return ResultUtils.build(relationshipModelService.findRelationshipByEntityId(entityId, keyWord, pageNumber, pageSize));
     }
 
     @ApiOperation("查询关联关系（本地数据）")

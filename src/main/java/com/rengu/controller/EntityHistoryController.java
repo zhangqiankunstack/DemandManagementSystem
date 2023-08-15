@@ -20,34 +20,37 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/entity-history-model")
 @Api(value = "EntityHistoryController", tags = {"控制器"})
-	public class EntityHistoryController {
+public class EntityHistoryController {
 
-@Autowired
-public EntityHistoryService entityHistoryModelService;
+    @Autowired
+    public EntityHistoryService entityHistoryModelService;
 
-@RequestMapping(value = "list", method = RequestMethod.GET)
-@ApiOperation(value = "展示列表")
-@ApiImplicitParams({
-		@ApiImplicitParam(value = "页码", name = "pageNum", dataType = "Integer", required = false,example = "1",defaultValue = "1"),
-		@ApiImplicitParam(value = "每页条数", name = "pageSize", dataType = "Integer", required = false,example = "10",defaultValue = "10")
-})
-public IPage<EntityHistoryModel> get(@RequestParam(value = "pageNum") Integer pageNum,@RequestParam(value = "pageSize") Integer pageSize){
-		return	entityHistoryModelService.page(new Page<>(pageNum, pageSize));
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @ApiOperation(value = "展示列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "页码", name = "pageNum", dataType = "Integer", required = false, example = "1", defaultValue = "1"),
+            @ApiImplicitParam(value = "每页条数", name = "pageSize", dataType = "Integer", required = false, example = "10", defaultValue = "10")
+    })
+    public IPage<EntityHistoryModel> get(@RequestParam(value = "pageNum") Integer pageNum, @RequestParam(value = "pageSize") Integer pageSize) {
+        return entityHistoryModelService.page(new Page<>(pageNum, pageSize));
 
-		}
-@RequestMapping(value = "queryById", method = RequestMethod.GET)
-@ApiOperation(value = "根据Id展示列表")
-public EntityHistoryModel get(String Id){
-		return entityHistoryModelService.getById(Id);
-		}
-@RequestMapping(value = "remove", method = RequestMethod.GET)
-@ApiOperation(value = "移除")
-public boolean remove(String Id){
-		return entityHistoryModelService.removeById(Id);
-		}
-@RequestMapping(value = "saveOrUpdate", method = RequestMethod.POST)
-@ApiOperation(value = "保存或更新")
-public boolean saveOrUpdate(@RequestBody EntityHistoryModel entityHistoryModel){
-		return entityHistoryModelService.saveOrUpdate(entityHistoryModel);
-		}
-		}
+    }
+
+    @RequestMapping(value = "queryById", method = RequestMethod.GET)
+    @ApiOperation(value = "根据Id展示列表")
+    public EntityHistoryModel get(String Id) {
+        return entityHistoryModelService.getById(Id);
+    }
+
+    @RequestMapping(value = "remove", method = RequestMethod.GET)
+    @ApiOperation(value = "移除")
+    public boolean remove(String Id) {
+        return entityHistoryModelService.removeById(Id);
+    }
+
+    @RequestMapping(value = "saveOrUpdate", method = RequestMethod.POST)
+    @ApiOperation(value = "保存或更新")
+    public boolean saveOrUpdate(@RequestBody EntityHistoryModel entityHistoryModel) {
+        return entityHistoryModelService.saveOrUpdate(entityHistoryModel);
+    }
+}

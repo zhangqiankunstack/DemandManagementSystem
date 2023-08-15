@@ -18,30 +18,27 @@ import java.util.List;
  * @Date 2023/08/04 09:45
  **/
 @Service
-		public class CriterionServiceImpl extends ServiceImpl<CriterionMapper, CriterionModel>implements CriterionService {
+public class CriterionServiceImpl extends ServiceImpl<CriterionMapper, CriterionModel> implements CriterionService {
+    @Override
+    public Page<CriterionModel> page(Integer index, Integer size, String criterionName, String reviewPoints, String reviewCriteria, String reviewProcess) {
+        Page<CriterionModel> page = new Page<>();
+        QueryWrapper<CriterionModel> queryWrapper = new QueryWrapper<>();
+        if (criterionName != null && !criterionName.isEmpty()) {
+            queryWrapper.like("criterionName", criterionName);
+        }
+        if (reviewPoints != null && !reviewPoints.isEmpty()) {
+            queryWrapper.like("reviewPoints", reviewPoints);
+        }
+        if (reviewCriteria != null && !reviewCriteria.isEmpty()) {
+            queryWrapper.like("reviewCriteria", reviewCriteria);
+        }
+        if (reviewProcess != null && !reviewProcess.isEmpty()) {
+            queryWrapper.like("reviewProcess", reviewProcess);
+        }
+        queryWrapper.orderByAsc("display");
+        List<CriterionModel> data = baseMapper.page(page, queryWrapper);
+        page.setRecords(data);
+        return page;
 
-
-
-	@Override
-	public Page<CriterionModel> page(Integer index, Integer size,  String criterionName, String reviewPoints, String reviewCriteria, String reviewProcess) {
-		Page<CriterionModel> page = new Page<>();
-		QueryWrapper<CriterionModel> queryWrapper = new QueryWrapper<>();
-		if (criterionName !=null && !criterionName.isEmpty()){
-			queryWrapper.like("criterionName", criterionName);
-		}
-		if (reviewPoints !=null && !reviewPoints.isEmpty()){
-			queryWrapper.like("reviewPoints", reviewPoints);
-		}
-		if (reviewCriteria !=null && !reviewCriteria.isEmpty()){
-			queryWrapper.like("reviewCriteria", reviewCriteria);
-		}
-		if (reviewProcess !=null && !reviewProcess.isEmpty()){
-			queryWrapper.like("reviewProcess", reviewProcess);
-		}
-		queryWrapper.orderByAsc("display");
-		List<CriterionModel> data = baseMapper.page(page,queryWrapper);
-		page.setRecords(data);
-		return page;
-
-	}
+    }
 }

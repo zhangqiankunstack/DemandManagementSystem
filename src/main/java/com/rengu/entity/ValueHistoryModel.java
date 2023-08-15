@@ -15,24 +15,24 @@ import java.io.Serializable;
  * @Date 2023/08/08 14:37
  **/
 @Data
-    @EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @TableName("value_history")
 @ApiModel(value = "ValueHistoryModel", description = "")
-public class ValueHistoryModel implements Serializable{
+public class ValueHistoryModel implements Serializable {
 
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
-                    @TableId(value = "value_id", type = IdType.UUID)
-                private String valueId;
+    @TableId(value = "value_id", type = IdType.UUID)
+    private String valueId;
 
-        private String entityHistoryid;
+    private String entityHistoryid;
 
-        private String attributeId;
+    private String attributeId;
 
-        private String value;
+    private String value;
 
 
-        }
+}

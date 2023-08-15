@@ -43,6 +43,7 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
     private ValueMapper valueMapper;
     @Autowired
     private RelationshipMapper relationshipMapper;
+
     /**
      * 连接后查询
      *
@@ -113,7 +114,7 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
         List<List<String>> listList = new ArrayList<>();
         capabilities.stream().forEach(capability -> {
             missions.stream().forEach(mission -> {
-                relationshipService.getRelationshnipByEntityIds(capability.getEntityId(),mission.getEntityId());
+                relationshipService.getRelationshnipByEntityIds(capability.getEntityId(), mission.getEntityId());
             });
         });
 

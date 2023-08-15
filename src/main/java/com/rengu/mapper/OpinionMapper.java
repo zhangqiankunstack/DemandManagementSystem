@@ -15,10 +15,7 @@ import java.util.List;
 @Mapper
 public interface OpinionMapper extends BaseMapper<OpinionModel> {
 
+    void insertBatch(List<OpinionModel> opinionList);
 
-
-	void insertBatch(List<OpinionModel> opinionList);
-
-
-	List<OpinionModel>  findByReviewId(Integer reviewId);
-		}
+    List<OpinionModel> findByReviewId(Integer reviewId);
+}

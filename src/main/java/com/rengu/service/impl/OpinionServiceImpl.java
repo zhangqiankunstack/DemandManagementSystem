@@ -16,16 +16,17 @@ import java.util.List;
  * @Date 2023/08/11 17:23
  **/
 @Service
-		public class OpinionServiceImpl extends ServiceImpl<OpinionMapper, OpinionModel>implements OpinionService {
-@Autowired
-private OpinionMapper opinionMapper;
-	@Override
-	public void batchInsert(List<OpinionModel> dataList) {
-		opinionMapper.insertBatch(dataList);
-	}
+public class OpinionServiceImpl extends ServiceImpl<OpinionMapper, OpinionModel> implements OpinionService {
+    @Autowired
+    private OpinionMapper opinionMapper;
 
-	@Override
-	public List<OpinionModel> findByReviewId(Integer reviewId) {
-		return opinionMapper.findByReviewId(reviewId);
-	}
+    @Override
+    public void batchInsert(List<OpinionModel> dataList) {
+        opinionMapper.insertBatch(dataList);
+    }
+
+    @Override
+    public List<OpinionModel> findByReviewId(Integer reviewId) {
+        return opinionMapper.findByReviewId(reviewId);
+    }
 }

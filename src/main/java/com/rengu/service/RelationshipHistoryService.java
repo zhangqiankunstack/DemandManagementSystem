@@ -13,8 +13,7 @@ import java.util.List;
  * @Date 2023/08/08 14:37
  **/
 public interface RelationshipHistoryService extends IService<RelationshipHistoryModel> {
-        public void copyDataToRelationshipHistory(List<String> ids);
+    public void copyDataToRelationshipHistory(List<String> ids);
 
 
-
-        }
+}
