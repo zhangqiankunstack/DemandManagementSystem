@@ -114,6 +114,7 @@ public class DataBaseFactoryService {
         }
         try {
             connection = dbinfoMap.get(dbInfo.getId()).getConnection();
+            removeDataSource(dbInfo);
         } catch (Exception e) {
             removeDataSource(dbInfo);
             e.printStackTrace();

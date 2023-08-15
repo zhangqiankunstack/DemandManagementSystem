@@ -16,7 +16,9 @@ import java.util.Map;
  **/
 public interface EntityService extends IService<EntityModel> {
 
-    List<EntityModel> connect(HostInfoModel hostInfo);
+    List<EntityModel> connect(HostInfoModel hostInfo,String keyWord);
 
     Map<String, Object> getAllEntity(String keyWord,Integer pageNumber, Integer pageSize);
+
+    Object missionAndCapabilityTrace();
 }

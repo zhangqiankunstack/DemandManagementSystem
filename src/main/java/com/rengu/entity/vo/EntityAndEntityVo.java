@@ -24,6 +24,11 @@ public class EntityAndEntityVo {
     private String entity2_name;
 
     /**
+     * 实体类型
+     */
+    private String entityType;
+
+    /**
      * 关联类型
      */
     private String relationship_type;

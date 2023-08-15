@@ -69,7 +69,6 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
 
     @Override
     public List<EntityRelationship> getEntityRelationships(String entityId, String keyWord) {
-
         List<EntityRelationship> list = entityMapper.getEntityRelationships(entityId, keyWord);
         return list;
     }
@@ -262,7 +261,7 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
     public Map<String, Object> getDbInfoList(String keyword, Integer pageNumber, Integer pageSize) {
         QueryWrapper<HostInfoModel> queryWrap = new QueryWrapper<>();
         if (!StringUtils.isEmpty(keyword)) {
-            queryWrap.like("new_database", keyword).or().like("host_ip", keyword).or().like("db_name", keyword).or().like("port", keyword);
+            queryWrap.like("another_name", keyword).or().like("host_ip", keyword).or().like("db_name", keyword).or().like("port", keyword);
         }
         List<HostInfoModel> hostInfoModels = this.list(queryWrap);
         Map<String, Object> requestParams = new HashMap<>();
@@ -272,7 +271,7 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
     }
 
     // 定义Lambda表达式，判断RelationshipModel对象的EntityId1或EntityId2是否与目标ID满足其一相同
-    private static Filter<RelationshipModel> getRelationshipByParams(String targetId) {
+    public static Filter<RelationshipModel> getRelationshipByParams(String targetId) {
         return relationshipModel -> relationshipModel.getEntityId1().equals(targetId) || relationshipModel.getEntityId2().equals(targetId);
     }
 

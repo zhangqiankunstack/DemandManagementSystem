@@ -1,14 +1,15 @@
 package com.rengu.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.rengu.entity.*;
 import com.rengu.service.EntityService;
+import com.rengu.service.RequirementService;
 import com.rengu.util.ListPageUtil;
 import com.rengu.util.*;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -28,17 +29,8 @@ public class EntityController {
 
     @Autowired
     private RedisUtils redisUtils;
-
-    @RequestMapping(value = "list", method = RequestMethod.GET)
-    @ApiOperation(value = "展示列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "页码", name = "pageNum", dataType = "Integer", required = false, example = "1", defaultValue = "1"),
-            @ApiImplicitParam(value = "每页条数", name = "pageSize", dataType = "Integer", required = false, example = "10", defaultValue = "10")
-    })
-    public IPage<EntityModel> get(@RequestParam(value = "pageNum") Integer pageNum, @RequestParam(value = "pageSize") Integer pageSize) {
-        return entityModelService.page(new Page<>(pageNum, pageSize));
-
-    }
+    @Autowired
+    private RequirementService requirementService;
 
     @RequestMapping(value = "queryById", method = RequestMethod.GET)
     @ApiOperation(value = "根据Id展示列表")
@@ -68,8 +60,8 @@ public class EntityController {
      */
     @ApiOperation(value = "查询元数据实体列表(物化采集)")
     @PostMapping("/findEntityModeList")
-    public Result findEntityModeList(@RequestBody HostInfoModel hostInfo, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        List<EntityModel> entityModels = entityModelService.connect(hostInfo);
+    public Result findEntityModeList(@RequestBody HostInfoModel hostInfo, @RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        List<EntityModel> entityModels = entityModelService.connect(hostInfo,keyWord);
         if (entityModels.size() != 0) {
             redisUtils.set(RedisKeyPrefix.ENTITY, entityModels, 7200L);
         }
@@ -82,7 +74,31 @@ public class EntityController {
 
     @ApiOperation("分页模糊查询实体列表（本地数据）")
     @GetMapping("/getAllEntity")
-    public Result getAllEntity(@RequestParam(required = false) String keyWord,@RequestParam Integer pageNumber,@RequestParam Integer pageSize){
-        return ResultUtils.build(entityModelService.getAllEntity(keyWord,pageNumber,pageSize));
+    public Result getAllEntity(@RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        return ResultUtils.build(entityModelService.getAllEntity(keyWord, pageNumber, pageSize));
+    }
+
+    @ApiOperation("根据实体id查询需求描述")
+    @GetMapping("/getRequirementByEntityId")
+    public Result getRequirementByEntityId(@RequestParam String entityId){
+        return ResultUtils.build(requirementService.getRequirementByEntityId(entityId));
+    }
+
+    @ApiOperation("上传.md图片")
+    @PostMapping("/uploadPicToServicePath")
+    public Result uploadPicToServicePath(@RequestBody MultipartFile multipartFile) {
+        return ResultUtils.build(requirementService.uploadPic(multipartFile));
+    }
+
+    @ApiOperation("保存md文件内容")
+    @PostMapping("/saveRequirementModel")
+    public Result saveRequirementModel(@RequestBody RequirementModel requirementModel) {
+        return ResultUtils.build(requirementService.saveRequirementModel(requirementModel));
+    }
+
+    @ApiOperation("任务需求-能力需求追溯矩阵")
+    @GetMapping("/missionAndCapabilityTrace")
+    public Result missionAndCapabilityTrace(){
+        return ResultUtils.build(entityModelService.missionAndCapabilityTrace());
     }
 }

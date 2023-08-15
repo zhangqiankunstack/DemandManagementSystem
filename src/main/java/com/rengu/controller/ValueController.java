@@ -74,8 +74,8 @@ public class ValueController {
 
     @ApiOperation(value = "根据实体id查询元数据属性(物化查询)")
     @GetMapping("/findValueInfoByEntityId")
-    public Result findValueInfoByEntityId(@RequestParam String entityId,@RequestParam Integer pageNumber,@RequestParam Integer pageSize){
-        return ResultUtils.build(valueModelService.findValueInfoByEntityId(entityId,pageNumber,pageSize));
+    public Result findValueInfoByEntityId(@RequestParam String entityId,@RequestParam(required = false)String keyWord,@RequestParam Integer pageNumber,@RequestParam Integer pageSize){
+        return ResultUtils.build(valueModelService.findValueInfoByEntityId(entityId,keyWord,pageNumber,pageSize));
     }
 
 

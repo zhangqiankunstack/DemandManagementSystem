@@ -12,10 +12,32 @@ import lombok.Setter;
  */
 public class EntityRelationship {
 
+    /**
+     * 属性id
+     */
     private String relationshipId;
-
+    /**
+     * 实体名称1
+     */
     private String entityName1;
+    /**
+     * 实体id1
+     */
     private String entityId1;
+    /**
+     * 实体名称2
+     */
     private String entityName2;
+    /**
+     * 实体id2
+     */
     private String entityId2;
+    /**
+     * 关联类型
+     */
+    private String relationshipType;
+    /**
+     * 关联类型
+     */
+    private String entityType;
 }

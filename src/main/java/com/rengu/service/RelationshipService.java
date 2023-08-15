@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.rengu.entity.HostInfoModel;
 import com.rengu.entity.RelationshipModel;
 import com.rengu.entity.vo.EntityAndEntityVo;
-import com.rengu.entity.vo.ValueAttribute;
 
 import java.util.List;
 import java.util.Map;
@@ -21,4 +20,8 @@ public interface RelationshipService extends IService<RelationshipModel> {
     List<EntityAndEntityVo> connect(HostInfoModel hostInfo);
 
     Map<String, Object> getAllRelationship(String entityId, String keyWord, Integer pageNumber, Integer pageSize);
+
+    Map<String, Object> findRelationshipByEntityId(String entityId, String keyWord,Integer pageNumber, Integer pageSize);
+
+    RelationshipModel getRelationshnipByEntityIds(String capabilityId, String missionId);
 }

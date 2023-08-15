@@ -1,7 +1,6 @@
 package com.rengu.controller;
 
 import com.rengu.entity.HostInfoModel;
-import com.rengu.entity.RelationshipModel;
 import com.rengu.entity.Result;
 import com.rengu.entity.vo.EntityAndEntityVo;
 import com.rengu.service.RelationshipService;
@@ -37,12 +36,6 @@ public class RelationshipController {
         return relationshipModelService.removeById(Id);
     }
 
-    @RequestMapping(value = "saveOrUpdate", method = RequestMethod.POST)
-    @ApiOperation(value = "保存或更新")
-    public boolean saveOrUpdate(@RequestBody RelationshipModel relationshipModel) {
-        return relationshipModelService.saveOrUpdate(relationshipModel);
-    }
-
     @ApiOperation(value = "查询元数据关联关系(物化采集)")
     @PostMapping("/findRelationshipInfo")
     public Result findRelationshipInfo(@RequestBody HostInfoModel hostInfo, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
@@ -54,12 +47,15 @@ public class RelationshipController {
         return ResultUtils.build(requestParams);
     }
 
-//    @ApiOperation(value = "/根据实体id查询关联关系（物化采集）")
-//    @GetMapping("/findRelationshipByEntityId")
+    @ApiOperation(value = "/根据实体id查询关联关系（物化采集）")
+    @GetMapping("/findRelationshipByEntityId")
+    public Result findRelationshipByEntityId(@RequestParam String entityId, @RequestParam(required = false)String keyWord,@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        return ResultUtils.build(relationshipModelService.findRelationshipByEntityId(entityId,keyWord, pageNumber,pageSize));
+    }
 
     @ApiOperation("查询关联关系（本地数据）")
     @GetMapping("/getAllRelationship")
     public Result getAllRelationship(@RequestParam String entityId, @RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        return ResultUtils.build(relationshipModelService.getAllRelationship(entityId,keyWord,pageNumber,pageSize));
+        return ResultUtils.build(relationshipModelService.getAllRelationship(entityId, keyWord, pageNumber, pageSize));
     }
 }

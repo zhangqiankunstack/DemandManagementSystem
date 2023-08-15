@@ -4,7 +4,6 @@ package com.rengu.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.AttributeModel;
-import com.rengu.entity.EntityModel;
 import com.rengu.entity.HostInfoModel;
 import com.rengu.entity.ValueModel;
 import com.rengu.entity.vo.ValueAttribute;
@@ -116,12 +115,13 @@ public class ValueServiceImpl extends ServiceImpl<ValueMapper, ValueModel> imple
      * 根据实体id查询属性值
      *
      * @param entityId
+     * @param keyWord
      * @param pageNumber
      * @param pageSize
      * @return
      */
     @Override
-    public Map<String, Object> findValueInfoByEntityId(String entityId, Integer pageNumber, Integer pageSize) {
+    public Map<String, Object> findValueInfoByEntityId(String entityId, String keyWord, Integer pageNumber, Integer pageSize) {
         if (StringUtils.isEmpty(entityId)) {
             return null;
         }
@@ -138,7 +138,13 @@ public class ValueServiceImpl extends ServiceImpl<ValueMapper, ValueModel> imple
                     valueAttribute.setAttributeId(attributeModel.getAttributeId());
                     valueAttribute.setAttributeName(attributeModel.getAttributeName());
                 });
-                valueAttributes.add(valueAttribute);
+                if(!StringUtils.isEmpty(keyWord)){
+                    if(valueAttribute.getValue().contains(keyWord)||valueAttribute.getAttributeName().contains(keyWord)){
+                        valueAttributes.add(valueAttribute);
+                    }
+                }else {
+                    valueAttributes.add(valueAttribute);
+                }
             }
         });
         Map<String, Object> requestParams = new HashMap<>();

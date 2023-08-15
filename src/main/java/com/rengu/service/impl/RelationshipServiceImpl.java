@@ -1,30 +1,19 @@
 package com.rengu.service.impl;
 
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.rengu.entity.EntityModel;
-import com.rengu.entity.HostInfoModel;
-import com.rengu.entity.RelationshipModel;
-import com.rengu.entity.vo.EntityAndEntityVo;
-import com.rengu.entity.vo.EntityRelationship;
+import com.rengu.entity.*;
+import com.rengu.entity.vo.*;
 import com.rengu.mapper.RelationshipMapper;
-import com.rengu.service.EntityService;
-import com.rengu.service.HostInfoService;
-import com.rengu.service.RelationshipService;
-import com.rengu.util.ListPageUtil;
-import com.rengu.util.RedisKeyPrefix;
-import com.rengu.util.RedisUtils;
+import com.rengu.service.*;
+import com.rengu.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName RelationshipServiceImpl
@@ -42,6 +31,9 @@ public class RelationshipServiceImpl extends ServiceImpl<RelationshipMapper, Rel
 
     @Autowired
     private HostInfoService hostInfoService;
+
+    @Autowired
+    private HostInfoServiceImpl hostInfoServiceImpl;
 
 
     @Override
@@ -62,6 +54,7 @@ public class RelationshipServiceImpl extends ServiceImpl<RelationshipMapper, Rel
                     relationship.setEntityId2(resultSet.getString("entity_id2"));
                     resultList.add(relationship);
                     EntityAndEntityVo entityAndEntityVo = new EntityAndEntityVo();
+                    //todo:上移，无需多次获取
                     List<EntityModel> entityModels = (List<EntityModel>) redisUtils.get(RedisKeyPrefix.ENTITY);
                     if (entityModels.size() > 0 || entityModels != null) {
                         entityModels.stream().forEach(entityModel -> {
@@ -99,5 +92,60 @@ public class RelationshipServiceImpl extends ServiceImpl<RelationshipMapper, Rel
         requestParams.put("pageSize", pageSize);
         new ListPageUtil<EntityRelationship>().separatePageList(entityRelationships, requestParams);
         return requestParams;
+    }
+
+    @Override
+    public Map<String, Object> findRelationshipByEntityId(String entityId, String keyWord, Integer pageNumber, Integer pageSize) {
+        if (StringUtils.isEmpty(entityId)) {
+            return null;
+        }
+        List<RelationshipModel> relationshipModels = (List<RelationshipModel>) redisUtils.get(RedisKeyPrefix.RELATIONSHIP);
+        List<EntityAndEntityVo> entityAndEntityVos = new ArrayList<>();
+        if (relationshipModels != null || relationshipModels.size() > 0) {
+            List<RelationshipModel> commonRelationList = CollUtil.filter(relationshipModels, hostInfoServiceImpl.getRelationshipByParams(entityId));
+
+            List<EntityModel> entityModels = (List<EntityModel>) redisUtils.get(RedisKeyPrefix.ENTITY);
+
+            commonRelationList.stream().forEach(relationshipModel -> {
+                EntityAndEntityVo entityAndEntityVo = new EntityAndEntityVo();
+                if (entityModels.size() > 0 || entityModels != null) {
+                    entityModels.stream().forEachOrdered(entityModel -> {
+                        if (entityModel.getEntityId().equals(relationshipModel.getEntityId1())) {
+                            entityAndEntityVo.setEntity1_name(entityModel.getEntityName());
+                        }
+                        if (entityModel.getEntityId().equals(relationshipModel.getEntityId2())) {
+                            entityAndEntityVo.setEntity2_name(entityModel.getEntityName());
+                            entityAndEntityVo.setEntityType(entityModel.getEntityType());
+                            entityAndEntityVo.setRelationship_type(relationshipModel.getRelationshipType());
+                        }
+                    });
+                    if (!StringUtils.isEmpty(keyWord)) {
+                        if (entityAndEntityVo.getEntityType().equals(keyWord)) {
+                            entityAndEntityVos.add(entityAndEntityVo);
+                        }
+                    } else {
+                        entityAndEntityVos.add(entityAndEntityVo);
+                    }
+                }
+            });
+        }
+        Map<String, Object> requestParams = new HashMap<>();
+        requestParams.put("pageNumber", pageNumber);
+        requestParams.put("pageSize", pageSize);
+        new ListPageUtil<EntityAndEntityVo>().separatePageList(entityAndEntityVos, requestParams);
+        return requestParams;
+    }
+
+    /**
+     * 根据任务、能力类型的实体id查询关联关系
+     *
+     * @param capabilityId
+     * @param missionId
+     * @return
+     */
+    @Override
+    public RelationshipModel getRelationshnipByEntityIds(String capabilityId, String missionId) {
+
+        return null;
     }
 }
