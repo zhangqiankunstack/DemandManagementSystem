@@ -1,5 +1,5 @@
-#server:
-#  port: 8090
+server:
+  port: 8080
 
 spring:
   application:
@@ -39,3 +39,7 @@ mysql:
   attributeSql: Select * from attribute;
   relationshipSql: Select * from relationship;
 #  valueSql: Select * from value;
+
+upload:
+  # 上传的图片保存路径（可自定义）
+  path: D://upload//avatar//

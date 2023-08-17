@@ -21,8 +21,9 @@ public interface EntityService extends IService<EntityModel> {
 
     Map<String, Object> getAllEntity(String keyWord, Integer pageNumber, Integer pageSize);
 
-    Object missionAndCapabilityTrace();
+    Map<String,Object> findTrace(String type);
 
     EntityQueryVo queryEntities(List<String> entityIdList);
 
+    List<Object> coverageAnalysisTrace();
 }

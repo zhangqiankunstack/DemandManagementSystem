@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class File {
+public class FileModel {
     /**
      * 唯一标识符
      */
@@ -26,19 +26,24 @@ public class File {
     private Date createTime = new Date();
 
     /**
-     * md5
+     * 原文件名称
+     */
+    private String fileName;
+
+    /**
+     *
      */
     private String md5;
 
-    /**
-     * 文件类型
-     */
-    private String type;
+//    /**
+//     * 文件类型
+//     */
+//    private String type;
 
     /**
      * 文件大小
      */
-    private long size;
+    private String size;
 
     /**
      * 文件本地路径

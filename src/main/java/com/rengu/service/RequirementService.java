@@ -5,9 +5,11 @@ import com.rengu.entity.RequirementModel;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface RequirementService extends IService<RequirementModel> {
-    String uploadPic(MultipartFile multipartFile);
+    String uploadFile(MultipartFile multipartFile);
 
     boolean saveRequirementModel(RequirementModel requirementModel);
 
     RequirementModel getRequirementByEntityId(String entityId);
+
+    Object uploadPic(MultipartFile multipartFile);
 }

@@ -1,5 +1,6 @@
 package com.rengu.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.EntityModel;
@@ -7,12 +8,15 @@ import com.rengu.entity.HostInfoModel;
 import com.rengu.entity.RelationshipModel;
 import com.rengu.entity.ValueModel;
 import com.rengu.entity.vo.EntityQueryVo;
+import com.rengu.entity.vo.TraceVo;
 import com.rengu.mapper.EntityMapper;
 import com.rengu.mapper.RelationshipMapper;
 import com.rengu.mapper.ValueMapper;
 import com.rengu.service.EntityService;
 import com.rengu.service.RelationshipService;
 import com.rengu.util.ListPageUtil;
+import lombok.var;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,6 +37,10 @@ import java.util.stream.Collectors;
  **/
 @Service
 public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> implements EntityService {
+    private static final String FUNCTION = "function";
+    private static final String SYSTEM = "system";
+    private static final String CAPABILITY = "capability";
+    private static final String ACTIVITY = "activity";
     @Value("${mysql.entitySql}")
     private String entitySql;
 
@@ -43,6 +51,9 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
     private ValueMapper valueMapper;
     @Autowired
     private RelationshipMapper relationshipMapper;
+
+    @Autowired
+    private HostInfoServiceImpl hostInfoServiceImpl;
 
     /**
      * 连接后查询
@@ -100,29 +111,160 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
     }
 
     @Override
-    public Object missionAndCapabilityTrace() {
-        QueryWrapper<EntityModel> queryWrap = new QueryWrapper<>();
-        queryWrap.eq("entity_type", "mission");
-        List<EntityModel> missions = this.list(queryWrap);
-        queryWrap.clear();
-        queryWrap.eq("entity_type", "capability");
-        List<EntityModel> capabilities = this.list(queryWrap);
-//        List<String> missionIds = missions.stream().map(EntityModel::getEntityId).collect(Collectors.toList());//行
-//        List<String> capabilityIds = capabilities.stream().map(EntityModel::getEntityId).collect(Collectors.toList());//列
-        // 获取两组ids的两两组合
-//        List<RelationshipModel> relationshipModels = calculateCartesianProduct(missionIds, capabilityIds);
-        List<List<String>> listList = new ArrayList<>();
-        capabilities.stream().forEach(capability -> {
-            missions.stream().forEach(mission -> {
-                relationshipService.getRelationshnipByEntityIds(capability.getEntityId(), mission.getEntityId());
-            });
-        });
-
-        return null;
+    public Map<String, Object> findTrace(String type) {
+        Map<String, Object> map = null;
+        if (type.equals("1")) {
+            map = missionAndCapabilityTrace();//任务与能力
+        }
+        if (type.equals("2")) {
+            CapabilityAndSystemTrace();//能力与系统
+        }
+        return map;
     }
 
-    public static List<RelationshipModel> calculateCartesianProduct(List<String> list1, List<String> list2) {
-        return list1.stream().flatMap(id1 -> list2.stream().map(id2 -> new RelationshipModel("", id1, id2, ""))).collect(Collectors.toList());
+    /**
+     * 覆盖分析追溯矩阵
+     *
+     * @return
+     */
+    @Override
+    public List<Object> coverageAnalysisTrace() {
+        List<TraceVo> sysTraceVos = new ArrayList<>();
+
+        QueryWrapper<EntityModel> query = new QueryWrapper<>();
+        query.eq("entity_type", SYSTEM);
+        List<EntityModel> systems = this.list(query);//列系统
+
+        systems.stream().forEach(system -> {
+            List<RelationshipModel> modelList = relationshipService.list();
+            List<RelationshipModel> commonRelationList = CollUtil.filter(modelList, hostInfoServiceImpl.getRelationshipByParams(system.getEntityId()));
+            List<EntityModel> functionEntities = new ArrayList<>();
+            commonRelationList.stream().forEach(relationshipModel -> {
+                if (relationshipModel.getEntityId1() != system.getEntityId() && this.getById(relationshipModel.getEntityId1()).getEntityType().equals(FUNCTION)) {
+                    functionEntities.add(this.getById(relationshipModel.getEntityId1()));
+                }
+                if (relationshipModel.getEntityId2() != system.getEntityId() && this.getById(relationshipModel.getEntityId2()).getEntityType().equals(FUNCTION) && !functionEntities.contains(this.getById(relationshipModel.getEntityId2()))) {
+                    functionEntities.add(this.getById(relationshipModel.getEntityId2()));
+                }
+            });
+            if (functionEntities.size() > 0) {
+                TraceVo traceVo = new TraceVo();
+//                BeanUtils.copyProperties(system, traceVo, "entities");
+                traceVo.setEntityName(system.getEntityName());
+                traceVo.setEntities(functionEntities);
+                sysTraceVos.add(traceVo);
+            }
+        });
+
+        query.clear();
+
+        query.eq("entity_type", CAPABILITY);
+        List<EntityModel> capabilities = this.list(query);//行能力
+        List<TraceVo> capTraceVos = new ArrayList<>();
+        capabilities.stream().forEach(capability -> {
+            List<RelationshipModel> modelList1 = relationshipService.list();
+            List<RelationshipModel> commonRelationList = CollUtil.filter(modelList1, hostInfoServiceImpl.getRelationshipByParams(capability.getEntityId()));
+            List<EntityModel> activityEntities = new ArrayList<>();
+            commonRelationList.stream().forEach(relationshipModel -> {
+                if (relationshipModel.getEntityId2() != capability.getEntityId() && this.getById(relationshipModel.getEntityId1()).getEntityType().equals(ACTIVITY)) {
+                    activityEntities.add(this.getById(relationshipModel.getEntityId1()));
+                }
+                if (relationshipModel.getEntityId2() != capability.getEntityId() && this.getById(relationshipModel.getEntityId2()).getEntityType().equals(ACTIVITY) && !activityEntities.contains(this.getById(relationshipModel.getEntityId2()))) {
+                    activityEntities.add(this.getById(relationshipModel.getEntityId2()));
+                }
+            });
+            if (activityEntities.size() > 0) {
+                TraceVo traceVo = new TraceVo();
+                traceVo.setEntityName(capability.getEntityName());
+//                BeanUtils.copyProperties(capability, traceVo, "entities");
+                traceVo.setEntities(activityEntities);
+                capTraceVos.add(traceVo);
+            }
+        });
+
+        List<Object> objList = new ArrayList<>();
+        //列
+        sysTraceVos.stream().forEach(sysTraceVo -> {
+            List<Map> mapList = new ArrayList<>();
+            //行
+            capTraceVos.stream().forEach(capTraceVo -> {
+                List<List<Boolean>> listList = new ArrayList<>();
+                //todo:列
+                sysTraceVo.getEntities().stream().forEach(function -> {
+                    List<Boolean> boolList = new ArrayList<>();
+                    //todo:行
+                    capTraceVo.getEntities().stream().forEach(cap -> {
+
+                        boolean bool = relationshipService.getRelationshipByEntityIds(function.getEntityId(), cap.getEntityId());
+                        boolList.add(bool);
+                    });
+                    listList.add(boolList);//
+                });
+                Map<String, Object> map = new HashMap<>();
+                map.put("system", sysTraceVo);
+                map.put("capabilities", capTraceVo);
+                map.put("boolList", listList);
+                mapList.add(map);
+            });
+            objList.add(mapList);
+        });
+        return objList;
+    }
+
+    /**
+     * 能力与系统需求追溯矩阵
+     *
+     * @return
+     */
+    public Map<String, Object> CapabilityAndSystemTrace() {
+        QueryWrapper<EntityModel> queryWrap = new QueryWrapper<>();
+        queryWrap.eq("entity_type", "capability");
+        List<EntityModel> capabilities = this.list(queryWrap);//行(能力)
+        queryWrap.clear();
+        queryWrap.eq("entity_type", SYSTEM);
+        List<EntityModel> systems = this.list(queryWrap);//列（系统）
+        List<List<Boolean>> listList = new ArrayList<>();
+        systems.stream().forEach(system -> {
+            List<Boolean> boolList = new ArrayList<>();
+            capabilities.stream().forEach(capability -> {
+                boolean bool = relationshipService.getRelationshipByEntityIds(system.getEntityId(), capability.getEntityId());
+                boolList.add(bool);
+            });
+            listList.add(boolList);
+        });
+        Map<String, Object> map = new HashMap<>();
+        map.put("systems", systems);
+        map.put("capabilities", capabilities);
+        map.put("boolList", listList);
+        return map;
+    }
+
+    /**
+     * 任务与能力需求追溯矩阵
+     *
+     * @return
+     */
+    public Map<String, Object> missionAndCapabilityTrace() {
+        QueryWrapper<EntityModel> queryWrap = new QueryWrapper<>();
+        queryWrap.eq("entity_type", "mission");
+        List<EntityModel> missions = this.list(queryWrap);//行
+        queryWrap.clear();
+        queryWrap.eq("entity_type", "capability");
+        List<EntityModel> capabilities = this.list(queryWrap);//列
+        List<List<Boolean>> listList = new ArrayList<>();
+        capabilities.stream().forEach(capability -> {
+            List<Boolean> boolList = new ArrayList<>();
+            missions.stream().forEach(mission -> {
+                boolean bool = relationshipService.getRelationshipByEntityIds(capability.getEntityId(), mission.getEntityId());
+                boolList.add(bool);
+            });
+            listList.add(boolList);
+        });
+        Map<String, Object> map = new HashMap<>();
+        map.put("missions", missions);
+        map.put("capabilities", capabilities);
+        map.put("boolList", listList);
+        return map;
     }
 
     @Override

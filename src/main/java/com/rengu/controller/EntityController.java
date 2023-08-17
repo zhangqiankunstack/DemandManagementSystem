@@ -1,6 +1,5 @@
 package com.rengu.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.rengu.entity.*;
 import com.rengu.service.EntityService;
 import com.rengu.service.RequirementService;
@@ -23,7 +22,6 @@ import java.util.*;
 @RequestMapping("/entity-model")
 @Api(tags = "实体控制层-API")
 public class EntityController {
-
     @Autowired
     public EntityService entityModelService;
 
@@ -31,24 +29,6 @@ public class EntityController {
     private RedisUtils redisUtils;
     @Autowired
     private RequirementService requirementService;
-
-    @RequestMapping(value = "queryById", method = RequestMethod.GET)
-    @ApiOperation(value = "根据Id展示列表")
-    public EntityModel get(String Id) {
-        return entityModelService.getById(Id);
-    }
-
-    @RequestMapping(value = "remove", method = RequestMethod.GET)
-    @ApiOperation(value = "移除")
-    public boolean remove(String Id) {
-        return entityModelService.removeById(Id);
-    }
-
-    @RequestMapping(value = "saveOrUpdate", method = RequestMethod.POST)
-    @ApiOperation(value = "保存或更新")
-    public boolean saveOrUpdate(@RequestBody EntityModel entityModel) {
-        return entityModelService.saveOrUpdate(entityModel);
-    }
 
     /**
      * 采集任务展示实体、属性、关系（未入库数据接口）
@@ -96,9 +76,15 @@ public class EntityController {
         return ResultUtils.build(requirementService.saveRequirementModel(requirementModel));
     }
 
-    @ApiOperation("任务需求-能力需求追溯矩阵")
-    @GetMapping("/missionAndCapabilityTrace")
-    public Result missionAndCapabilityTrace() {
-        return ResultUtils.build(entityModelService.missionAndCapabilityTrace());
+    @ApiOperation("需求追溯矩阵")
+    @GetMapping("/requirementTrace")
+    public Result requirementTrace(@RequestParam String type) {
+        return ResultUtils.build(entityModelService.findTrace(type));
+    }
+
+    @ApiOperation("覆盖分析追溯矩阵")
+    @GetMapping("/coverageAnalysisTrace")
+    public Result coverageAnalysisTrace(){
+        return ResultUtils.build(entityModelService.coverageAnalysisTrace());
     }
 }
