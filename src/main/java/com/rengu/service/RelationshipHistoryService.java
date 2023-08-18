@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.rengu.entity.RelationshipHistoryModel;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -15,5 +16,5 @@ import java.util.List;
 public interface RelationshipHistoryService extends IService<RelationshipHistoryModel> {
     public void copyDataToRelationshipHistory(List<String> ids);
 
-
+    Map<String, Object> getAllRelationship(String entityId, String keyWord, Integer pageNumber, Integer pageSize);
 }

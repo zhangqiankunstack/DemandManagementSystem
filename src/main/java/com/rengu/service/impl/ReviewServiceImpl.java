@@ -228,13 +228,19 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, ReviewModel> im
         reviewModel.setSponsor(sponsor);
         reviewModel.setStatus(0);
 
-        List<EntityHistoryModel> entityHistoryModels = entityHistoryMapper.selectBatchIds(list);
+//        List<EntityHistoryModel> entityHistoryModels = entityHistoryMapper.selectBatchIds(list);
 
+
+        QueryWrapper<EntityHistoryModel> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("entity_id", list);
+        List<EntityHistoryModel> entityHistoryModels = entityHistoryMapper.selectList(queryWrapper);
 
         if (entityHistoryModels != null) {
             reviewModel.setType("变更");
+        }else {
+            reviewModel.setType("增量");
         }
-        reviewModel.setType("增量");
+
         baseMapper.insert(reviewModel);
         return reviewModel;
     }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rengu.mapper.EntityBaselineMapper">
+
+		<!-- 通用查询映射结果 -->
+		<resultMap id="BaseResultMap" type="com.rengu.entity.EntityBaselineModel">
+					<id column="id" property="id"/>
+					<result column="entity_historyid" property="entityHistoryid"/>
+					<result column="baseline_id" property="baselineId"/>
+		</resultMap>
+
+		<!-- 通用查询结果列 -->
+		<sql id="Base_Column_List">
+            id, entity_historyid, baseline_id
+		</sql>
+
+</mapper>

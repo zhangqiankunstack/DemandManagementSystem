@@ -3,13 +3,19 @@ package com.rengu.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.ValueHistoryModel;
 import com.rengu.entity.ValueModel;
+import com.rengu.entity.vo.ValueAttribute;
+import com.rengu.entity.vo.ValueAttributeHistory;
+import com.rengu.mapper.ValueAttributeHistoryMapper;
 import com.rengu.mapper.ValueHistoryMapper;
 import com.rengu.mapper.ValueMapper;
 import com.rengu.service.ValueHistoryService;
+import com.rengu.util.ListPageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName ValueHistoryServiceImpl
@@ -22,6 +28,8 @@ public class ValueHistoryServiceImpl extends ServiceImpl<ValueHistoryMapper, Val
 
     @Autowired
     private ValueMapper valueMapper;
+    @Autowired
+    private ValueAttributeHistoryMapper valueAttributeHistoryMapper;
 
     @Override
     public void copyDataToValueHistory(List<String> valueIds) {
@@ -31,12 +39,21 @@ public class ValueHistoryServiceImpl extends ServiceImpl<ValueHistoryMapper, Val
         // 遍历第一个表的数据，将其添加到第二个表中
         for (ValueModel value : values) {
             ValueHistoryModel valueHistory = new ValueHistoryModel();
-            valueHistory.setValueId(value.getValueId());
             valueHistory.setValue(value.getValue());
             valueHistory.setAttributeId(value.getAttributeId());
             valueHistory.setEntityHistoryid(value.getEntityId());
             baseMapper.insert(valueHistory);
 
         }
+    }
+
+    @Override
+    public Map<String, Object> getAllValueInfo(String entityId, String keyWord, Integer pageNumber, Integer pageSize) {
+        List<ValueAttributeHistory> valueAttributeHistory = valueAttributeHistoryMapper.findValueAttributesByEntityId(entityId, keyWord);
+        Map<String, Object> requestParams = new HashMap<>();
+        requestParams.put("pageNumber", pageNumber);
+        requestParams.put("pageSize", pageSize);
+        new ListPageUtil<ValueAttributeHistory>().separatePageList(valueAttributeHistory, requestParams);
+        return requestParams;
     }
 }

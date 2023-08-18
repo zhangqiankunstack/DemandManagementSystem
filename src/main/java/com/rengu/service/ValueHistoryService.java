@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.rengu.entity.ValueHistoryModel;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -14,4 +15,8 @@ import java.util.List;
  **/
 public interface ValueHistoryService extends IService<ValueHistoryModel> {
     public void copyDataToValueHistory(List<String> valueIds);
+
+    Map<String, Object> getAllValueInfo(String entityId, String keyWord, Integer pageNumber, Integer pageSize);
+
+
 }
