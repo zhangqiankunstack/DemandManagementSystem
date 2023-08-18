@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @program Effectiveness evaluation
+ * @program
  * @Author Miracle ZHQK
  * @Description:数据库对象工厂类
  * @Date 2020/12/16 13:33

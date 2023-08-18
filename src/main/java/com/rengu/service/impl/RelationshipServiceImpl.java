@@ -1,6 +1,7 @@
 package com.rengu.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.*;
 import com.rengu.entity.vo.*;
@@ -137,15 +138,29 @@ public class RelationshipServiceImpl extends ServiceImpl<RelationshipMapper, Rel
     }
 
     /**
-     * 根据任务、能力类型的实体id查询关联关系
+     * 判断通过任务、能力类型的实体id查询关联关系是否存在
      *
      * @param capabilityId
      * @param missionId
      * @return
      */
     @Override
-    public RelationshipModel getRelationshnipByEntityIds(String capabilityId, String missionId) {
-
-        return null;
+    public boolean getRelationshipByEntityIds(String capabilityId, String missionId) {
+        RelationshipModel relationshipModel = null;
+        QueryWrapper<RelationshipModel> query = new QueryWrapper<>();
+        query.eq("entity_id1", capabilityId);
+        query.eq("entity_id2", missionId);
+        relationshipModel = this.getOne(query);
+        if (relationshipModel == null) {
+            query.clear();
+            query.eq("entity_id1", missionId);
+            query.eq("entity_id2", capabilityId);
+            relationshipModel = this.getOne(query);
+        }
+        if (relationshipModel == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

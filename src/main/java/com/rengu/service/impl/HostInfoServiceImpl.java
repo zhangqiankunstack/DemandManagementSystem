@@ -248,7 +248,6 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
 //        commonEntityList.stream().forEach(entityModel -> {
         for (EntityModel entityModel : commonEntityList) {
             entityService.saveOrUpdate(entityModel);
-//                entityMapper.insert(entityModel);
             List<RelationshipModel> commonRelationList = CollUtil.filter(relationship, getRelationshipByParams(entityModel.getEntityId()));
             relationshipService.saveOrUpdateBatch(commonRelationList);
             List<ValueModel> commonValues = CollUtil.filter(valueModels, getValueModelByParams(entityModel.getEntityId()));
@@ -273,16 +272,25 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
         return new ListPageUtil<HostInfoModel>().separatePageList(hostInfoModels, requestParams);
     }
 
-    // 定义Lambda表达式，判断RelationshipModel对象的EntityId1或EntityId2是否与目标ID满足其一相同
+
+    /**
+     * 定义Lambda表达式，判断RelationshipModel对象的EntityId1或EntityId2是否与目标ID满足其一相同
+     * @param targetId
+     * @return
+     */
     public static Filter<RelationshipModel> getRelationshipByParams(String targetId) {
-        return relationshipModel -> relationshipModel.getEntityId1().equals(targetId) || relationshipModel.getEntityId2().equals(targetId);
+        return relationshipModel -> (relationshipModel.getEntityId1().equals(targetId) || relationshipModel.getEntityId2().equals(targetId));
     }
 
     private static Filter<ValueModel> getValueModelByParams(String targetId) {
         return valueModel -> valueModel.getEntityId().equals(targetId);
     }
 
-    // 定义Lambda表达式，判断AttributeModel对象的id在另一个List中是否存在相同值
+    /**
+     * 定义Lambda表达式，判断AttributeModel对象的id在另一个List中是否存在相同值
+     * @param attributeModel
+     * @return
+     */
     private static Filter<AttributeModel> getByParams(List<ValueModel> attributeModel) {
         return valueModel -> CollUtil.contains(attributeModel, attribute -> attribute.getAttributeId().equals(valueModel.getAttributeId()));
     }
