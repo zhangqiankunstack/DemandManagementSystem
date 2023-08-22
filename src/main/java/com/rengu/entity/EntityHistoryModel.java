@@ -1,6 +1,7 @@
 package com.rengu.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
@@ -38,5 +39,11 @@ public class EntityHistoryModel implements Serializable {
     @ApiModelProperty(value = "枚举：mission,activity,capability,function,system,node  没有默认，必填")
     private String entityType;
 
+    @ApiModelProperty(value = "0是false，1是ture")
+    @TableField("isTop")
+    private Integer isTop;
+
+    @ApiModelProperty(value = "变更内容")
+    private String changes;
 
 }

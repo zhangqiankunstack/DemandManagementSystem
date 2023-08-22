@@ -75,3 +75,49 @@ create table criterion(
 #
 #
 #
+
+CREATE TABLE baseline (
+                          id INT AUTO_INCREMENT PRIMARY KEY,
+                          baseline_name VARCHAR(255) NOT NULL ,
+                          baseline_description TEXT ,
+                          priority INT ,
+                          created_time DATETIME DEFAULT NULL,
+                          modified_time DATETIME DEFAULT NULL
+)engine = Innodb default charset = utf8mb4 comment '基线';
+
+
+
+
+
+
+
+
+SELECT DISTINCT relationship_id,
+                entity_history_id1, entity1.entity_name AS entity_name1,
+                entity_history_id2, entity2.entity_name AS entity_name2,
+                relationship_type, entity1.entity_type AS entity_type
+FROM relationship_history
+         INNER JOIN entity_history entity1 ON relationship_history.entity_history_id1 = entity1.entity_id
+         INNER JOIN entity_history entity2 ON relationship_history.entity_history_id2 = entity2.entity_id
+WHERE entity1.entity_historyid = #{entity_historyid}
+    AND (#{keyWord} IS NULL OR entity1.entity_type LIKE CONCAT('%', #{keyWord}, '%'))
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE `file_model`  (
+                               `id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '唯一标识符',
+                               `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                               `md5` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'md5码',
+                               `size` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件大小',
+                               `local_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件路径',
+                               `file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '原文件名称',
+                               PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;

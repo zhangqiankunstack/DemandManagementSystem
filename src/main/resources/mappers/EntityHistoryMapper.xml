@@ -2,18 +2,79 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rengu.mapper.EntityHistoryMapper">
 
-		<!-- 通用查询映射结果 -->
-		<resultMap id="BaseResultMap" type="com.rengu.entity.EntityHistoryModel">
-					<id column="entity_historyid" property="entityHistoryid"/>
-					<result column="entity_id" property="entityId"/>
-					<result column="version" property="version"/>
-					<result column="entity_name" property="entityName"/>
-					<result column="entity_type" property="entityType"/>
-		</resultMap>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rengu.entity.EntityHistoryModel">
+        <id column="entity_historyid" property="entityHistoryid"/>
+        <result column="entity_id" property="entityId"/>
+        <result column="version" property="version"/>
+        <result column="entity_name" property="entityName"/>
+        <result column="entity_type" property="entityType"/>
+        <result column="isTop" property="isTop"/>
+        <result column="changes" property="changes"/>
+    </resultMap>
 
-		<!-- 通用查询结果列 -->
-		<sql id="Base_Column_List">
-            entity_historyid, entity_id, version, entity_name, entity_type
-		</sql>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        entity_historyid
+        , entity_id, version, entity_name, entity_type, isTop, changes
+    </sql>
+    <update id="updateBatchIsTopById" parameterType="java.util.List">
+        <foreach collection="entityHistories" item="entityHistory" separator=";">
+            UPDATE entity_history
+            SET is_top = CASE WHEN entity_historyid != #{entityHistory.entityHistoryid} THEN 0 ELSE
+            #{entityHistory.isTop} END
+            WHERE entity_id = #{entityHistory.entityId}
+        </foreach>
+
+    </update>
+
+    <select id="getValueAttribute" resultType="com.rengu.entity.vo.ValueAttributeEntityVo">
+        SELECT ah.attribute_name, vh.value, eh.entity_name
+        FROM value_history vh
+                 JOIN entity_history eh ON vh.entity_historyid = eh.entity_id
+                 JOIN attribute_history ah ON vh.attribute_id = ah.attribute_id
+        WHERE eh.entity_historyid = #{entityHistoryId}
+    </select>
+
+
+
+    <select id="getRelationshipEntitiesByEntityHistoryId"
+            resultType="com.rengu.entity.vo.EntityHistoryRelationship">
+        SELECT DISTINCT eh.entity_name AS entityName,
+        eh.entity_type AS entityType,
+        eh1.entity_name AS entityName2,
+        eh2.entity_name AS entityName1,
+        rh.relationship_type AS relationshipType
+        FROM entity_history eh
+        JOIN relationship_history rh ON eh.entity_id = rh.entity_history_id1 OR eh.entity_id = rh.entity_history_id2
+        JOIN entity_history eh1 ON rh.entity_history_id1 = eh1.entity_id
+        JOIN entity_history eh2 ON rh.entity_history_id2 = eh2.entity_id
+        WHERE rh.entity_history_id1 IN (
+        SELECT entity_id
+        FROM entity_history
+        WHERE entity_historyid = #{entityHistoryId}
+        )
+        OR rh.entity_history_id2 IN (
+        SELECT entity_id
+        FROM entity_history
+        WHERE entity_historyid = #{entityHistoryId}
+        )
+        <if test="entityType != null">
+            AND eh.entity_type LIKE CONCAT('%', #{entityType}, '%')
+        </if>
+    </select>
+
+
+
+    <select id="getEntityHistoryRelationships" resultType="com.rengu.entity.vo.EntityHistoryRelationship">
+        SELECT eh.entity_id, rh.entity_history_id1, rh.entity_history_id2, eh.entity_name, eh.entity_type
+        FROM entity_history eh
+        JOIN relationship_history rh ON (eh.entity_id = rh.entity_history_id1 OR eh.entity_id = rh.entity_history_id2)
+        WHERE eh.entity_historyid = #{entityHistoryId}
+        <if test="entityType != null and entityType != ''">
+            AND eh.entity_type LIKE CONCAT('%', #{entityType}, '%')
+        </if>
+    </select>
+
 
 </mapper>
