@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.rengu.entity.BaselineModel;
 import com.rengu.entity.OpinionModel;
 import com.rengu.entity.Result;
 import com.rengu.entity.ReviewModel;
+import com.rengu.entity.vo.EntityHistoryRelationship;
 import com.rengu.entity.vo.EntityInfo;
 import com.rengu.service.BaselineService;
 import com.rengu.service.EntityBaselineService;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,9 +87,18 @@ public class BaselineController {
 
     @ApiOperation(value = "查询流程表-实体属性")
     @GetMapping("/listForInfo")
-    public Result listForInfo(Integer id) {
+    public Result listForInfo(@RequestParam Integer id,@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+
         List<EntityInfo> entityInfoByBaselineId = entityBaselineService.findEntityInfoByBaselineId(id);
-        return ResultUtils.build(entityInfoByBaselineId);
+
+
+        Map<String, Object> requestParams = new HashMap<>();
+        requestParams.put("pageNumber", pageNumber);
+        requestParams.put("pageSize", pageSize);
+        new ListPageUtil<EntityInfo>().separatePageList(entityInfoByBaselineId, requestParams);
+        return ResultUtils.build(requestParams);
+
+
     }
 
     @ApiOperation(value = "下载")
@@ -95,7 +107,7 @@ public class BaselineController {
         List<EntityInfo> entityInfoByBaselineId = entityBaselineService.findEntityInfoByBaselineId(id);
         String fileName = "file.json"; // 下载文件的名称
 
-
+        String str = new Gson().toJson(entityInfoByBaselineId);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = "";
@@ -108,14 +120,12 @@ public class BaselineController {
         response.setContentType("application/json");
         response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
-        try {
-            response.getWriter().write(json);
-            response.getWriter().flush();
-            response.getWriter().close();
+        try (OutputStream outputStream = response.getOutputStream()) {
+            outputStream.write(json.getBytes());
+            outputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ResultUtils.build(entityInfoByBaselineId);
+        return ResultUtils.build(json);
     }
-
 }

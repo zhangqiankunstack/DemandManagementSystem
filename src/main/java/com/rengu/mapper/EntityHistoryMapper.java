@@ -21,12 +21,12 @@ public interface EntityHistoryMapper extends BaseMapper<EntityHistoryModel> {
 
 
 
-    @Select("SELECT DISTINCT relationship_id, " +
-            "entity_history_id1, entity1.entity_name AS entity_name1," +
-            "entity_history_id2, entity2.entity_name AS entity_name2," +
-            "relationship_type, entity1.entity_type AS entity_type " +
-            "FROM relationship_history INNER JOIN entity_history entity1 ON relationship_history.entity_history_id1 = entity1.entity_historyid INNER JOIN entity_history entity2 ON relationship_history.entity_history_id2 = entity2.entity_historyid WHERE entity1.entity_historyid = #{entity_historyid} AND (#{keyWord} IS NULL OR entity1.entity_type LIKE CONCAT('%', #{keyWord}, '%'))")
-    List<EntityHistoryRelationship> getEntityHistoryRelationships(@Param("entity_historyid") String entityId, @Param("keyWord") String keyWord);
+//    @Select("SELECT DISTINCT relationship_id, " +
+//            "entity_history_id1, entity1.entity_name AS entity_name1," +
+//            "entity_history_id2, entity2.entity_name AS entity_name2," +
+//            "relationship_type, entity1.entity_type AS entity_type " +
+//            "FROM relationship_history INNER JOIN entity_history entity1 ON relationship_history.entity_history_id1 = entity1.entity_historyid INNER JOIN entity_history entity2 ON relationship_history.entity_history_id2 = entity2.entity_historyid WHERE entity1.entity_historyid = #{entity_historyid} AND (#{keyWord} IS NULL OR entity1.entity_type LIKE CONCAT('%', #{keyWord}, '%'))")
+    List<EntityHistoryRelationship> getEntityHistoryRelationships(@Param("entity_historyid") String entityId, @Param("keyWord") String entityType);
 
 
 

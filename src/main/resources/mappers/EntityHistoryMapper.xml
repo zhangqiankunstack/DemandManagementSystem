@@ -40,10 +40,10 @@
 
     <select id="getRelationshipEntitiesByEntityHistoryId"
             resultType="com.rengu.entity.vo.EntityHistoryRelationship">
-        SELECT eh.entity_name AS entityName,
+        SELECT DISTINCT eh.entity_name AS entityName,
         eh.entity_type AS entityType,
-        eh1.entity_name AS entityName1,
-        eh2.entity_name AS entityName2,
+        eh1.entity_name AS entityName2,
+        eh2.entity_name AS entityName1,
         rh.relationship_type AS relationshipType
         FROM entity_history eh
         JOIN relationship_history rh ON eh.entity_id = rh.entity_history_id1 OR eh.entity_id = rh.entity_history_id2
@@ -60,6 +60,18 @@
         WHERE entity_historyid = #{entityHistoryId}
         )
         <if test="entityType != null">
+            AND eh.entity_type LIKE CONCAT('%', #{entityType}, '%')
+        </if>
+    </select>
+
+
+
+    <select id="getEntityHistoryRelationships" resultType="com.rengu.entity.vo.EntityHistoryRelationship">
+        SELECT eh.entity_id, rh.entity_history_id1, rh.entity_history_id2, eh.entity_name, eh.entity_type
+        FROM entity_history eh
+        JOIN relationship_history rh ON (eh.entity_id = rh.entity_history_id1 OR eh.entity_id = rh.entity_history_id2)
+        WHERE eh.entity_historyid = #{entityHistoryId}
+        <if test="entityType != null and entityType != ''">
             AND eh.entity_type LIKE CONCAT('%', #{entityType}, '%')
         </if>
     </select>

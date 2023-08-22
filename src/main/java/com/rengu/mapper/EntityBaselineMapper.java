@@ -17,7 +17,7 @@ import java.util.List;
  **/
 @Mapper
 public interface EntityBaselineMapper extends BaseMapper<EntityBaselineModel> {
-	@Select("SELECT eh.entity_name AS entityName, eh.version " +
+	@Select("SELECT eh.entity_name AS entityName, eh.version ,eh.entity_type " +
 			"FROM entity_baseline eb " +
 			"JOIN entity_history eh ON eb.entity_historyid = eh.entity_historyid " +
 			"WHERE eb.baseline_id = #{baselineId}")

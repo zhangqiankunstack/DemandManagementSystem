@@ -29,7 +29,7 @@ public class ValueHistoryController {
 
     @ApiOperation("查询数据值列表（本地数据）")
     @GetMapping("/getAllValueInfo")
-    public Result getAllValueInfo(@RequestParam String entityId, @RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        return ResultUtils.build(valueHistoryModelService.getAllValueInfo(entityId, keyWord, pageNumber, pageSize));
+    public Result getAllValueInfo(@RequestParam String entityHistoryId, @RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        return ResultUtils.build(valueHistoryModelService.getAllValueInfo(entityHistoryId, keyWord, pageNumber, pageSize));
     }
 }

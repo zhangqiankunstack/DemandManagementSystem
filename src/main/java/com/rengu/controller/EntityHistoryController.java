@@ -44,8 +44,8 @@ public class EntityHistoryController {
 
     @ApiOperation("分页模糊查询所有存在的历史实体")
     @GetMapping("/getAllNowEntityHistory")
-    public Result getAllNowEntityHistory(@RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        return ResultUtils.build(entityHistoryModelService.getAllNowEntityHistory(keyWord, pageNumber, pageSize));
+    public Result getAllNowEntityHistory(@RequestParam(required = false) String entityId,@RequestParam(required = false)String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        return ResultUtils.build(entityHistoryModelService.getAllNowEntityHistory(entityId,keyWord, pageNumber, pageSize));
     }
 
     @ApiOperation("查询单个存在的历史实体")

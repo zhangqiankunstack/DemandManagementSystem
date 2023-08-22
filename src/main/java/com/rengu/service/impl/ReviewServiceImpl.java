@@ -160,21 +160,19 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, ReviewModel> im
         // 用于存储相关的实体ID
 
         List<String> entityS = new ArrayList<>();
+        Set<String> uniqueEntities = new HashSet<>(); // 用于记录唯一的实体ID
 
         for (RelationshipModel relationship : relationshipList) {
             if (entityIds.contains(relationship.getEntityId1()) || entityIds.contains(relationship.getEntityId2())) {
-                entityS.add(relationship.getEntityId1());
-                entityS.add(relationship.getEntityId2());
+
+                uniqueEntities.add(relationship.getEntityId1());
+
+//                uniqueEntities.add(relationship.getEntityId2());
             }
         }
+        entityS.addAll(uniqueEntities);
 
-//		Set<String> relatedEntityIds = new HashSet<>();
-//
-//		// 遍历关系列表，将相关的实体ID添加到relatedEntityIds集合中
-//		for (RelationshipModel relationship : relationshipList) {
-//			relatedEntityIds.add(relationship.getEntityId1());
-//			relatedEntityIds.add(relationship.getEntityId2());
-//		}
+
 
         List<String> entitiesWithoutRelationship = new ArrayList<>();
 
@@ -191,10 +189,7 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, ReviewModel> im
         }
 
         if (hasRelationship) {
-            // 存在关联关系，返回"成功"字符串
 
-//			ReviewServiceImpl reviewService = new ReviewServiceImpl();
-//			ReviewModel reviewModel  = reviewService.add(name, sponsor, entityIds);
 
             ReviewModel reviewModel = s(name, sponsor, entityIds);
 

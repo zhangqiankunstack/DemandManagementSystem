@@ -11,5 +11,6 @@ public class EntityInfo {
 
     private String entityName;
     private String version;
+    private String entityType;
 
 }

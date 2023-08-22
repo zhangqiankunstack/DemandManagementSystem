@@ -26,7 +26,7 @@ public interface EntityHistoryService extends IService<EntityHistoryModel> {
     List<EntityHistoryRelationship> getEntityHistoryRelationships(String entityId, String keyWord);
 
 
-    Map<String, Object> getAllNowEntityHistory(String keyWord, Integer pageNumber, Integer pageSize);
+    Map<String, Object> getAllNowEntityHistory(String entityId,String keyWord, Integer pageNumber, Integer pageSize);
 
 
     List<ValueAttributeEntityVo> findValueByEntityHistoryId (String entityHistoryId);

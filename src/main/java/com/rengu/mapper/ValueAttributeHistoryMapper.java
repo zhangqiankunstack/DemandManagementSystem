@@ -15,7 +15,7 @@ public interface ValueAttributeHistoryMapper {
             "FROM value_history v " +
             "JOIN entity_history e ON v.entity_historyid = e.entity_id " +
             "JOIN attribute_history a ON v.attribute_id = a.attribute_id " +
-            "WHERE e.entity_id = #{entityId} " +
+            "WHERE e.entity_historyid = #{entityId} " +
             "AND (#{keyWord} IS NULL OR a.attribute_name LIKE CONCAT('%', #{keyWord}, '%') OR v.value LIKE CONCAT('%', #{keyWord}, '%'))")
     List<ValueAttributeHistory> findValueAttributesByEntityId(@Param("entityId") String entityId, @Param("keyWord") String keyWord);
 

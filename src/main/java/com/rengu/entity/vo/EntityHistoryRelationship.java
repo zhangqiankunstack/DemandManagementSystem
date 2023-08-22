@@ -9,9 +9,13 @@ import lombok.Setter;
 @Getter
 public class EntityHistoryRelationship {
 
-    private String entityName;
+    private String relationshipId;
+    private String entityHistoryId;
     private String entityType;
     private String entityName1;
+    private String entityId1;
     private String entityName2;
+    private String entityId2;
     private String relationshipType;
+
 }

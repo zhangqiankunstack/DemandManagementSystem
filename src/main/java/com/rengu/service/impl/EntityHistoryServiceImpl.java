@@ -43,7 +43,7 @@ public class EntityHistoryServiceImpl extends ServiceImpl<EntityHistoryMapper, E
                     .eq("entity_id", entityId));
 
             // 判断历史记录数量是否大于等于2，如果是则需要自增版本号
-            if (historyCount >= 2) {
+            if (historyCount >= 1) {
                 // 获取该实体最新的历史记录
                 EntityHistoryModel latestHistory = baseMapper.selectOne(new QueryWrapper<EntityHistoryModel>()
                         .eq("entity_id", entityId)
@@ -145,13 +145,16 @@ public class EntityHistoryServiceImpl extends ServiceImpl<EntityHistoryMapper, E
     }
 
     @Override
-    public Map<String, Object> getAllNowEntityHistory(String keyWord, Integer pageNumber, Integer pageSize) {
+    public Map<String, Object> getAllNowEntityHistory(String entityId,String keyWord, Integer pageNumber, Integer pageSize) {
         Map<String, Object> requestParams = new HashMap<>();
         requestParams.put("pageNumber", pageNumber);
         requestParams.put("pageSize", pageSize);
         QueryWrapper<EntityHistoryModel> queryWrapper = new QueryWrapper();
         if (!StringUtils.isEmpty(keyWord)) {
             queryWrapper.like("entity_name", keyWord);
+        }
+        if (!StringUtils.isEmpty(entityId)) {
+            queryWrapper.eq("entity_id", entityId);
         }
         List<EntityHistoryModel> entities = this.list(queryWrapper);
         return new ListPageUtil().separatePageList(entities, requestParams);

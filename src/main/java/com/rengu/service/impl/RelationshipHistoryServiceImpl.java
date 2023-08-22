@@ -33,17 +33,44 @@ public class RelationshipHistoryServiceImpl extends ServiceImpl<RelationshipHist
 
     @Override
     public void copyDataToRelationshipHistory(List<String> ids) {
+
         // 查询第一个表的数据
         List<RelationshipModel> relationships = relationshipMapper.selectBatchIds(ids);
+        List<RelationshipHistoryModel> existingRelationships = baseMapper.selectList(null);
 
-        // 遍历第一个表的数据，将其添加到第二个表中
         for (RelationshipModel relationship : relationships) {
+            // 检查是否存在重复数据
+            boolean isDuplicate = false;
+            for (RelationshipHistoryModel existingRelationship : existingRelationships) {
+                if (existingRelationship.getEntityHistoryId1().equals(relationship.getEntityId1()) &&
+                        existingRelationship.getEntityHistoryId2().equals(relationship.getEntityId2())) {
+                    // 存在重复数据，将标志设为true
+                    isDuplicate = true;
+                    break;
+                }
+            }
+            // 如果存在重复数据，则跳过该记录的添加
+            if (isDuplicate) {
+                continue;
+            }
+            // 添加关系数据到第二个表
             RelationshipHistoryModel relationshipHistory = new RelationshipHistoryModel();
+            relationshipHistory.setRelationshipId(relationship.getRelationshipId());
             relationshipHistory.setEntityHistoryId1(relationship.getEntityId1());
             relationshipHistory.setEntityHistoryId2(relationship.getEntityId2());
             relationshipHistory.setRelationshipType(relationship.getRelationshipType());
             baseMapper.insert(relationshipHistory);
         }
+//
+//        // 遍历第一个表的数据，将其添加到第二个表中
+//        for (RelationshipModel relationship : relationships) {
+//            RelationshipHistoryModel relationshipHistory = new RelationshipHistoryModel();
+//            relationshipHistory.setRelationshipId(relationship.getRelationshipId());
+//            relationshipHistory.setEntityHistoryId1(relationship.getEntityId1());
+//            relationshipHistory.setEntityHistoryId2(relationship.getEntityId2());
+//            relationshipHistory.setRelationshipType(relationship.getRelationshipType());
+//            baseMapper.insert(relationshipHistory);
+//        }
     }
 
     @Override
