@@ -1,5 +1,6 @@
 package com.rengu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.RequirementModel;
@@ -52,7 +53,13 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
 
     @Override
     public boolean saveRequirementModel(RequirementModel requirementModel) {
-        return this.saveOrUpdate(requirementModel);
+        RequirementModel requirementByEntityId = getRequirementByEntityId(requirementModel.getEntityId());
+        if (requirementByEntityId != null) {
+            requirementByEntityId.setFileContent(requirementModel.getFileContent());
+            return this.saveOrUpdate(requirementByEntityId);
+        } else {
+            return this.saveOrUpdate(requirementModel);
+        }
     }
 
     /**
@@ -66,10 +73,9 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
         if (StringUtils.isEmpty(entityId)) {
             return null;
         }
-        QueryWrapper<RequirementModel> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("entity_id", entityId);
-        RequirementModel requirementModel = getOne(queryWrapper);
-        return requirementModel;
+        LambdaQueryWrapper<RequirementModel> lambda = new LambdaQueryWrapper<>();
+        lambda.eq(RequirementModel::getEntityId, entityId);
+        return this.getOne(lambda);
     }
 
     @Override
@@ -108,8 +114,13 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
             return path;
         } catch (IOException e) {
             System.out.println(e.getMessage());
-//            log.error(e.getMessage(), e);
         }
         return "";
+    }
+
+    @Override
+    public void deleteByEntityId(String entityId) {
+        RequirementModel requirementByEntityId = getRequirementByEntityId(entityId);
+        this.removeById(requirementByEntityId);
     }
 }

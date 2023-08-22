@@ -1,8 +1,10 @@
 package com.rengu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.ValueHistoryModel;
 import com.rengu.entity.ValueModel;
+import com.rengu.mapper.AttributeHistoryMapper;
 import com.rengu.mapper.ValueHistoryMapper;
 import com.rengu.mapper.ValueMapper;
 import com.rengu.service.ValueHistoryService;
@@ -23,6 +25,9 @@ public class ValueHistoryServiceImpl extends ServiceImpl<ValueHistoryMapper, Val
     @Autowired
     private ValueMapper valueMapper;
 
+    @Autowired
+    private AttributeHistoryMapper attributeHistoryMapper;
+
     @Override
     public void copyDataToValueHistory(List<String> valueIds) {
         // 查询第一个表的数据
@@ -38,5 +43,29 @@ public class ValueHistoryServiceImpl extends ServiceImpl<ValueHistoryMapper, Val
             baseMapper.insert(valueHistory);
 
         }
+    }
+
+    @Override
+    public void deleteByEntityHisId(String entityHisId) {
+        List<ValueHistoryModel> allByEntityHisId = getAllByEntityHisId(entityHisId);
+        allByEntityHisId.stream().forEach(valueHistory -> {
+            if (valueHistory.getAttributeId() != null) {
+                attributeHistoryMapper.deleteById(valueHistory.getAttributeId());
+            }
+            this.removeById(valueHistory.getValueId());
+        });
+//        this.removeByIds(allByEntityHisId);
+    }
+
+    /**
+     * 通过历史id获取values
+     *
+     * @param entityHisId
+     * @return
+     */
+    public List<ValueHistoryModel> getAllByEntityHisId(String entityHisId) {
+        LambdaQueryWrapper<ValueHistoryModel> lambda = new LambdaQueryWrapper<>();
+        lambda.eq(ValueHistoryModel::getEntityHistoryid, entityHisId);
+        return this.list(lambda);
     }
 }

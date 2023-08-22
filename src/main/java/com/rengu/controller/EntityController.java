@@ -64,6 +64,11 @@ public class EntityController {
         return ResultUtils.build(requirementService.getRequirementByEntityId(entityId));
     }
 
+    /**
+     * 上传图片，可通过网络地址访问图片
+     * @param multipartFile
+     * @return
+     */
     @ApiOperation("上传.md图片")
     @PostMapping("/uploadPicToServicePath")
     public Result uploadPicToServicePath(@RequestBody MultipartFile multipartFile) {
@@ -86,5 +91,11 @@ public class EntityController {
     @GetMapping("/coverageAnalysisTrace")
     public Result coverageAnalysisTrace(){
         return ResultUtils.build(entityModelService.coverageAnalysisTrace());
+    }
+
+    @ApiOperation("根据实体id删除实体信息以及关联关系")
+    @DeleteMapping("/deletedById")
+    public Result deletedById(@RequestParam String id){
+        return ResultUtils.build(entityModelService.deletedById(id));
     }
 }

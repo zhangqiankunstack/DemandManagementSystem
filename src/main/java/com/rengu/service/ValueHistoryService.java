@@ -14,4 +14,6 @@ import java.util.List;
  **/
 public interface ValueHistoryService extends IService<ValueHistoryModel> {
     public void copyDataToValueHistory(List<String> valueIds);
+
+    void deleteByEntityHisId(String entityHisId);
 }

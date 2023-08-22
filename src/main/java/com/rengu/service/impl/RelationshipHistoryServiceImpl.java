@@ -1,5 +1,6 @@
 package com.rengu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.RelationshipHistoryModel;
 import com.rengu.entity.RelationshipModel;
@@ -35,8 +36,28 @@ public class RelationshipHistoryServiceImpl extends ServiceImpl<RelationshipHist
             relationshipHistory.setEntityHistoryId1(relationship.getEntityId1());
             relationshipHistory.setEntityHistoryId2(relationship.getEntityId2());
             relationshipHistory.setRelationshipType(relationship.getRelationshipType());
-
             baseMapper.insert(relationshipHistory);
         }
+    }
+
+    @Override
+    public void deleteByEntityHisId(String entityHisId) {
+        List<RelationshipHistoryModel> relationshipHistoryList = findAllRelationshipHistoryByHisId(entityHisId);
+        relationshipHistoryList.stream().forEach(relationshipHistoryModel -> {
+            this.removeById(relationshipHistoryModel.getEntityHistoryId1());
+        });
+//        this.removeByIds(relationshipHistoryList);
+    }
+
+    /**
+     * 通过历史id获取历史关联List
+     *
+     * @param entityHisId
+     * @return
+     */
+    public List<RelationshipHistoryModel> findAllRelationshipHistoryByHisId(String entityHisId) {
+        LambdaQueryWrapper<RelationshipHistoryModel> lambda = new LambdaQueryWrapper<>();
+        lambda.eq(RelationshipHistoryModel::getEntityHistoryId1, entityHisId).or().eq(RelationshipHistoryModel::getEntityHistoryId2, entityHisId);
+        return this.list(lambda);
     }
 }

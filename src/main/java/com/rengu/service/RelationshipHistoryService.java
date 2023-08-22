@@ -15,5 +15,5 @@ import java.util.List;
 public interface RelationshipHistoryService extends IService<RelationshipHistoryModel> {
     public void copyDataToRelationshipHistory(List<String> ids);
 
-
+    void deleteByEntityHisId(String entityHisId);
 }

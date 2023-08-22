@@ -5,15 +5,12 @@ import cn.hutool.core.lang.Filter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.*;
-import com.rengu.entity.vo.EntityAndEntityVo;
-import com.rengu.entity.vo.EntityRelationship;
-import com.rengu.entity.vo.ValueAttribute;
-import com.rengu.mapper.EntityMapper;
-import com.rengu.mapper.HostInfoMapper;
-import com.rengu.mapper.ValueAttributeMapper;
+import com.rengu.entity.vo.*;
+import com.rengu.mapper.*;
 import com.rengu.service.*;
-import com.rengu.util.ListPageUtil;
-import com.rengu.util.RedisTemplateUtil;
+import com.rengu.util.*;
+import org.dom4j.Attribute;
+import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -21,15 +18,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.*;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 /**
  * @ClassName HostInfoServiceImpl
@@ -46,8 +40,6 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
     private ValueAttributeMapper valueAttributeMapper;
     @Autowired
     private EntityMapper entityMapper;
-    @Autowired
-    private RedisTemplateUtil redisTemplateUtil;
     @Autowired
     private RelationshipService relationshipService;
     @Autowired
@@ -272,9 +264,222 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
         return new ListPageUtil<HostInfoModel>().separatePageList(hostInfoModels, requestParams);
     }
 
+    /**
+     * 上传需求清单文件
+     * @param multipartFiles
+     * @return
+     */
+    @Override
+    public Object importTaskXml(List<MultipartFile> multipartFiles) {
+        for (MultipartFile multipartFile : multipartFiles) {
+            try {
+                // 创建SAXReader对象
+                SAXReader saxReader = new SAXReader();
+                // 读取XML文件，获取Document对象
+                org.dom4j.Document document = saxReader.read(multipartFile.getInputStream());
+                // 遍历根节点,并判断是什么类型清单
+                org.dom4j.Element rootElement = document.getRootElement();
+                // 查询数据库表的Entity_id
+                List<String> selectId = DatabaseUtils.selectId();
+
+                // 如果这个xml是任务清单,任务清单没有owner
+                if (rootElement.getName().equals("missionInventory")) {
+                    // 拿到任务清单中所有mission元素
+                    org.dom4j.Element missionNode = (org.dom4j.Element) document.selectSingleNode("//mission");
+                    if (missionNode != null) {
+                        String missionId = missionNode.attributeValue("id");// 代表entity_id
+                        String missionName = missionNode.attributeValue("name");
+
+                        insertIntoAttAndValue(missionNode, missionId);
+
+                        if (selectId.size() != 0) {
+                            for (String id : selectId) {
+                                if (!id.equals(missionId)) {
+                                    // 插入实体数据
+                                    DatabaseUtils.insertEntity(missionId, missionName, "mission");
+                                }
+                            }
+                        } else {
+                            // 插入实体数据
+                            DatabaseUtils.insertEntity(missionId, missionName, "mission");
+                        }
+                        // 拿到mission下的活动
+                        List<org.dom4j.Element> elements = missionNode.elements("activity");
+                        for (org.dom4j.Element actElement : elements) {
+                            String actId = actElement.attributeValue("id");
+                            String actName = actElement.attributeValue("name");
+
+                            insertIntoAttAndValue(actElement, actId);
+
+                            if (selectId.size() != 0) {
+                                for (String id : selectId) {
+                                    if (!id.equals(actId)) {
+                                        // 插入实体数据
+                                        DatabaseUtils.insertEntity(actId, actName, "activity");
+                                    }
+                                }
+                            } else {
+                                DatabaseUtils.insertEntity(actId, actName, "activity");
+                            }
+                            // 插入关系数据
+                            String relationshipId = UUID.randomUUID().toString();
+                            DatabaseUtils.insertRelationship(relationshipId, "关联", missionId, actId);
+                        }
+
+                    } else {
+                        throw new RuntimeException("未找到匹配节点");
+                    }
+                    // 找到所有的作战概念
+                    List<org.dom4j.Element> metanodes = document.selectNodes("//metanode");
+                    if (metanodes != null) {
+                        for (org.dom4j.Element element : metanodes) {
+                            String metanodeId = element.attributeValue("id");
+                            String metanodeName = element.attributeValue("name");
+                            DatabaseUtils.insertEntity(metanodeId, metanodeName, "metanode");
+
+                            insertIntoAttAndValue(element, metanodeId);
+
+                            List<org.dom4j.Element> systems = element.elements();
+                            for (org.dom4j.Element system : systems) {
+                                String systemName = system.attributeValue("name");
+                                String systemId = system.attributeValue("id");
+                                DatabaseUtils.insertEntity(systemId, systemName, "metanode");
+
+                                insertIntoAttAndValue(system, systemId);
+                                // 插入关系数据
+                                String relationshipId = UUID.randomUUID().toString();
+                                DatabaseUtils.insertRelationship(relationshipId, "关联", metanodeId, systemId);
+                            }
+                        }
+                    } else {
+                        throw new RuntimeException("未找到匹配节点");
+                    }
+                }
+                // 如果是能力清单
+                if (rootElement.getName().equals("capabilityInventory")) {
+                    // 遍历右侧树选中的能力
+                    org.dom4j.Element root = document.getRootElement();
+                    String owner = root.attributeValue("owner");
+                    // 根据选中的能力名称在能力清单中查到元素
+                    List<org.dom4j.Element> selectNodes = document.selectNodes("//capability");
+                    for (org.dom4j.Element element : selectNodes) {
+                        String capId = element.attributeValue("id");
+                        String capName = element.attributeValue("name");
+
+                        if (selectId.size() != 0) {
+                            for (String id : selectId) {
+                                if (!id.equals(capId)) {
+                                    // 插入实体数据
+                                    DatabaseUtils.insertEntity(capId, capName, "capability");
+                                }
+                            }
+                        } else {
+                            DatabaseUtils.insertEntity(capId, capName, "capability");
+                        }
+
+                        insertIntoAttAndValue(element, capId);
+
+                        // 插入关系数据
+                        String relationshipId = UUID.randomUUID().toString();
+                        DatabaseUtils.insertRelationship(relationshipId, "关联", owner, capId);
+                    }
+                }
+                // 如果是装备清单
+                if (rootElement.getName().equals("equipmentInventory")) {
+                    org.dom4j.Element root = document.getRootElement();
+                    String owner = root.attributeValue("owner");
+                    // 根据选中的装备名称在装备清单中查到元素
+                    List<org.dom4j.Element> selectNodes = document.selectNodes("//system");
+                    for (org.dom4j.Element element : selectNodes) {
+                        String systemId = element.attributeValue("id");
+                        String systemName = element.attributeValue("name");
+
+                        if (selectId.size() != 0) {
+                            for (String id : selectId) {
+                                if (!id.equals(systemId)) {
+                                    // 插入实体数据
+                                    DatabaseUtils.insertEntity(systemId, systemName, "system");
+                                }
+                            }
+                        } else {
+                            DatabaseUtils.insertEntity(systemId, systemName, "system");
+                        }
+
+                        insertIntoAttAndValue(element, systemId);
+
+                        // 插入关系数据
+                        String relationshipId = UUID.randomUUID().toString();
+                        DatabaseUtils.insertRelationship(relationshipId, "关联", owner, systemId);
+
+                        // 拿到system的所有function
+                        List<org.dom4j.Element> functions = element.elements("function");
+                        for (org.dom4j.Element function : functions) {
+                            String functionId = function.attributeValue("id");
+                            String functionName = function.attributeValue("name");
+
+                            if (selectId.size() != 0) {
+                                for (String id : selectId) {
+                                    if (!id.equals(systemId)) {
+                                        // 插入实体数据
+                                        DatabaseUtils.insertEntity(functionId, functionName, "function");
+                                    }
+                                }
+                            } else {
+                                DatabaseUtils.insertEntity(functionId, functionName, "function");
+                            }
+
+                            insertIntoAttAndValue(function, functionId);
+
+                            // 插入关系数据
+                            String relationshipId1 = UUID.randomUUID().toString();
+                            DatabaseUtils.insertRelationship(relationshipId1, "关联", systemId, functionId);
+                        }
+
+                    }
+
+                }
+                // 如果是活动清单
+                if (rootElement.getName().equals("activityInventory")) {
+                    // 遍历右侧树选中的能力
+                    org.dom4j.Element root = document.getRootElement();
+                    String owner = root.attributeValue("owner");
+                    // 根据选中的能力名称在能力清单中查到元素
+                    List<org.dom4j.Element> selectNodes = document.selectNodes("//activity");
+                    for (org.dom4j.Element element : selectNodes) {
+                        String actId = element.attributeValue("id");
+                        String actName = element.attributeValue("name");
+
+                        if (selectId.size() != 0) {
+                            for (String id : selectId) {
+                                if (!id.equals(actId)) {
+                                    // 插入实体数据
+                                    DatabaseUtils.insertEntity(actId, actName, "activity");
+                                }
+                            }
+                        } else {
+                            DatabaseUtils.insertEntity(actId, actName, "activity");
+                        }
+
+                        insertIntoAttAndValue(element, actId);
+
+                        // 插入关系数据
+                        String relationshipId = UUID.randomUUID().toString();
+                        DatabaseUtils.insertRelationship(relationshipId, "关联", owner, actId);
+                    }
+
+                }
+            } catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
 
     /**
      * 定义Lambda表达式，判断RelationshipModel对象的EntityId1或EntityId2是否与目标ID满足其一相同
+     *
      * @param targetId
      * @return
      */
@@ -288,10 +493,29 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
 
     /**
      * 定义Lambda表达式，判断AttributeModel对象的id在另一个List中是否存在相同值
+     *
      * @param attributeModel
      * @return
      */
     private static Filter<AttributeModel> getByParams(List<ValueModel> attributeModel) {
         return valueModel -> CollUtil.contains(attributeModel, attribute -> attribute.getAttributeId().equals(valueModel.getAttributeId()));
+    }
+
+    public void insertIntoAttAndValue(org.dom4j.Element element, String id) {
+        // 拿到所有属性
+        List<Attribute> attributes = element.attributes();
+        for (Attribute attribute : attributes) {
+            String attributeName = attribute.getName();
+            if (!attributeName.equals("id") && !attributeName.equals("name")) {
+                String attributeValue = attribute.getValue();
+                String replaceName = attributeName.replace("-", " ");
+                // 插入属性数据
+                String attributeId = UUID.randomUUID().toString();
+                DatabaseUtils.insertAttribute(attributeId, replaceName);
+                // 插入value数据
+                DatabaseUtils.insertValue(UUID.randomUUID().toString(), id, attributeId, attributeValue);
+            }
+
+        }
     }
 }

@@ -22,7 +22,7 @@ public class TemplateController {
 
     @ApiOperation("/保存模板、上传ftl文件")
     @PostMapping("/saveAndUploadFTL")
-    public Result saveOrUpdate(TemplateModel templateModel, @RequestPart("multipartFile") MultipartFile multipartFile) {
+    public Result saveOrUpdate(TemplateModel templateModel, @RequestPart(required = false) MultipartFile multipartFile) {
         return ResultUtils.build(templateService.saveAndUploadFTL(templateModel, multipartFile));
     }
 

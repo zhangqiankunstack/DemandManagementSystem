@@ -17,4 +17,5 @@ public interface EntityHistoryService extends IService<EntityHistoryModel> {
     public void copyDataToEntityHistory(List<String> ids);
 
 
+    void deleteByEntityId(String id);
 }

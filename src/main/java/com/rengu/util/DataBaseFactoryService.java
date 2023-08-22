@@ -125,7 +125,7 @@ public class DataBaseFactoryService {
     /**
      * 添加数据源
      *
-     * @param dbinfo
+     * @param dbInfo
      */
     public void addDataSource(HostInfoModel dbInfo) {
         synchronized (DataBaseFactoryService.class) {

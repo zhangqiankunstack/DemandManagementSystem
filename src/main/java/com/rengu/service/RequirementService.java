@@ -12,4 +12,6 @@ public interface RequirementService extends IService<RequirementModel> {
     RequirementModel getRequirementByEntityId(String entityId);
 
     Object uploadPic(MultipartFile multipartFile);
+
+    void deleteByEntityId(String id);
 }
