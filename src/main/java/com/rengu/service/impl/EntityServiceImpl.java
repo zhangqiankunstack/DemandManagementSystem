@@ -149,10 +149,13 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
             List<RelationshipModel> commonRelationList = CollUtil.filter(modelList, hostInfoServiceImpl.getRelationshipByParams(system.getEntityId()));
             List<EntityModel> functionEntities = new ArrayList<>();
             commonRelationList.stream().forEach(relationshipModel -> {
-                if (relationshipModel.getEntityId1() != system.getEntityId() && this.getById(relationshipModel.getEntityId1()).getEntityType().equals(FUNCTION)) {
+                EntityModel entityModel1 = this.getById(relationshipModel.getEntityId1());
+
+                if (relationshipModel.getEntityId1() != system.getEntityId() && entityModel1 != null && entityModel1.getEntityType().equals(FUNCTION)) {
                     functionEntities.add(this.getById(relationshipModel.getEntityId1()));
                 }
-                if (relationshipModel.getEntityId2() != system.getEntityId() && this.getById(relationshipModel.getEntityId2()).getEntityType().equals(FUNCTION) && !functionEntities.contains(this.getById(relationshipModel.getEntityId2()))) {
+                EntityModel entityModel2 = this.getById(relationshipModel.getEntityId2());
+                if (relationshipModel.getEntityId2() != system.getEntityId() && entityModel2 != null && entityModel2.getEntityType().equals(FUNCTION) && !functionEntities.contains(entityModel2)) {
                     functionEntities.add(this.getById(relationshipModel.getEntityId2()));
                 }
             });

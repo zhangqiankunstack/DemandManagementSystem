@@ -1,23 +1,16 @@
 package com.rengu.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.rengu.entity.BaselineModel;
-import com.rengu.entity.OpinionModel;
 import com.rengu.entity.Result;
-import com.rengu.entity.ReviewModel;
-import com.rengu.entity.vo.EntityHistoryRelationship;
 import com.rengu.entity.vo.EntityInfo;
 import com.rengu.service.BaselineService;
 import com.rengu.service.EntityBaselineService;
 import com.rengu.util.ListPageUtil;
 import com.rengu.util.ResultUtils;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +37,7 @@ public class BaselineController {
     public BaselineService baselineModelService;
     @Autowired
     private EntityBaselineService entityBaselineService;
+
     @ApiOperation(value = "分页组合查询流程表")
     @GetMapping("/listByNameAndDescription")
     public Result testOnline(@RequestParam Integer pageNumber,
@@ -87,7 +81,7 @@ public class BaselineController {
 
     @ApiOperation(value = "查询流程表-实体属性")
     @GetMapping("/listForInfo")
-    public Result listForInfo(@RequestParam Integer id,@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+    public Result listForInfo(@RequestParam Integer id, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
 
         List<EntityInfo> entityInfoByBaselineId = entityBaselineService.findEntityInfoByBaselineId(id);
 

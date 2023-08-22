@@ -111,7 +111,7 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
             if (path.contains("\\")) {
                 path = path.replace("\\", "/");
             }
-            return path;
+            return "http://"+path;
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
