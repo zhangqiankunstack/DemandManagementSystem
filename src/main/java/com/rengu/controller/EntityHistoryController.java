@@ -65,13 +65,13 @@ public class EntityHistoryController {
 
     @ApiOperation("版本比对")
     @GetMapping("/findValueByEntityHistoryId")
-    public Result findValueByEntityHistoryId(String id1,String id2) {
+    public Result findValueByEntityHistoryId(String id1) {
         List<ValueAttributeEntityVo> valueByEntityHistoryId1 = entityHistoryModelService.findValueByEntityHistoryId(id1);
-        List<ValueAttributeEntityVo> valueByEntityHistoryId2 = entityHistoryModelService.findValueByEntityHistoryId(id2);
-        TwoValueAttributeEntityVo two = new TwoValueAttributeEntityVo();
-        two.setValueList1(valueByEntityHistoryId1);
-        two.setValueList2(valueByEntityHistoryId2);
-        return ResultUtils.build(two);
+//        List<ValueAttributeEntityVo> valueByEntityHistoryId2 = entityHistoryModelService.findValueByEntityHistoryId(id2);
+//        TwoValueAttributeEntityVo two = new TwoValueAttributeEntityVo();
+//        two.setValueList1(valueByEntityHistoryId1);
+//        two.setValueList2(valueByEntityHistoryId2);
+        return ResultUtils.build(valueByEntityHistoryId1);
     }
 
 
@@ -96,6 +96,15 @@ public class EntityHistoryController {
 
 
 
+
+
+    @ApiOperation("查询该实体以外的历史版本")
+    @GetMapping("/getOther")
+    public Result getOther(String entityId ,String entityHistoryId ) {
+
+        return ResultUtils.build(entityHistoryModelService.getEntityHistoryByEntityId(entityId, entityHistoryId));
+
+    }
 
 
 }

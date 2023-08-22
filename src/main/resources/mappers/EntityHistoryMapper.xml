@@ -77,4 +77,12 @@
     </select>
 
 
+
+<!--    <select id="getEntityHistoryByEntityId" resultType="com.rengu.entity.EntityHistoryModel">-->
+<!--        SELECT *-->
+<!--        FROM entity_history-->
+<!--        WHERE entity_id = #{entityId} AND entity_historyid != #{entityHistoryid}-->
+<!--    </select>-->
+
+
 </mapper>

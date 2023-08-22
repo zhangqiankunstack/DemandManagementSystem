@@ -105,6 +105,7 @@ public class BaselineController {
     @GetMapping("/download")
     public Result download(Integer id, HttpServletResponse response) {
         List<EntityInfo> entityInfoByBaselineId = entityBaselineService.findEntityInfoByBaselineId(id);
+
         String fileName = "file.json"; // 下载文件的名称
 
         String str = new Gson().toJson(entityInfoByBaselineId);

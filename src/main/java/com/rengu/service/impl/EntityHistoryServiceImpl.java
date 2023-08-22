@@ -224,5 +224,10 @@ public class EntityHistoryServiceImpl extends ServiceImpl<EntityHistoryMapper, E
 //        return entityHistoryMapper.selectList(queryWrapper);
     }
 
+    @Override
+    public List<EntityHistoryModel> getEntityHistoryByEntityId(String entityId, String excludedEntityHistoryId) {
+        return entityHistoryMapper.getEntityHistoryByEntityId(entityId, excludedEntityHistoryId);
+    }
+
 
 }
