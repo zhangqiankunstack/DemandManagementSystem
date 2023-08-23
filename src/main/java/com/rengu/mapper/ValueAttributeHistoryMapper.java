@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface ValueAttributeHistoryMapper {
 
-    @Select("SELECT v.value, v.attribute_id, a.attribute_name " +
+    @Select("SELECT DISTINCT  v.value, v.attribute_id, a.attribute_name " +
             "FROM value_history v " +
             "JOIN entity_history e ON v.entity_historyid = e.entity_id " +
             "JOIN attribute_history a ON v.attribute_id = a.attribute_id " +

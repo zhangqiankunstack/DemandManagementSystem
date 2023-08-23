@@ -19,12 +19,18 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,4 +135,39 @@ public class BaselineController {
         }
         return ResultUtils.build(json);
     }
+
+
+
+
+
+
+
+
+
+//    @ApiOperation(value = "根据发布id下载文件")
+//    @GetMapping(value = "/{toolPackageId}/exportToolPackage")
+//    public void exportToolPackage(@PathVariable(value = "toolPackageId") Integer id, HttpServletResponse httpServletResponse) throws IOException {
+//        //导出文件
+//        String exportFileName = "yourFileName.extension";
+//
+////        File exportFile = toolPackageFileService.exportToolPackageFileByToolPackage(exportFileName);
+//
+//
+//        String mimeType = URLConnection.guessContentTypeFromName(exportFile.getName()) == null ? "application/octet-stream" : URLConnection.guessContentTypeFromName(exportFile.getName());
+//        httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + new String(exportFile.getName().getBytes(StandardCharsets.UTF_8), "ISO8859-1"));
+//        httpServletResponse.setContentType(mimeType);
+//        httpServletResponse.setContentLengthLong(exportFile.length());
+//        // 文件流输出
+//        IOUtils.copy(new FileInputStream(exportFile), httpServletResponse.getOutputStream());
+//        httpServletResponse.flushBuffer();
+//    }
+
+
+
+
+
+
+
+
+
 }

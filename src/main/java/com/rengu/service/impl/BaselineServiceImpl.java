@@ -2,18 +2,19 @@ package com.rengu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.rengu.entity.BaselineModel;
-import com.rengu.entity.EntityBaselineModel;
-import com.rengu.entity.EntityHistoryModel;
-import com.rengu.entity.ReviewModel;
-import com.rengu.mapper.BaselineMapper;
-import com.rengu.mapper.EntityBaselineMapper;
-import com.rengu.mapper.EntityHistoryMapper;
+import com.rengu.entity.*;
+import com.rengu.entity.vo.EntityInfo;
+import com.rengu.entity.vo.ToJson;
+import com.rengu.mapper.*;
 import com.rengu.service.BaselineService;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,16 @@ public class BaselineServiceImpl extends ServiceImpl<BaselineMapper, BaselineMod
 
     @Autowired
     private EntityHistoryMapper entityHistoryMapper;
+
+    @Autowired
+    private ValueHistoryMapper valueHistoryMapper;
+
+    @Autowired
+    private AttributeHistoryMapper attributeHistoryMapper;
+
+    @Autowired
+    private RelationshipHistoryMapper relationshipHistoryMapper;
+
 
 
 
@@ -81,5 +92,51 @@ public class BaselineServiceImpl extends ServiceImpl<BaselineMapper, BaselineMod
         baseMapper.updateById(baseline);
     }
 
+
+
+    //把数据转为json后实现上传
+    @Override
+    public File allForDownload(Integer id){
+        List<String> entityHistoryIdByBaseLineId = entityBaselineMapper.findEntityHistoryIdByBaseLineId(id);
+
+        List<EntityHistoryModel> entityHistoryModelList = new ArrayList<>();
+        List<ValueHistoryModel> valueHistoryModelList = new ArrayList<>();
+        List<AttributeHistoryModel> attributeHistoryModelList = new ArrayList<>();
+        List<RelationshipHistoryModel> relationshipHistoryModelList = new ArrayList<>();
+
+        for (String entityHistoryId : entityHistoryIdByBaseLineId) {
+            EntityHistoryModel entityHistoryByEntityHistoryId = entityHistoryMapper.getEntityHistoryByEntityHistoryId(entityHistoryId);
+            entityHistoryModelList.add(entityHistoryByEntityHistoryId);
+            ValueHistoryModel valueHistoryModelByEntityId = valueHistoryMapper.findValueHistoryModelByEntityId(entityHistoryByEntityHistoryId.getEntityId());
+            valueHistoryModelList.add(valueHistoryModelByEntityId);
+            AttributeHistoryModel byAttributeId = attributeHistoryMapper.findByAttributeId(valueHistoryModelByEntityId.getAttributeId());
+            attributeHistoryModelList.add(byAttributeId);
+            RelationshipHistoryModel byEntityHistoryId = relationshipHistoryMapper.findByEntityHistoryId(entityHistoryByEntityHistoryId.getEntityId());
+            relationshipHistoryModelList.add(byEntityHistoryId);
+
+
+        }
+        ToJson toJson =new ToJson();
+        toJson.setEntityHistoryModelList(entityHistoryModelList);
+        toJson.setValueHistoryModelList(valueHistoryModelList);
+        toJson.setAttributeHistoryModelList(attributeHistoryModelList);
+        toJson.setLinks(relationshipHistoryModelList);
+
+
+
+
+        return null;
+
+
+//
+//        //todo:初始化导出目录
+//        File exportPath = new File(FileUtils.getTempDirectoryPath() + File.separator + "基线");
+//        exportPath.mkdirs();
+//        //导出成果文件
+//        for (ToolPackageFileEntity toolPackageFileEntity : getToolPackageFileByParentNodeAndToolPackage(null, toolPackageArgs)) {
+//            exportToolPackageFile(toolPackageFileEntity, exportPath);
+//        }
+//        return exportPath;
+    }
 
 }

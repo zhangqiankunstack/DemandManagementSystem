@@ -59,4 +59,9 @@ public interface EntityHistoryMapper extends BaseMapper<EntityHistoryModel> {
     List<EntityHistoryModel> getEntityHistoryByEntityId(@Param("entityId") String entityId, @Param("entityHistoryid") String entityHistoryid);
 
 
+
+    @Select(" SELECT * FROM entity_history WHERE entity_historyid = #{entityHistoryid}")
+   EntityHistoryModel getEntityHistoryByEntityHistoryId(String  entityHistoryid);
+
+
 }

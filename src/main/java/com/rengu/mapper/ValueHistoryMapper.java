@@ -3,6 +3,7 @@ package com.rengu.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.rengu.entity.ValueHistoryModel;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @ClassName ValueHistoryMapper
@@ -12,5 +13,8 @@ import org.apache.ibatis.annotations.Mapper;
  **/
 @Mapper
 public interface ValueHistoryMapper extends BaseMapper<ValueHistoryModel> {
+
+    @Select("SELECT * FROM value_history WHERE entity_historyid = #{entityId}")
+    ValueHistoryModel findValueHistoryModelByEntityId(String entityId);
 
 }

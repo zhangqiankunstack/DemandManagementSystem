@@ -3,6 +3,7 @@ package com.rengu.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.rengu.entity.AttributeHistoryModel;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @ClassName AttributeHistoryMapper
@@ -12,4 +13,9 @@ import org.apache.ibatis.annotations.Mapper;
  **/
 @Mapper
 public interface AttributeHistoryMapper extends BaseMapper<AttributeHistoryModel> {
+
+
+    @Select("SELECT * FROM attribute_history WHERE attribute_id = #{attributeId}")
+    AttributeHistoryModel findByAttributeId (String attributeId);
+
 }

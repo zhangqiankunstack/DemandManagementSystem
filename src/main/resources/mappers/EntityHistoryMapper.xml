@@ -29,7 +29,7 @@
     </update>
 
     <select id="getValueAttribute" resultType="com.rengu.entity.vo.ValueAttributeEntityVo">
-        SELECT ah.attribute_name, vh.value, eh.entity_name
+        SELECT DISTINCT  ah.attribute_name, vh.value, eh.entity_name
         FROM value_history vh
                  JOIN entity_history eh ON vh.entity_historyid = eh.entity_id
                  JOIN attribute_history ah ON vh.attribute_id = ah.attribute_id
