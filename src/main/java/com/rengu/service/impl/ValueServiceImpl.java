@@ -2,11 +2,13 @@ package com.rengu.service.impl;
 
 
 import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.AttributeModel;
 import com.rengu.entity.HostInfoModel;
 import com.rengu.entity.ValueModel;
 import com.rengu.entity.vo.ValueAttribute;
+import com.rengu.mapper.AttributeMapper;
 import com.rengu.mapper.ValueMapper;
 import com.rengu.service.HostInfoService;
 import com.rengu.service.ValueService;
@@ -41,6 +43,9 @@ public class ValueServiceImpl extends ServiceImpl<ValueMapper, ValueModel> imple
 
     @Autowired
     private HostInfoService hostInfoService;
+
+    @Autowired
+    private AttributeMapper attributeMapper;
 
     /**
      * 获取元数据属性列表
@@ -152,5 +157,19 @@ public class ValueServiceImpl extends ServiceImpl<ValueMapper, ValueModel> imple
         requestParams.put("pageSize", pageSize);
         new ListPageUtil<ValueAttribute>().separatePageList(valueAttributes, requestParams);
         return requestParams;
+    }
+
+    @Override
+    public void deleteByEntityId(String entityId) {
+        QueryWrapper<ValueModel> queryWrap = new QueryWrapper<>();
+        queryWrap.eq("entity_id", entityId);
+        List<ValueModel> valueModels = this.list(queryWrap);
+        valueModels.stream().forEach(valueModel -> {
+            if (valueModel.getAttributeId() != null) {
+                attributeMapper.deleteById(valueModel.getAttributeId());
+            }
+            this.removeById(valueModel.getValue());
+        });
+//        this.getBaseMapper().deleteBatchIds(valueModels);
     }
 }

@@ -26,4 +26,6 @@ public interface EntityService extends IService<EntityModel> {
     EntityQueryVo queryEntities(List<String> entityIdList);
 
     List<Object> coverageAnalysisTrace();
+
+    boolean deletedById(String id);
 }

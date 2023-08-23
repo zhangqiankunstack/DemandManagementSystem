@@ -22,4 +22,6 @@ public interface ValueService extends IService<ValueModel> {
     Map<String, Object> getAllValueInfo(String entityId, String keyWord, Integer pageNumber, Integer pageSize);
 
     Map<String, Object> findValueInfoByEntityId(String entityId, String keyWord, Integer pageNumber, Integer pageSize);
+
+    void deleteByEntityId(String id);
 }

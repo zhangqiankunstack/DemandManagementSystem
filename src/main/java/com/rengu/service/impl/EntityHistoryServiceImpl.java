@@ -1,5 +1,6 @@
 package com.rengu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.EntityHistoryModel;
@@ -11,6 +12,9 @@ import com.rengu.entity.vo.ValueAttributeHistory;
 import com.rengu.mapper.EntityHistoryMapper;
 import com.rengu.mapper.EntityMapper;
 import com.rengu.service.EntityHistoryService;
+import com.rengu.service.RelationshipHistoryService;
+import com.rengu.service.RequirementService;
+import com.rengu.service.ValueHistoryService;
 import com.rengu.util.ListPageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +37,12 @@ public class EntityHistoryServiceImpl extends ServiceImpl<EntityHistoryMapper, E
     private EntityMapper entityMapper;
     @Autowired
     private EntityHistoryMapper entityHistoryMapper;
+
+    @Autowired
+    private RelationshipHistoryService relationshipHistoryService;
+
+    @Autowired
+    private ValueHistoryService valueHistoryService;
 
     @Override
     public void copyDataToEntityHistory(List<String> ids) {
@@ -103,6 +113,26 @@ public class EntityHistoryServiceImpl extends ServiceImpl<EntityHistoryMapper, E
             }
         }
     }
+
+    @Override
+    public void deleteByEntityId(String entityId) {
+        LambdaQueryWrapper<EntityHistoryModel> lambda = new LambdaQueryWrapper<>();
+        lambda.eq(EntityHistoryModel::getEntityId, entityId);
+        this.list(lambda).stream().forEach(entityHistory -> {
+            deleteByEntityHisId(entityHistory.getEntityId());
+        });
+    }
+
+    //
+    public void deleteByEntityHisId(String entityHisId) {
+        //删除历史关联关系
+        relationshipHistoryService.deleteByEntityHisId(entityHisId);
+        //删除value历史
+        valueHistoryService.deleteByEntityHisId(entityHisId);
+        //删除历史
+        this.removeById(entityHisId);
+    }
+
 
 
     @Override

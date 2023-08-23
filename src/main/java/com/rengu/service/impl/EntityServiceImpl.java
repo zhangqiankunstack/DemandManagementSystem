@@ -1,6 +1,8 @@
 package com.rengu.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.EntityModel;
@@ -12,22 +14,20 @@ import com.rengu.entity.vo.TraceVo;
 import com.rengu.mapper.EntityMapper;
 import com.rengu.mapper.RelationshipMapper;
 import com.rengu.mapper.ValueMapper;
-import com.rengu.service.EntityService;
-import com.rengu.service.RelationshipService;
+import com.rengu.service.*;
 import com.rengu.util.ListPageUtil;
-import lombok.var;
-import org.springframework.beans.BeanUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.swing.text.html.parser.Entity;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @ClassName EntityServiceImpl
@@ -54,6 +54,15 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
 
     @Autowired
     private HostInfoServiceImpl hostInfoServiceImpl;
+
+    @Autowired
+    private ValueService valueService;
+
+    @Autowired
+    private EntityHistoryService entityHistoryService;
+
+    @Autowired
+    private RequirementService requirementService;
 
     /**
      * 连接后查询
@@ -166,10 +175,12 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
             List<RelationshipModel> commonRelationList = CollUtil.filter(modelList1, hostInfoServiceImpl.getRelationshipByParams(capability.getEntityId()));
             List<EntityModel> activityEntities = new ArrayList<>();
             commonRelationList.stream().forEach(relationshipModel -> {
-                if (relationshipModel.getEntityId2() != capability.getEntityId() && this.getById(relationshipModel.getEntityId1()).getEntityType().equals(ACTIVITY)) {
+                EntityModel entityModel1 = this.getById(relationshipModel.getEntityId1());
+                if (relationshipModel.getEntityId1() != capability.getEntityId() && entityModel1 != null && entityModel1.getEntityType().equals(ACTIVITY)) {
                     activityEntities.add(this.getById(relationshipModel.getEntityId1()));
                 }
-                if (relationshipModel.getEntityId2() != capability.getEntityId() && this.getById(relationshipModel.getEntityId2()).getEntityType().equals(ACTIVITY) && !activityEntities.contains(this.getById(relationshipModel.getEntityId2()))) {
+                EntityModel entityModel2 = this.getById(relationshipModel.getEntityId2());
+                if (relationshipModel.getEntityId2() != capability.getEntityId() && entityModel2 != null && entityModel2.getEntityType().equals(ACTIVITY) && !activityEntities.contains(entityModel2)) {
                     activityEntities.add(this.getById(relationshipModel.getEntityId2()));
                 }
             });
@@ -190,15 +201,26 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
             capTraceVos.stream().forEach(capTraceVo -> {
                 List<List<Boolean>> listList = new ArrayList<>();
                 //todo:列
+
                 sysTraceVo.getEntities().stream().forEach(function -> {
                     List<Boolean> boolList = new ArrayList<>();
                     //todo:行
                     capTraceVo.getEntities().stream().forEach(cap -> {
 
-                        boolean bool = relationshipService.getRelationshipByEntityIds(function.getEntityId(), cap.getEntityId());
+                        List<RelationshipModel> modelList = relationshipService.list();
+                        List<RelationshipModel> commonRelationList = CollUtil.filter(modelList, hostInfoServiceImpl.getRelationshipByParams(function.getEntityId()));
+                        boolean bool = false;
+                        for (RelationshipModel relationshipModel : commonRelationList) {
+                            if (relationshipModel.getEntityId1().equals(cap.getEntityId()) || relationshipModel.getEntityId2().equals(cap.getEntityId())) {
+                                bool = true;
+                                System.out.println("进入true,并跳出循环");
+                                break;
+                            }
+                        }
+                        System.out.println("执行外面的语句：" + bool);
                         boolList.add(bool);
                     });
-                    listList.add(boolList);//
+                    listList.add(boolList);
                 });
                 Map<String, Object> map = new HashMap<>();
                 map.put("system", sysTraceVo);
@@ -210,6 +232,53 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
         });
         return objList;
     }
+
+    @Override
+    public boolean deletedById(String id) {
+        if (StringUtils.isEmpty(id)) {
+            return false;
+        }
+        //删除关联关系
+        List<RelationshipModel> modelList = relationshipService.list();
+        List<RelationshipModel> relationList = CollUtil.filter(modelList, hostInfoServiceImpl.getRelationshipByParams(id));
+        relationList.forEach(relationshipModel -> {
+            relationshipService.removeById(relationshipModel.getRelationshipId());
+        });
+//        relationshipService.removeByIds(relationList);
+        //删除value、attribute
+        valueService.deleteByEntityId(id);
+        //删除历史
+        entityHistoryService.deleteByEntityId(id);
+        //删除需求描述
+        requirementService.deleteByEntityId(id);
+        return this.removeById(id);
+    }
+
+    // //列
+    //        sysTraceVos.stream().forEach(sysTraceVo -> {
+    //            List<Map> mapList = new ArrayList<>();
+    //            //行
+    //            capTraceVos.stream().forEach(capTraceVo -> {
+    //                List<List<Boolean>> listList = new ArrayList<>();
+    //                //todo:列
+    //                sysTraceVo.getEntities().stream().forEach(function -> {
+    //                    List<Boolean> boolList = new ArrayList<>();
+    //                    //todo:行
+    //                    capTraceVo.getEntities().stream().forEach(cap -> {
+    //
+    //                        boolean bool = relationshipService.getRelationshipByEntityIds(function.getEntityId(), cap.getEntityId());
+    //                        boolList.add(bool);
+    //                    });
+    //                    listList.add(boolList);//
+    //                });
+    //                Map<String, Object> map = new HashMap<>();
+    //                map.put("system", sysTraceVo);
+    //                map.put("capabilities", capTraceVo);
+    //                map.put("boolList", listList);
+    //                mapList.add(map);
+    //            });
+    //            objList.add(mapList);
+    //        });
 
     /**
      * 能力与系统需求追溯矩阵
@@ -301,4 +370,28 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
         }
         return entityQueryVo;
     }
+
+
+    public static void main(String[] args) {
+        String a = "aaa";
+        String b = "aaa1";
+        if (a == b) {
+            System.out.println("可以使用==");
+        } else {
+            System.out.println("不可以使用==");
+        }
+        if (a != b) {
+            System.out.println("a!=b");
+        }
+
+        if (a.equals(b)) {
+            System.out.println("可以使用.equals");
+        } else {
+            System.out.println("不可以使用.equals");
+        }
+        if (!a.equals(b)) {
+            System.out.println("a非b");
+        }
+    }
+
 }

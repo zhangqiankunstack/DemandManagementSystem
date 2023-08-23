@@ -52,4 +52,6 @@ public interface EntityHistoryService extends IService<EntityHistoryModel> {
     List<EntityHistoryModel> getEntityHistoryByEntityId(String entityId, String excludedEntityHistoryId);
 
 
-    }
+
+    void deleteByEntityId(String id);
+}

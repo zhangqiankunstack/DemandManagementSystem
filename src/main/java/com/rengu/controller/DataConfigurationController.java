@@ -8,7 +8,6 @@ import com.rengu.util.RedisUtils;
 import com.rengu.util.ResultUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,14 +79,14 @@ public class DataConfigurationController {
     }
 
     /**
-     * 上传任务清单并解析(测试接口)
+     * 批量上传任务清单并解析
      *
-     * @param multipartFiles
+     * @param multipartFile
      * @return
      */
-    @ApiOperation(value = "上传任务清单")
-    @PostMapping(value = "importTaskFiles")
-    public Result importTaskFiles(@ApiParam(value = "multipartFile") @RequestParam MultipartFile multipartFiles) {
-        return ResultUtils.build(hostInfoService.importTaskFiles(multipartFiles));
+    @ApiOperation(value = "批量上传任务清单")
+    @PostMapping(value = "importTaskXml")
+    public Result importTaskFiles(@RequestParam(value = "files") List<MultipartFile> multipartFile) {
+        return ResultUtils.build(hostInfoService.importTaskXml(multipartFile));
     }
 }

@@ -17,6 +17,7 @@ import java.util.Map;
 public interface RelationshipHistoryService extends IService<RelationshipHistoryModel> {
     public void copyDataToRelationshipHistory(List<String> ids);
 
+    void deleteByEntityHisId(String entityHisId);
     Map<String, Object> getAllRelationship(String entityId, String keyWord, Integer pageNumber, Integer pageSize);
 
 

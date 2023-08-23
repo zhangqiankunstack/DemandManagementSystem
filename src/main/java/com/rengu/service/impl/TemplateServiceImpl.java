@@ -10,22 +10,12 @@ import com.rengu.service.RequirementService;
 import com.rengu.service.TemplateService;
 import com.rengu.util.ListPageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import org.springframework.core.io.Resource;
 import java.util.*;
 
 @Service
@@ -44,16 +34,18 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateMod
             deletePathFile(fileModel.getLocalPath());
             fileService.removeById(fileModel.getId());
         }
-        //上传文件
-        String filePath = requirementService.uploadFile(multipartFile);
-        FileModel file = new FileModel();
-        String originalFilename = multipartFile.getOriginalFilename();
-        String[] split = originalFilename.split("\\.");
-        file.setFileName(split[0]);
-        file.setSize(((multipartFile.getSize() / 1024) + 1) + "KB");
-        file.setLocalPath(filePath);
-        fileService.save(file);
-        templateModel.setFileId(file.getId());
+        if(multipartFile!=null) {
+            //上传文件
+            String filePath = requirementService.uploadFile(multipartFile);
+            FileModel file = new FileModel();
+            String originalFilename = multipartFile.getOriginalFilename();
+            String[] split = originalFilename.split("\\.");
+            file.setFileName(split[0]);
+            file.setSize(((multipartFile.getSize() / 1024) + 1) + "KB");
+            file.setLocalPath(filePath);
+            fileService.save(file);
+            templateModel.setFileId(file.getId());
+        }
         return this.saveOrUpdate(templateModel);
     }
 
@@ -93,8 +85,10 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateMod
         TemplateModel templateModel = this.getById(templateId);
         if (templateModel != null) {
             FileModel fileModel = fileService.getById(templateModel.getFileId());
-            deletePathFile(fileModel.getLocalPath());
-            fileService.removeById(fileModel.getId());
+            if(fileModel!=null) {
+                deletePathFile(fileModel.getLocalPath());
+                fileService.removeById(fileModel.getId());
+            }
         }
         return this.removeById(templateId);
     }
@@ -112,26 +106,5 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateMod
             System.out.println("文件删除失败：" + e.getMessage());
         }
         return false;
-    }
-
-    public static void main(String[] args) throws MalformedURLException {
-        getImage();
-    }
-
-    public static ResponseEntity getImage()throws MalformedURLException {
-        String sourceFilePath = "D:\\报销\\壁纸\\0e45c74a9f2aeb65c56dc7b1f5340ee3.jpeg";  // 源图片文件路径
-        String destinationDirectory = "D:\\报销\\壁纸\\"; // 目标文件夹路径
-        String fileName = "saved_image.jpg"; // 保存的文件名
-
-        Path imagePath = Paths.get(destinationDirectory, fileName);
-        Resource resource = new UrlResource(imagePath.toUri());
-
-        if (resource.exists() && resource.isReadable()) {
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG)
-                    .body(resource);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
 }

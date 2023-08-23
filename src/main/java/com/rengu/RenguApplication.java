@@ -10,9 +10,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class RenguApplication {
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(RenguApplication.class, args);
-
+        System.setProperty("javax.xml.parsers.DocumentBuilderFactory","com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl");
+        SpringApplication.run(RenguApplication.class, args);
     }
-
-
 }

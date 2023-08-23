@@ -16,6 +16,8 @@ import java.util.Map;
 public interface ValueHistoryService extends IService<ValueHistoryModel> {
     public void copyDataToValueHistory(List<String> valueIds);
 
+    void deleteByEntityHisId(String entityHisId);
+
     Map<String, Object> getAllValueInfo(String entityId, String keyWord, Integer pageNumber, Integer pageSize);
 
 

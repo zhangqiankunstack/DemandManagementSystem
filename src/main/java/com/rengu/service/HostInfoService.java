@@ -37,6 +37,8 @@ public interface HostInfoService extends IService<HostInfoModel> {
     List<EntityModel> saveMetadata(List<EntityModel> entity, List<RelationshipModel> relationship, List<AttributeModel> attributeModel, List<ValueModel> valueModels, List<String> entityIds);
 
     Map<String, Object> getDbInfoList(String keyWord, Integer pageNumber, Integer pageSize);
+
+    Object importTaskXml(List<MultipartFile> multipartFiles);
 }
 
 
