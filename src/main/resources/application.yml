@@ -19,6 +19,8 @@ mybatis-plus:
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
+      date-format: yyyy-MM-dd HH:mm:ss
+
 
 redis:
 
@@ -43,3 +45,5 @@ mysql:
 upload:
   # 上传的图片保存路径（可自定义）
   path: D://upload//avatar//
+
+

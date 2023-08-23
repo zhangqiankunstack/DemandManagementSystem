@@ -3,17 +3,12 @@ package com.rengu.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.*;
-import com.rengu.entity.vo.EntityInfo;
 import com.rengu.entity.vo.ToJson;
 import com.rengu.mapper.*;
 import com.rengu.service.BaselineService;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -96,7 +91,7 @@ public class BaselineServiceImpl extends ServiceImpl<BaselineMapper, BaselineMod
 
     //把数据转为json后实现上传
     @Override
-    public File allForDownload(Integer id){
+    public ToJson allForDownload(Integer id){
         List<String> entityHistoryIdByBaseLineId = entityBaselineMapper.findEntityHistoryIdByBaseLineId(id);
 
         List<EntityHistoryModel> entityHistoryModelList = new ArrayList<>();
@@ -107,27 +102,40 @@ public class BaselineServiceImpl extends ServiceImpl<BaselineMapper, BaselineMod
         for (String entityHistoryId : entityHistoryIdByBaseLineId) {
             EntityHistoryModel entityHistoryByEntityHistoryId = entityHistoryMapper.getEntityHistoryByEntityHistoryId(entityHistoryId);
             entityHistoryModelList.add(entityHistoryByEntityHistoryId);
-            ValueHistoryModel valueHistoryModelByEntityId = valueHistoryMapper.findValueHistoryModelByEntityId(entityHistoryByEntityHistoryId.getEntityId());
-            valueHistoryModelList.add(valueHistoryModelByEntityId);
-            AttributeHistoryModel byAttributeId = attributeHistoryMapper.findByAttributeId(valueHistoryModelByEntityId.getAttributeId());
-            attributeHistoryModelList.add(byAttributeId);
-            RelationshipHistoryModel byEntityHistoryId = relationshipHistoryMapper.findByEntityHistoryId(entityHistoryByEntityHistoryId.getEntityId());
-            relationshipHistoryModelList.add(byEntityHistoryId);
+
+            List<ValueHistoryModel> valueHistoryModelByEntityId = valueHistoryMapper.findValueHistoryModelByEntityId(entityHistoryByEntityHistoryId.getEntityId());
+            for (ValueHistoryModel valueHistoryModel : valueHistoryModelByEntityId) {
+                valueHistoryModelList.add(valueHistoryModel);
+
+                AttributeHistoryModel byAttributeId = attributeHistoryMapper.findByAttributeId(valueHistoryModel.getAttributeId());
+                attributeHistoryModelList.add(byAttributeId);
+            }
+
+
+            List<RelationshipHistoryModel> byEntityHistoryId = relationshipHistoryMapper.findByEntityHistoryId(entityHistoryByEntityHistoryId.getEntityId());
+            for (RelationshipHistoryModel relationshipHistoryModel : byEntityHistoryId) {
+                relationshipHistoryModelList.add(relationshipHistoryModel);
+            }
+
 
 
         }
         ToJson toJson =new ToJson();
-        toJson.setEntityHistoryModelList(entityHistoryModelList);
-        toJson.setValueHistoryModelList(valueHistoryModelList);
-        toJson.setAttributeHistoryModelList(attributeHistoryModelList);
+        toJson.setEntityHistorys(entityHistoryModelList);
+        toJson.setValueHistory(valueHistoryModelList);
+        toJson.setAttributeHistory(attributeHistoryModelList);
         toJson.setLinks(relationshipHistoryModelList);
 
+        return toJson;
 
 
 
-        return null;
 
 
+//
+//        return toJson;
+//
+//
 //
 //        //todo:初始化导出目录
 //        File exportPath = new File(FileUtils.getTempDirectoryPath() + File.separator + "基线");

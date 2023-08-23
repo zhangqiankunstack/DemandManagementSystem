@@ -15,11 +15,15 @@ import java.util.List;
 @Setter
 public class ToJson {
 
-    private List<ValueHistoryModel> valueHistoryModelList;
+    private List<EntityHistoryModel> entityHistorys;
+
+    private List<AttributeHistoryModel> attributeHistory;
+
+    private List<ValueHistoryModel> valueHistory;
+
 
     private List<RelationshipHistoryModel> links;
 
-    private List<EntityHistoryModel> entityHistoryModelList;
 
-    private List<AttributeHistoryModel> attributeHistoryModelList;
+
 }

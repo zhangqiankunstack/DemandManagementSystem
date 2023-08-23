@@ -2,11 +2,8 @@ package com.rengu.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rengu.entity.BaselineModel;
-import com.rengu.entity.ReviewModel;
 import com.rengu.entity.vo.ToJson;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 
@@ -27,6 +24,6 @@ public interface BaselineService extends IService<BaselineModel> {
         public void updateBaseline(Integer id, String baselineName, String baselineDescription, Integer priority);
 
 
-        public File allForDownload(Integer id);
+        public ToJson allForDownload(Integer id);
 
         }

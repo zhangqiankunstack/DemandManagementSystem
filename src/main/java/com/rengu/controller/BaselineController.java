@@ -11,6 +11,7 @@ import com.rengu.entity.Result;
 import com.rengu.entity.ReviewModel;
 import com.rengu.entity.vo.EntityHistoryRelationship;
 import com.rengu.entity.vo.EntityInfo;
+import com.rengu.entity.vo.ToJson;
 import com.rengu.service.BaselineService;
 import com.rengu.service.EntityBaselineService;
 import com.rengu.util.ListPageUtil;
@@ -109,41 +110,34 @@ public class BaselineController {
 
     @ApiOperation(value = "下载")
     @GetMapping("/download")
-    public Result download(Integer id, HttpServletResponse response) {
-        List<EntityInfo> entityInfoByBaselineId = entityBaselineService.findEntityInfoByBaselineId(id);
+    public Result download(Integer id) throws JsonProcessingException {
+        ToJson toJson = baselineModelService.allForDownload(id);
+        ObjectMapper Obj = new ObjectMapper();
 
-        String fileName = "file.json"; // 下载文件的名称
+        String jsonStr = Obj.writeValueAsString(toJson);
 
-        String str = new Gson().toJson(entityInfoByBaselineId);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = "";
-        try {
-            json = objectMapper.writeValueAsString(entityInfoByBaselineId);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        return ResultUtils.build(jsonStr);
+    }
 
-        response.setContentType("application/json");
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+    @ApiOperation(value = "下载测试版")
+    @GetMapping("/downloadTest")
+    public Result downloadTest(Integer id) throws JsonProcessingException {
+        ToJson toJson = baselineModelService.allForDownload(id);
+//        ObjectMapper Obj = new ObjectMapper();
+//
+//        String jsonStr = Obj.writeValueAsString(toJson);
 
-        try (OutputStream outputStream = response.getOutputStream()) {
-            outputStream.write(json.getBytes());
-            outputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ResultUtils.build(json);
+
+        return ResultUtils.build(toJson);
     }
 
 
 
-
-
-
-
-
-
+//
+//
+//
+//
 //    @ApiOperation(value = "根据发布id下载文件")
 //    @GetMapping(value = "/{toolPackageId}/exportToolPackage")
 //    public void exportToolPackage(@PathVariable(value = "toolPackageId") Integer id, HttpServletResponse httpServletResponse) throws IOException {
@@ -161,9 +155,9 @@ public class BaselineController {
 //        IOUtils.copy(new FileInputStream(exportFile), httpServletResponse.getOutputStream());
 //        httpServletResponse.flushBuffer();
 //    }
-
-
-
+//
+//
+//
 
 
 

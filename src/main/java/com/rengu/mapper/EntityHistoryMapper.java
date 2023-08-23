@@ -64,4 +64,13 @@ public interface EntityHistoryMapper extends BaseMapper<EntityHistoryModel> {
    EntityHistoryModel getEntityHistoryByEntityHistoryId(String  entityHistoryid);
 
 
+
+
+    void updateOtherIsTop(String entityId,String entityHistoryid);
+
+
+
+    void updateOtherChanges(String entityId,String entityHistoryid);
+
+
 }

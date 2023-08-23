@@ -5,6 +5,8 @@ import com.rengu.entity.RelationshipHistoryModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * @ClassName RelationshipHistoryMapper
  * @Description mapper接口
@@ -16,5 +18,5 @@ public interface RelationshipHistoryMapper extends BaseMapper<RelationshipHistor
 
 
     @Select("SELECT * FROM relationship_history WHERE entity_history_id1 = #{entityHistoryid1}")
-    RelationshipHistoryModel findByEntityHistoryId(String entityHistoryid1);
+    List<RelationshipHistoryModel> findByEntityHistoryId(String entityHistoryid1);
 }

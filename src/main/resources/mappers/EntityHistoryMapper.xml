@@ -28,6 +28,18 @@
 
     </update>
 
+    <update id="updateOtherIsTop">
+        UPDATE entity_history
+        SET isTop = 0
+        WHERE entity_id = #{entityId} and entity_historyid !=  #{entityHistoryid}
+    </update>
+    <update id="updateOtherChanges">
+        UPDATE entity_history
+        SET changes = '暂无变更内容'
+        WHERE entity_id = #{entityId} and entity_historyid !=  #{entityHistoryid}
+    </update>
+
+
     <select id="getValueAttribute" resultType="com.rengu.entity.vo.ValueAttributeEntityVo">
         SELECT DISTINCT  ah.attribute_name, vh.value, eh.entity_name
         FROM value_history vh

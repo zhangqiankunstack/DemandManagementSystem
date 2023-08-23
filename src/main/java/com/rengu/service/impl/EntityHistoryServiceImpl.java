@@ -20,6 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.xml.crypto.Data;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -216,9 +219,16 @@ public class EntityHistoryServiceImpl extends ServiceImpl<EntityHistoryMapper, E
         entityHistoryModel.setEntityType(byId.getEntityType());
         entityHistoryModel.setEntityHistoryid(byId.getEntityHistoryid());
         entityHistoryModel.setEntityName(byId.getEntityName());
-        entityHistoryModel.setChanges("恢复为当前版本");
+
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String currentTimeString = currentTime.format(formatter);
+        entityHistoryModel.setChanges("恢复为当前版本,修改时间为"+currentTimeString);
+
         entityHistoryModel.setVersion(byId.getVersion());
         entityHistoryModel.setIsTop(1);
+        entityHistoryMapper.updateOtherIsTop(byId.getEntityId(),byId.getEntityHistoryid());
+        entityHistoryMapper.updateOtherChanges(byId.getEntityId(),byId.getEntityHistoryid());
         entityHistoryMapper.updateById(entityHistoryModel);
         entityHistoryMapper.updateOtherIsTopToZero(entityHistoryModel.getEntityId(),0,entityHistoryModel.getEntityHistoryid());
 
