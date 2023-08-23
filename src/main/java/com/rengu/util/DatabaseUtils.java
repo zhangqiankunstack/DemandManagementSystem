@@ -1,51 +1,62 @@
 package com.rengu.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Properties;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+@Component
 public class DatabaseUtils {
-//    public static String mysqlConfigPath = Tool.getPluginPath("org.seri.modeling.core") + File.separator + "mysqlConfig" + File.separator + "config.properties";
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_CHARSET = "UTF-8";
-
     private static String DB_URL = "";
     private static String DB_USERNAME = "";
     private static String DB_PASSWORD = "";
 
+    private static String MY_SQL_IP = "";
+
+    @Value("${spring.datasource.username}")
+    private String userName;
+
+    @Value("${spring.datasource.password}")
+    private String password;
+
+    @Value("${spring.datasource.url}")
+    private String url;
+
+
+
+    @PostConstruct
+    public void getServerParam(){
+        DB_USERNAME = this.userName;
+        DB_PASSWORD = this.password;
+        MY_SQL_IP = url;
+    }
+
     public static void getMySQLParam() {
-        Properties properties = new Properties();
-        String mysqlIp = "127.0.0.1";
-        String username = "";
-        String password = "";
+        String result = null;
         try {
-//            BufferedReader br = new BufferedReader(new FileReader(ModelingConstant.mysqlConfigPath));
-//            properties.load(br);
-//			mysqlIp = properties.getProperty("mysqlServerIp") == null ? mysqlIp : properties.getProperty("mysqlServerIp");
-//			username = properties.getProperty("username") == "" ? mysqlIp : properties.getProperty("username");
-//			password = properties.getProperty("password") == "" ? mysqlIp : properties.getProperty("password");
-            mysqlIp = "jdbc:mysql://localhost:3306/emo";
-            username = "root";
-            password = "root";
+            int index = MY_SQL_IP.indexOf('?');
 
-            DB_USERNAME = username;
-            DB_PASSWORD = password;
-
+            if (index != -1) {
+                // 截取问号之前的字符串
+                result = MY_SQL_IP.substring(0, index);
+                System.out.println("截取的结果：" + result);
+            }
             Class.forName(JDBC_DRIVER);
         } catch (Exception exx) {
             exx.printStackTrace();
         }
-        if (mysqlIp.contains(":")) {
-            DB_URL = mysqlIp;
+        if (result.contains(":")) {
+            DB_URL = result;
         }
     }
 
@@ -60,7 +71,7 @@ public class DatabaseUtils {
         PreparedStatement stmt = null;
         try {
             // 设置连接字符集编码为UTF-8,防止插入数据出现中文乱码
-            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET+"&serverTimezone=GMT%2B8";
+            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
             conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
             String insertEntityQuery = "INSERT INTO entity (entity_id, entity_name, entity_type) VALUES (?, ?, ?)";
             stmt = conn.prepareStatement(insertEntityQuery);
@@ -80,7 +91,7 @@ public class DatabaseUtils {
         if (DB_URL.equals("")) {
             getMySQLParam();
         }
-        String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET+"&serverTimezone=GMT%2B8";
+        String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
         ;
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -112,7 +123,7 @@ public class DatabaseUtils {
         if (DB_URL.equals("")) {
             getMySQLParam();
         }
-        String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET+"&serverTimezone=GMT%2B8";
+        String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
         ;
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -138,6 +149,7 @@ public class DatabaseUtils {
         }
     }
 
+
     public static void insertRelationship(String relationshipId, String relationshipType, String entityId1,
                                           String entityId2) {
         if (DB_URL.equals("")) {
@@ -147,7 +159,7 @@ public class DatabaseUtils {
         PreparedStatement stmt = null;
         try {
             // 设置连接字符集编码为UTF-8,防止插入数据出现中文乱码
-            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET+"&serverTimezone=GMT%2B8";
+            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
             conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
             // 插入到relationship表中
             String insertRelationshipQuery = "INSERT INTO relationship (relationship_id, entity_id1, entity_id2, relationship_type) VALUES (?, ?, ?, ?)";
@@ -173,7 +185,7 @@ public class DatabaseUtils {
         PreparedStatement stmt = null;
         try {
             // 设置连接字符集编码为UTF-8,防止插入数据出现中文乱码
-            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET+"&serverTimezone=GMT%2B8";
+            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
             conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
             // 插入到arrribute表中
             String selectAttributeQuery = "SELECT * FROM attribute WHERE attribute_name = ?";
@@ -203,7 +215,7 @@ public class DatabaseUtils {
         PreparedStatement stmt = null;
         try {
             // 设置连接字符集编码为UTF-8,防止插入数据出现中文乱码
-            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET+"&serverTimezone=GMT%2B8";
+            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
             conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
             // 插入到arrribute表中
             String insertAttributeQuery = "INSERT INTO attribute (attribute_id, attribute_name) VALUES (?, ?)";
@@ -227,7 +239,7 @@ public class DatabaseUtils {
         PreparedStatement stmt = null;
         try {
             // 设置连接字符集编码为UTF-8,防止插入数据出现中文乱码
-            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET+"&serverTimezone=GMT%2B8";
+            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
             conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
             // 插入到value表中
             String insertValueQuery = "INSERT INTO value (value_id, entity_id, attribute_id, value) VALUES (?, ?, ?, ?)";
@@ -325,7 +337,7 @@ public class DatabaseUtils {
         PreparedStatement stmt = null;
         try {
             // 设置连接字符集编码为UTF-8,防止插入数据出现中文乱码
-            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET+"&serverTimezone=GMT%2B8";
+            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
             conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
             // 插入到arrribute表中
             String selectAttributeQuery = "SELECT * FROM entity e,relationship r WHERE e.entity_id=r.entity_id1 AND entity_type='metanode' AND r.entity_id2= ?";
@@ -377,7 +389,7 @@ public class DatabaseUtils {
         PreparedStatement stmt = null;
         try {
             // 设置连接字符集编码为UTF-8,防止插入数据出现中文乱码
-            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET+"&serverTimezone=GMT%2B8";
+            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
             conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
             String insertEntityQuery = "select entity_id from entity";
             stmt = conn.prepareStatement(insertEntityQuery);
@@ -392,6 +404,40 @@ public class DatabaseUtils {
             }
             return ids;
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closePreparedStatement(stmt);
+            closeConnection(conn);
+        }
+        return null;
+    }
+
+    public static String selectRelatedIds(String entityId1, String entityId2) {
+        if (DB_URL.equals("")) {
+            getMySQLParam();
+        }
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            // 设置连接字符集编码为UTF-8,防止插入数据出现中文乱码
+            String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
+            conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
+            // 插入到arrribute表中
+            String selectAttributeQuery = "SELECT * FROM relationship WHERE (entity_id1 = ? and entity_id2 = ?) or (entity_id1 = ? and entity_id2 = ?)";
+            stmt = conn.prepareStatement(selectAttributeQuery);
+            stmt.setString(1, entityId1);
+            stmt.setString(2, entityId2);
+            stmt.setString(3, entityId2);
+            stmt.setString(4, entityId1);
+
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                String relationship_id = resultSet.getString("relationship_id");
+                return relationship_id;
+            }
+
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

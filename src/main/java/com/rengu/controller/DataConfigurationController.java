@@ -2,17 +2,22 @@ package com.rengu.controller;
 
 import com.rengu.entity.*;
 import com.rengu.service.HostInfoService;
-import com.rengu.util.DataBaseFactoryService;
-import com.rengu.util.RedisKeyPrefix;
-import com.rengu.util.RedisUtils;
-import com.rengu.util.ResultUtils;
+import com.rengu.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -88,5 +93,66 @@ public class DataConfigurationController {
     @PostMapping(value = "importTaskXml")
     public Result importTaskFiles(@RequestParam(value = "files") List<MultipartFile> multipartFile) {
         return ResultUtils.build(hostInfoService.importTaskXml(multipartFile));
+    }
+
+    /**
+     * 导出 方案评审证书
+     * @param reviewId 评审ID
+     * @param response
+     * @return
+     */
+    @GetMapping("/exportSchemeAppraisal")
+    public void exportSchemeAppraisal(String reviewId, HttpServletResponse response){
+        String fileName = "方案评审证书";
+        String filePath = System.getProperty("os.name").startsWith("Windows") ? "D:/" : "/usr/etc";
+        hostInfoService.exportSchemeAppraisal(reviewId,filePath,fileName,response);
+        FileInputStream inputStream = null;
+        OutputStream outputStream = null;
+        try {
+            // 向客户端输出
+            File file = new File(filePath+fileName+".doc");
+            inputStream = new FileInputStream(file);
+            // 设置请求头
+            response.setContentType("application/octet-stream");
+            response.addHeader("Content-Disposition", "attachment;filename=" + new String((fileName.replaceAll(" ", "")+".doc").getBytes(), "iso8859-1"));
+            outputStream = response.getOutputStream();
+            byte [] buffer = new byte [1024];
+            int r;
+            while ((r = inputStream.read(buffer)) >= 0) {
+                outputStream.write(buffer, 0, r);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                inputStream.close();
+                outputStream.close();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        File file = new File(filePath+fileName+".doc");
+        file.delete(); // 移除文件
+    }
+
+    @GetMapping("/testFtl")
+    public void testFtl(HttpServletResponse response){
+        // 此条数据是通过数据库查询出的数据
+        User user = new User("李四",13,173,56);
+        Map<String,Object> map = new HashMap<>();
+
+        // 此数据是查询数据库返回的集合
+        List<User> userList = new ArrayList<>();
+        userList.add(new User("李四1",13,173,53));
+        userList.add(new User("李四2",14,174,54));
+        userList.add(new User("李四3",15,175,55));
+        userList.add(new User("李四4",16,176,56));
+        userList.add(new User("李四5",17,177,57));
+
+        // 添加到map传给模板
+        map.put("user",user);
+        map.put("userList",userList);
+
+        FtlUtils.reportPeisOrgReservation(map,response);
     }
 }

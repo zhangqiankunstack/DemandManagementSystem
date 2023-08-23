@@ -19,10 +19,19 @@ import com.rengu.util.ListPageUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.yaml.snakeyaml.Yaml;
+import sun.applet.Main;
 
-import javax.swing.text.html.parser.Entity;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -376,25 +385,38 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
 
 
     public static void main(String[] args) {
-        String a = "aaa";
-        String b = "aaa1";
-        if (a == b) {
-            System.out.println("可以使用==");
-        } else {
-            System.out.println("不可以使用==");
-        }
-        if (a != b) {
-            System.out.println("a!=b");
-        }
+        String configFile = "classpath:application.yml";
 
-        if (a.equals(b)) {
-            System.out.println("可以使用.equals");
-        } else {
-            System.out.println("不可以使用.equals");
+        // 读取YAML配置文件
+        Yaml yaml = new Yaml();
+        try {
+            // 创建ResourceLoader对象
+            ResourceLoader resourceLoader = new DefaultResourceLoader();
+            // 获取配置文件的资源对象
+            Resource resource = resourceLoader.getResource(configFile);
+            // 获取配置文件的路径
+            String filePath = resource.getFile().getAbsolutePath();
+            System.out.println("配置文件路径：" + filePath);
+            FileInputStream inputStream = new FileInputStream(filePath);
+            Map<String, Object> config = yaml.load(inputStream);
+
+            // 获取jdbc URL
+            String jdbcUrl = (String) config.get("url");
+            String userName = (String) config.get("username");
+            // 从jdbc URL中提取数据库名
+            String dbName = extractDatabaseName(jdbcUrl);
+
+            System.out.println("截取到的数据库名为：" + dbName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        if (!a.equals(b)) {
-            System.out.println("a非b");
-        }
+    }
+
+    private static String extractDatabaseName(String jdbcUrl) {
+        int endIndex = jdbcUrl.lastIndexOf("/");
+        return jdbcUrl.substring(endIndex + 1);
     }
 
 }
