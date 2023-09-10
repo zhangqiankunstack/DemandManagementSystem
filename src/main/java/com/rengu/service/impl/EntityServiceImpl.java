@@ -1,20 +1,18 @@
 package com.rengu.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.rengu.entity.EntityModel;
-import com.rengu.entity.HostInfoModel;
-import com.rengu.entity.RelationshipModel;
-import com.rengu.entity.ValueModel;
+import com.rengu.entity.*;
 import com.rengu.entity.vo.EntityQueryVo;
 import com.rengu.entity.vo.TraceVo;
 import com.rengu.mapper.EntityMapper;
 import com.rengu.mapper.RelationshipMapper;
 import com.rengu.mapper.ValueMapper;
 import com.rengu.service.*;
+import com.rengu.util.ExportMyWord;
+import com.rengu.util.FtlUtils;
 import com.rengu.util.ListPageUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +23,11 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.yaml.snakeyaml.Yaml;
-import sun.applet.Main;
 
-import java.io.File;
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -135,7 +131,7 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
             map = missionAndCapabilityTrace();//任务与能力
         }
         if (type.equals("2")) {
-            CapabilityAndSystemTrace();//能力与系统
+            map = CapabilityAndSystemTrace();//能力与系统
         }
         return map;
     }
@@ -266,6 +262,7 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
         return this.removeById(id);
     }
 
+
     // //列
     //        sysTraceVos.stream().forEach(sysTraceVo -> {
     //            List<Map> mapList = new ArrayList<>();
@@ -314,7 +311,8 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
             listList.add(boolList);
         });
         Map<String, Object> map = new HashMap<>();
-        map.put("systems", systems);
+//        map.put("systems", systems);
+        map.put("missions", systems);
         map.put("capabilities", capabilities);
         map.put("boolList", listList);
         return map;
@@ -417,6 +415,103 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
     private static String extractDatabaseName(String jdbcUrl) {
         int endIndex = jdbcUrl.lastIndexOf("/");
         return jdbcUrl.substring(endIndex + 1);
+    }
+
+    /**
+     * 导出报告
+     *
+     * @param base64List
+     * @param templateId
+     * @param response
+     * @return
+     */
+    @Override
+    public void exportReport(List<String> base64List, String templateId, HttpServletResponse response) {
+        //获取所有任务实体列表
+        LambdaQueryWrapper<EntityModel> lambda = new LambdaQueryWrapper<>();
+        lambda.eq(EntityModel::getEntityType, "mission");
+        List<EntityModel> missionList = this.list(lambda);
+
+        lambda.clear();
+        //获取所有能力的实体列表
+        lambda.eq(EntityModel::getEntityType, "capability");
+        List<EntityModel> capabilityList = this.list(lambda);
+
+        lambda.clear();
+
+        //获取所有系统的实体列表
+        lambda.eq(EntityModel::getEntityType, "system");
+        List<EntityModel> systemList = this.list(lambda);
+
+        lambda.clear();
+
+        //获取所有系统功能的实体列表
+        lambda.eq(EntityModel::getEntityType, "function");
+        List<EntityModel> functionList = this.list(lambda);
+
+        //获取矩阵任务需求-能力需求矩阵
+        Map<String, Object> missionMap = missionAndCapabilityTrace();
+        Map<String, Object> systemMap = CapabilityAndSystemTrace();//能力与系统
+
+        //todo：封装数据
+        Map<String, Object> map = new HashMap<>();
+        map.put("missionList", missionList);
+        map.put("capabilityList", capabilityList);
+        map.put("systemList", systemList);
+        map.put("functionList", functionList);
+        map.put("missionMap", missionMap);  //任务需求-能力需求
+        map.put("systemMap", systemMap);     //能力与系统
+        map.put("image1", base64List.get(0));
+        map.put("image2", base64List.get(1));
+        map.put("image3", base64List.get(2));
+        FtlUtils.reportPeisOrgReservation(map, response);
+    }
+
+    @Override
+    public void exportSchemeAppraisal(String templateId, String filePath, String fileName, HttpServletResponse response) {
+        ExportMyWord exportMyWord = new ExportMyWord();
+        HashMap<String, Object> mapData = new HashMap<>();
+        //获取所有任务实体列表
+        LambdaQueryWrapper<EntityModel> lambda = new LambdaQueryWrapper<>();
+        lambda.eq(EntityModel::getEntityType, "mission");
+        List<EntityModel> missionList = this.list(lambda);
+
+        lambda.clear();
+        //获取所有能力的实体列表
+        lambda.eq(EntityModel::getEntityType, "capability");
+        List<EntityModel> capabilityList = this.list(lambda);
+
+        lambda.clear();
+
+        //获取所有系统的实体列表
+        lambda.eq(EntityModel::getEntityType, "system");
+        List<EntityModel> systemList = this.list(lambda);
+
+        lambda.clear();
+
+        //获取所有系统功能的实体列表
+        lambda.eq(EntityModel::getEntityType, "function");
+        List<EntityModel> functionList = this.list(lambda);
+
+        //获取矩阵任务需求-能力需求矩阵
+        Map<String, Object> missionMap = missionAndCapabilityTrace();
+        Map<String, Object> systemMap = CapabilityAndSystemTrace();//能力与系统
+
+        //todo：封装数据
+        Map<String, Object> map = new HashMap<>();
+        map.put("missionList", missionList);
+        map.put("capabilityList", capabilityList);
+        map.put("systemList", systemList);
+        map.put("functionList", functionList);
+        map.put("missionMap", missionMap);  //任务需求-能力需求
+        map.put("systemMap", systemMap);     //能力与系统
+//        map.put("image1", base64List.get(0));
+//        map.put("image2", base64List.get(1));
+//        map.put("image3", base64List.get(2));
+
+//        exportMyWord.createWord(mapData, "方案评审证书.ftl", filePath+fileName+".doc");
+        exportMyWord.createWord(mapData, "ftl导出模板.ftl", filePath+fileName+".doc");
+
     }
 
 }

@@ -103,7 +103,7 @@ public class DataConfigurationController {
      */
     @GetMapping("/exportSchemeAppraisal")
     public void exportSchemeAppraisal(String reviewId, HttpServletResponse response){
-        String fileName = "方案评审证书";
+        String fileName = "ftl导出模板";
         String filePath = System.getProperty("os.name").startsWith("Windows") ? "D:/" : "/usr/etc";
         hostInfoService.exportSchemeAppraisal(reviewId,filePath,fileName,response);
         FileInputStream inputStream = null;
@@ -135,24 +135,25 @@ public class DataConfigurationController {
         file.delete(); // 移除文件
     }
 
+
     @GetMapping("/testFtl")
     public void testFtl(HttpServletResponse response){
         // 此条数据是通过数据库查询出的数据
-        User user = new User("李四",13,173,56);
-        Map<String,Object> map = new HashMap<>();
-
-        // 此数据是查询数据库返回的集合
-        List<User> userList = new ArrayList<>();
-        userList.add(new User("李四1",13,173,53));
-        userList.add(new User("李四2",14,174,54));
-        userList.add(new User("李四3",15,175,55));
-        userList.add(new User("李四4",16,176,56));
-        userList.add(new User("李四5",17,177,57));
+//        User user = new User("李四",13,173,56);
+//        Map<String,Object> map = new HashMap<>();
+//
+//        // 此数据是查询数据库返回的集合
+//        List<User> userList = new ArrayList<>();
+//        userList.add(new User("李四1",13,173,53));
+//        userList.add(new User("李四2",14,174,54));
+//        userList.add(new User("李四3",15,175,55));
+//        userList.add(new User("李四4",16,176,56));
+//        userList.add(new User("李四5",17,177,57));
 
         // 添加到map传给模板
-        map.put("user",user);
-        map.put("userList",userList);
-
-        FtlUtils.reportPeisOrgReservation(map,response);
+//        map.put("user",user);
+//        map.put("userList",userList);
+//
+//        FtlUtils.reportPeisOrgReservation(map,response);
     }
 }

@@ -29,7 +29,8 @@ public class FtlUtils {
      */
     public static void reportPeisOrgReservation(Map<String, Object> data, HttpServletResponse response) {
         try {
-            reportPeisOrgReservation(data, "ftl模板.ftl", "logs/" + "aaa" + ".docx", "aaa" + ".docx", response);
+            reportPeisOrgReservation(data, "ftl导出模板.ftl", "logs/" + "aaa" + ".docx", "aaa" + ".docx", response);
+//            reportPeisOrgReservation(data, "需求报告图片.ftl", "logs/" + "aaa" + ".docx", "aaa" + ".docx", response);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,7 +41,6 @@ public class FtlUtils {
     static {
         // 设置模板所在文件夹
         cfg.setClassForTemplateLoading(FtlUtils.class, "/template/");
-//        cfg.setClassForTemplateLoading(FtlUtils.class, "/template/");
         // setEncoding这个方法一定要设置国家及其编码，不然在ftl中的中文在生成html后会变成乱码
         cfg.setEncoding(Locale.getDefault(), ENCODING);
         // 设置对象的包装器
@@ -91,11 +91,14 @@ public class FtlUtils {
                 // 清除buffer缓存
                 response.reset();
                 // 指定下载的文件名
-                response.setHeader("Content-Disposition",
-                        "attachment;filename=" + fileName);
-                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
-                response.setHeader("Pragma", "no-cache");
-                response.setHeader("Cache-Control", "no-cache");
+//                response.setHeader("Content-Disposition",
+//                        "attachment;filename=" + fileName);
+//                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+//                response.setHeader("Pragma", "no-cache");
+//                response.setHeader("Cache-Control", "no-cache");
+
+                response.setContentType("application/octet-stream");
+                response.addHeader("Content-Disposition", "attachment;filename=" + new String((fileName.replaceAll(" ", "")).getBytes(), "iso8859-1"));
                 FileInputStream inputStream = new FileInputStream(file);
                 bufferedInputStream = new BufferedInputStream(inputStream); //缓冲流加速读
                 OutputStream outputStream = response.getOutputStream();
@@ -110,7 +113,7 @@ public class FtlUtils {
                 try {
                     bufferedOutputStream.close();
                     bufferedInputStream.close();
-                    file.delete();
+//                    file.delete();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -119,4 +122,66 @@ public class FtlUtils {
             throw new RuntimeException("文件在本地服务器不存在");
         }
     }
+
+
+//    public static void reportPeisOrgReservation(Map<String, Object> data, String templateFileName, String outFilePath, String fileName, HttpServletResponse response) throws Exception {
+//        Writer out = null;
+//        File outFile = new File(outFilePath);
+//        try {
+//            // 获取模板,并设置编码方式，这个编码必须要与页面中的编码格式一致
+//            Template template = getTemplate(templateFileName);
+//            if (!outFile.getParentFile().exists()) {
+//                outFile.getParentFile().mkdirs();
+//            }
+//            out = new OutputStreamWriter(new FileOutputStream(outFile), ENCODING);
+//            //下载到本地
+//            template.process(data, out);
+//            out.flush();
+//            log.info("由模板文件" + templateFileName + "生成" + outFilePath + "成功.");
+//        } catch (Exception e) {
+//            log.error("由模板文件" + templateFileName + "生成" + outFilePath + "出错");
+//        } finally {
+//            out.close();
+//        }
+//        // 获取服务器本地的文件位置
+//        File file = new File(outFilePath);
+//        if (file.exists()) {
+//            BufferedInputStream bufferedInputStream = null;
+//            BufferedOutputStream bufferedOutputStream = null;
+//            try {
+//                // 清除buffer缓存
+//                response.reset();
+//                // 指定下载的文件名
+////                response.setHeader("Content-Disposition",
+////                        "attachment;filename=" + fileName);
+////                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+////                response.setHeader("Pragma", "no-cache");
+////                response.setHeader("Cache-Control", "no-cache");
+//
+//                response.setContentType("application/octet-stream");
+//                response.addHeader("Content-Disposition", "attachment;filename=" + new String((fileName.replaceAll(" ", "")).getBytes(), "iso8859-1"));
+//                FileInputStream inputStream = new FileInputStream(file);
+//                bufferedInputStream = new BufferedInputStream(inputStream); //缓冲流加速读
+//                OutputStream outputStream = response.getOutputStream();
+//                bufferedOutputStream = new BufferedOutputStream(outputStream);  //缓冲流加速写
+//                int n;
+//                while ((n = bufferedInputStream.read()) != -1) {
+//                    bufferedOutputStream.write(n);
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                try {
+//                    bufferedOutputStream.close();
+//                    bufferedInputStream.close();
+//                    file.delete();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        } else {
+//            throw new RuntimeException("文件在本地服务器不存在");
+//        }
+//    }
+
 }

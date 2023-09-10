@@ -16,4 +16,6 @@ public class User {
     private Integer height;
 
     private Integer weight;
+
+    private String pic;
 }

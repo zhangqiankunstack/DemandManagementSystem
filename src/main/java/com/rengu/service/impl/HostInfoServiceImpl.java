@@ -479,35 +479,35 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
         HashMap<String, Object> mapData = new HashMap<>();
 
         // 根据评审ID查询信息
-        LambdaQueryWrapper<HostInfoModel> reviewsQuestion = new LambdaQueryWrapper<>();
-        reviewsQuestion.eq(HostInfoModel::getPort,"3306");
-        List<HostInfoModel> reviewsQuestionList = this.list(reviewsQuestion);
-
-        List<HostInfoModel> specialistSuggestList = new ArrayList<>();
-        List<String> opinionList = new ArrayList<>();
-        List<String> acceptList = new ArrayList<>();
-        List<Map<String, Object>> reviewGroupWordList = new ArrayList<>();
-
-        reviewsQuestionList.forEach(item->{
-            HashMap<String,Object> data = new HashMap<>();
-            data.put("reviewName","测试");
-            // TODO 导出 方案评审证书：评审成员工作部门待加入
-            data.put("reviewDeptName",null);    // 评审成员工作部门 reviewDeptName
-            reviewGroupWordList.add(data);
-        });
-
-        mapData.put("reviewPerson","张三");                            // 评审申请人
-//        mapData.put("revidewPullDate", DateUtil.format(maxPretime,"yyyy年MM月dd日")); // 评审完成日
-//        mapData.put("revidewStartDate",DateUtil.format(minPretime,"yyyy年MM月dd日"));// 评审发起日
-        mapData.put("deptName","测试部门");// 评审申请人所在部门
-        mapData.put("reviewProjectName","测试名称");// 评审项目名称
-        mapData.put("specialistSuggestList",specialistSuggestList);     // 专业评审专家意见反馈表
-        mapData.put("opinionList",opinionList); // 需完善的评审意见
-        mapData.put("acceptList",acceptList); //  // 专业评审问题的落实情况
-        mapData.put("reviewGroupWordList",reviewGroupWordList);  // 专业评审组
-        // TODO 导出 方案评审证书：评审组长、工作部门数据待加入
-        mapData.put("reviewGroupOld",null);// 评审组长   reviewGroupOld
-        mapData.put("reviewDeptName",null); // 评审组长部门   reviewDeptName
+//        LambdaQueryWrapper<HostInfoModel> reviewsQuestion = new LambdaQueryWrapper<>();
+//        reviewsQuestion.eq(HostInfoModel::getPort,"3306");
+//        List<HostInfoModel> reviewsQuestionList = this.list(reviewsQuestion);
+//
+//        List<HostInfoModel> specialistSuggestList = new ArrayList<>();
+//        List<String> opinionList = new ArrayList<>();
+//        List<String> acceptList = new ArrayList<>();
+//        List<Map<String, Object>> reviewGroupWordList = new ArrayList<>();
+//
+//        reviewsQuestionList.forEach(item->{
+//            HashMap<String,Object> data = new HashMap<>();
+//            data.put("reviewName","测试");
+//            // TODO 导出 方案评审证书：评审成员工作部门待加入
+//            data.put("reviewDeptName",null);    // 评审成员工作部门 reviewDeptName
+//            reviewGroupWordList.add(data);
+//        });
+//
+//        mapData.put("reviewPerson","张三");                            // 评审申请人
+////        mapData.put("revidewPullDate", DateUtil.format(maxPretime,"yyyy年MM月dd日")); // 评审完成日
+////        mapData.put("revidewStartDate",DateUtil.format(minPretime,"yyyy年MM月dd日"));// 评审发起日
+//        mapData.put("deptName","测试部门");// 评审申请人所在部门
+//        mapData.put("reviewProjectName","测试名称");// 评审项目名称
+//        mapData.put("specialistSuggestList",specialistSuggestList);     // 专业评审专家意见反馈表
+//        mapData.put("opinionList",opinionList); // 需完善的评审意见
+//        mapData.put("acceptList",acceptList); //  // 专业评审问题的落实情况
+//        mapData.put("reviewGroupWordList",reviewGroupWordList);  // 专业评审组
+//        // TODO 导出 方案评审证书：评审组长、工作部门数据待加入
+//        mapData.put("reviewGroupOld",null);// 评审组长   reviewGroupOld
+//        mapData.put("reviewDeptName",null); // 评审组长部门   reviewDeptName
         exportMyWord.createWord(mapData, "方案评审证书.ftl", filePath+fileName+".doc");
     }
 

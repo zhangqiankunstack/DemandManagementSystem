@@ -31,21 +31,21 @@
         <o:Author>12160</o:Author>
         <o:LastAuthor>聪 王</o:LastAuthor>
         <o:Revision>2</o:Revision>
-        <o:TotalTime>1</o:TotalTime>
-        <o:Created>2023-08-23T03:15:00Z</o:Created>
-        <o:LastSaved>2023-08-23T03:15:00Z</o:LastSaved>
+        <o:TotalTime>0</o:TotalTime>
+        <o:Created>2023-08-23T08:19:00Z</o:Created>
+        <o:LastSaved>2023-08-23T08:19:00Z</o:LastSaved>
         <o:Pages>1</o:Pages>
-        <o:Words>2</o:Words>
-        <o:Characters>17</o:Characters>
+        <o:Words>3</o:Words>
+        <o:Characters>19</o:Characters>
         <o:Company>HP</o:Company>
         <o:Lines>1</o:Lines>
         <o:Paragraphs>1</o:Paragraphs>
-        <o:CharactersWithSpaces>18</o:CharactersWithSpaces>
+        <o:CharactersWithSpaces>21</o:CharactersWithSpaces>
         <o:Version>16</o:Version>
     </o:DocumentProperties>
     <o:CustomDocumentProperties>
         <o:KSOProductBuildVer dt:dt="string">2052-11.1.0.12155</o:KSOProductBuildVer>
-        <o:ICV dt:dt="string">7D62D4AC449B4003B3AC68C64B9E8948</o:ICV>
+        <o:ICV dt:dt="string">6C76A81D86884BE88615D71C4367A43A</o:ICV>
     </o:CustomDocumentProperties>
     <w:fonts>
         <w:defaultFonts w:ascii="Calibri" w:fareast="宋体" w:h-ansi="Calibri" w:cs="Times New Roman"/>
@@ -91,6 +91,26 @@
                    w:csb-1="00000000"/>
         </w:font>
     </w:fonts>
+    <w:lists>
+        <w:listDef w:listDefId="0">
+            <w:lsid w:val="2A2BB306"/>
+            <w:plt w:val="SingleLevel"/>
+            <w:tmpl w:val="2A2BB306"/>
+            <w:lvl w:ilvl="0">
+                <w:start w:val="1"/>
+                <w:nfc w:val="37"/>
+                <w:suff w:val="Nothing"/>
+                <w:lvlText w:val="%1、"/>
+                <w:lvlJc w:val="left"/>
+                <w:rPr>
+                    <w:rFonts w:hint="fareast"/>
+                </w:rPr>
+            </w:lvl>
+        </w:listDef>
+        <w:list w:ilfo="1" durableId="1893152426">
+            <w:ilst w:val="0"/>
+        </w:list>
+    </w:lists>
     <w:styles>
         <w:versionOfBuiltInStylenames w:val="7"/>
         <w:latentStyles w:defLockedState="off" w:latentStyleCount="376">
@@ -117,6 +137,49 @@
             <w:lsdException w:name="Outline List 1"/>
             <w:lsdException w:name="Outline List 2"/>
             <w:lsdException w:name="Outline List 3"/>
+            <w:lsdException w:name="Table Simple 1"/>
+            <w:lsdException w:name="Table Simple 2"/>
+            <w:lsdException w:name="Table Simple 3"/>
+            <w:lsdException w:name="Table Classic 1"/>
+            <w:lsdException w:name="Table Classic 2"/>
+            <w:lsdException w:name="Table Classic 3"/>
+            <w:lsdException w:name="Table Classic 4"/>
+            <w:lsdException w:name="Table Colorful 1"/>
+            <w:lsdException w:name="Table Colorful 2"/>
+            <w:lsdException w:name="Table Colorful 3"/>
+            <w:lsdException w:name="Table Columns 1"/>
+            <w:lsdException w:name="Table Columns 2"/>
+            <w:lsdException w:name="Table Columns 3"/>
+            <w:lsdException w:name="Table Columns 4"/>
+            <w:lsdException w:name="Table Columns 5"/>
+            <w:lsdException w:name="Table Grid 1"/>
+            <w:lsdException w:name="Table Grid 2"/>
+            <w:lsdException w:name="Table Grid 3"/>
+            <w:lsdException w:name="Table Grid 4"/>
+            <w:lsdException w:name="Table Grid 5"/>
+            <w:lsdException w:name="Table Grid 6"/>
+            <w:lsdException w:name="Table Grid 7"/>
+            <w:lsdException w:name="Table Grid 8"/>
+            <w:lsdException w:name="Table List 1"/>
+            <w:lsdException w:name="Table List 2"/>
+            <w:lsdException w:name="Table List 3"/>
+            <w:lsdException w:name="Table List 4"/>
+            <w:lsdException w:name="Table List 5"/>
+            <w:lsdException w:name="Table List 6"/>
+            <w:lsdException w:name="Table List 7"/>
+            <w:lsdException w:name="Table List 8"/>
+            <w:lsdException w:name="Table 3D effects 1"/>
+            <w:lsdException w:name="Table 3D effects 2"/>
+            <w:lsdException w:name="Table 3D effects 3"/>
+            <w:lsdException w:name="Table Contemporary"/>
+            <w:lsdException w:name="Table Elegant"/>
+            <w:lsdException w:name="Table Professional"/>
+            <w:lsdException w:name="Table Subtle 1"/>
+            <w:lsdException w:name="Table Subtle 2"/>
+            <w:lsdException w:name="Table Web 1"/>
+            <w:lsdException w:name="Table Web 2"/>
+            <w:lsdException w:name="Table Web 3"/>
+            <w:lsdException w:name="Table Theme"/>
             <w:lsdException w:name="Placeholder Text"/>
             <w:lsdException w:name="No Spacing"/>
             <w:lsdException w:name="Light Shading"/>
@@ -365,6 +428,7 @@
                 <w:lang w:val="EN-US" w:fareast="ZH-CN" w:bidi="AR-SA"/>
             </w:rPr>
             <w:tblPr>
+                <w:tblInd w:w="0" w:type="dxa"/>
                 <w:tblCellMar>
                     <w:top w:w="0" w:type="dxa"/>
                     <w:left w:w="108" w:type="dxa"/>
@@ -409,19 +473,15 @@
     <w:docPr>
         <w:view w:val="print"/>
         <w:zoom w:percent="130"/>
-        <w:doNotEmbedSystemFonts/>
         <w:bordersDontSurroundHeader/>
         <w:bordersDontSurroundFooter/>
+        <w:proofState w:spelling="clean" w:grammar="clean"/>
         <w:defaultTabStop w:val="420"/>
         <w:drawingGridVerticalSpacing w:val="156"/>
         <w:displayHorizontalDrawingGridEvery w:val="0"/>
         <w:displayVerticalDrawingGridEvery w:val="2"/>
         <w:punctuationKerning/>
         <w:characterSpacingControl w:val="CompressPunctuation"/>
-        <w:webPageEncoding w:val="x-cp20936"/>
-        <w:optimizeForBrowser/>
-        <w:allowPNG/>
-        <w:pixelsPerInch w:val="120"/>
         <w:validateAgainstSchema/>
         <w:saveInvalidXML w:val="off"/>
         <w:ignoreMixedContent w:val="off"/>
@@ -444,32 +504,61 @@
             <w:docVar w:name="commondata" w:val="eyJoZGlkIjoiYWU0YmNlNmMyZDNjMzNlNDgyNmI4MDViZDkzMTAyMWIifQ=="/>
         </w:docVars>
         <wsp:rsids>
-            <wsp:rsidRoot wsp:val="0051495E"/>
-            <wsp:rsid wsp:val="0051495E"/>
-            <wsp:rsid wsp:val="006C0C3D"/>
-            <wsp:rsid wsp:val="11235657"/>
+            <wsp:rsidRoot wsp:val="4D671238"/>
+            <wsp:rsid wsp:val="000A635B"/>
+            <wsp:rsid wsp:val="001F4318"/>
+            <wsp:rsid wsp:val="004D1958"/>
+            <wsp:rsid wsp:val="008F5E03"/>
+            <wsp:rsid wsp:val="00A163E6"/>
+            <wsp:rsid wsp:val="00A86574"/>
+            <wsp:rsid wsp:val="00D0370F"/>
+            <wsp:rsid wsp:val="4D671238"/>
         </wsp:rsids>
     </w:docPr>
     <w:body>
         <wx:sect>
-            <w:p wsp:rsidR="00000000" wsp:rsidRDefault="00000000">
+            <w:p wsp:rsidR="00D0370F" wsp:rsidRDefault="00000000">
                 <w:pPr>
+                    <w:jc w:val="center"/>
                     <w:rPr>
-                        <w:rFonts w:hint="fareast"/>
+                        <w:b/>
+                        <w:b-cs/>
+                        <w:sz w:val="32"/>
+                        <w:sz-cs w:val="32"/>
                     </w:rPr>
                 </w:pPr>
                 <w:r>
                     <w:rPr>
                         <w:rFonts w:hint="fareast"/>
                         <wx:font wx:val="宋体"/>
+                        <w:b/>
+                        <w:b-cs/>
+                        <w:sz w:val="32"/>
+                        <w:sz-cs w:val="32"/>
                     </w:rPr>
-                    <w:t>名称列表</w:t>
+                    <w:t>需求报告</w:t>
+                </w:r>
+            </w:p>
+            <w:p wsp:rsidR="00D0370F" wsp:rsidRDefault="00000000">
+                <w:pPr>
+                    <w:listPr>
+                        <w:ilvl w:val="0"/>
+                        <w:ilfo w:val="1"/>
+                        <wx:t wx:val="一、"/>
+                        <wx:font wx:val="Times New Roman"/>
+                    </w:listPr>
+                </w:pPr>
+                <w:r>
+                    <w:rPr>
+                        <w:rFonts w:hint="fareast"/>
+                        <wx:font wx:val="宋体"/>
+                    </w:rPr>
+                    <w:t>任务需求</w:t>
                 </w:r>
             </w:p>
             <w:tbl>
                 <w:tblPr>
                     <w:tblW w:w="0" w:type="auto"/>
-                    <w:tblInd w:w="0" w:type="dxa"/>
                     <w:tblBorders>
                         <w:top w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
                         <w:left w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
@@ -478,142 +567,87 @@
                         <w:insideH w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
                         <w:insideV w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
                     </w:tblBorders>
+                    <w:tblLook w:val="04A0"/>
                 </w:tblPr>
                 <w:tblGrid>
-                    <w:gridCol w:w="2130"/>
-                    <w:gridCol w:w="2130"/>
-                    <w:gridCol w:w="2131"/>
-                    <w:gridCol w:w="2131"/>
+                    <w:gridCol w:w="4261"/>
+                    <w:gridCol w:w="4261"/>
                 </w:tblGrid>
-                <w:tr wsp:rsidR="00000000">
+                <w:tr wsp:rsidR="00A163E6" wsp:rsidTr="000A635B">
                     <w:tc>
                         <w:tcPr>
-                            <w:tcW w:w="2130" w:type="dxa"/>
+                            <w:tcW w:w="4261" w:type="dxa"/>
                             <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
                         </w:tcPr>
-                        <w:p wsp:rsidR="00000000" wsp:rsidRDefault="00000000">
+                        <w:p wsp:rsidR="00A163E6" wsp:rsidRDefault="00A163E6">
                             <w:r>
                                 <w:rPr>
                                     <w:rFonts w:hint="fareast"/>
                                     <wx:font wx:val="宋体"/>
                                 </w:rPr>
-                                <w:t>姓名</w:t>
+                                <w:t>追溯</w:t>
                             </w:r>
                         </w:p>
                     </w:tc>
-                    <w:tc>
-                        <w:tcPr>
-                            <w:tcW w:w="2130" w:type="dxa"/>
-                            <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
-                        </w:tcPr>
-                        <w:p wsp:rsidR="00000000" wsp:rsidRDefault="00000000">
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:hint="fareast"/>
-                                    <wx:font wx:val="宋体"/>
-                                </w:rPr>
-                                <w:t>年龄</w:t>
-                            </w:r>
-                        </w:p>
-                    </w:tc>
-                    <w:tc>
-                        <w:tcPr>
-                            <w:tcW w:w="2131" w:type="dxa"/>
-                            <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
-                        </w:tcPr>
-                        <w:p wsp:rsidR="00000000" wsp:rsidRDefault="00000000">
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:hint="fareast"/>
-                                    <wx:font wx:val="宋体"/>
-                                </w:rPr>
-                                <w:t>身高</w:t>
-                            </w:r>
-                        </w:p>
-                    </w:tc>
-                    <w:tc>
-                        <w:tcPr>
-                            <w:tcW w:w="2131" w:type="dxa"/>
-                            <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
-                        </w:tcPr>
-                        <w:p wsp:rsidR="00000000" wsp:rsidRDefault="00000000">
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:hint="fareast"/>
-                                    <wx:font wx:val="宋体"/>
-                                </w:rPr>
-                                <w:t>体重</w:t>
-                            </w:r>
-                        </w:p>
-                    </w:tc>
+                    <#--行数据-->
+                    <#list userList as user>
+                        <w:tc>
+                            <w:tcPr>
+                                <w:tcW w:w="4261" w:type="dxa"/>
+                                <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
+                            </w:tcPr>
+                            <w:p wsp:rsidR="00A163E6" wsp:rsidRDefault="00A163E6">
+                                <w:r>
+                                    <w:rPr>
+                                        <w:rFonts w:hint="fareast"/>
+                                    </w:rPr>
+                                    <w:t>${user.age}</w:t>
+                                </w:r>
+                            </w:p>
+                        </w:tc>
+                    </#list>
                 </w:tr>
-                <#list userList as user1>
-                    <w:tr wsp:rsidR="00000000">
+                <#--添加行数-->
+                <#list userList as user>
+                    <w:tr wsp:rsidR="00A163E6" wsp:rsidTr="000A635B">
+
                         <w:tc>
                             <w:tcPr>
-                                <w:tcW w:w="2130" w:type="dxa"/>
+                                <w:tcW w:w="4261" w:type="dxa"/>
                                 <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
                             </w:tcPr>
-                            <w:p wsp:rsidR="00000000" wsp:rsidRDefault="00000000">
+                            <w:p wsp:rsidR="00A163E6" wsp:rsidRDefault="00A163E6">
                                 <w:r>
                                     <w:rPr>
                                         <w:rFonts w:hint="fareast"/>
-                                        <wx:font wx:val="宋体"/>
                                     </w:rPr>
-                                    <w:t>${user1.name}</w:t>
+                                    <w:t>${user.name}</w:t>
                                 </w:r>
                             </w:p>
                         </w:tc>
-                        <w:tc>
-                            <w:tcPr>
-                                <w:tcW w:w="2130" w:type="dxa"/>
-                                <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
-                            </w:tcPr>
-                            <w:p wsp:rsidR="00000000" wsp:rsidRDefault="00000000">
-                                <w:r>
-                                    <w:rPr>
-                                        <w:rFonts w:hint="fareast"/>
-                                        <wx:font wx:val="宋体"/>
-                                    </w:rPr>
-                                    <w:t>${user1.age}</w:t>
-                                </w:r>
-                            </w:p>
-                        </w:tc>
-                        <w:tc>
-                            <w:tcPr>
-                                <w:tcW w:w="2131" w:type="dxa"/>
-                                <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
-                            </w:tcPr>
-                            <w:p wsp:rsidR="00000000" wsp:rsidRDefault="00000000">
-                                <w:r>
-                                    <w:rPr>
-                                        <w:rFonts w:hint="fareast"/>
-                                        <wx:font wx:val="宋体"/>
-                                    </w:rPr>
-                                    <w:t>${user1.height}</w:t>
-                                </w:r>
-                            </w:p>
-                        </w:tc>
-                        <w:tc>
-                            <w:tcPr>
-                                <w:tcW w:w="2131" w:type="dxa"/>
-                                <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
-                            </w:tcPr>
-                            <w:p wsp:rsidR="00000000" wsp:rsidRDefault="00000000">
-                                <w:r>
-                                    <w:rPr>
-                                        <w:rFonts w:hint="fareast"/>
-                                        <wx:font wx:val="宋体"/>
-                                    </w:rPr>
-                                    <w:t>${user1.weight}</w:t>
-                                </w:r>
-                            </w:p>
-                        </w:tc>
+
+                        <#--遍历每个行数对应值-->
+                        <#list userList as user>
+                            <w:tc>
+                                <w:tcPr>
+                                    <w:tcW w:w="4261" w:type="dxa"/>
+                                    <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
+                                </w:tcPr>
+                                <w:p wsp:rsidR="00A163E6" wsp:rsidRDefault="00A163E6">
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:rFonts w:hint="fareast"/>
+                                        </w:rPr>
+                                        <w:t>ture</w:t>
+                                    </w:r>
+                                </w:p>
+                            </w:tc>
+                        </#list>
                     </w:tr>
                 </#list>
             </w:tbl>
-            <w:p wsp:rsidR="006C0C3D" wsp:rsidRDefault="006C0C3D"/>
-            <w:sectPr wsp:rsidR="006C0C3D">
+            <w:p wsp:rsidR="00D0370F" wsp:rsidRDefault="00D0370F"/>
+            <w:sectPr wsp:rsidR="00D0370F">
                 <w:pgSz w:w="11906" w:h="16838"/>
                 <w:pgMar w:top="1440" w:right="1800" w:bottom="1440" w:left="1800" w:header="851" w:footer="992"
                          w:gutter="0"/>

@@ -10,6 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 
 /**
@@ -66,6 +71,7 @@ public class EntityController {
 
     /**
      * 上传图片，可通过网络地址访问图片
+     *
      * @param multipartFile
      * @return
      */
@@ -89,13 +95,54 @@ public class EntityController {
 
     @ApiOperation("覆盖分析追溯矩阵")
     @GetMapping("/coverageAnalysisTrace")
-    public Result coverageAnalysisTrace(){
+    public Result coverageAnalysisTrace() {
         return ResultUtils.build(entityModelService.coverageAnalysisTrace());
     }
 
     @ApiOperation("根据实体id删除实体信息以及关联关系")
     @DeleteMapping("/deletedById")
-    public Result deletedById(@RequestParam String id){
+    public Result deletedById(@RequestParam String id) {
         return ResultUtils.build(entityModelService.deletedById(id));
+    }
+
+    @CrossOrigin(origins = "http://localhost",methods = {RequestMethod.POST})
+    @ApiOperation("导出实体、追溯报告")
+    @PostMapping("/exportReport")
+    public void exportReport(@RequestBody List<String> base64List,@RequestParam String templateId, HttpServletResponse response) {
+        entityModelService.exportReport(base64List,templateId, response);
+    }
+
+    @PostMapping("/exportReport1")
+    public void exportSchemeAppraisal(@RequestParam String templateId, HttpServletResponse response){
+        String fileName = "ftl导出模板";
+        String filePath = System.getProperty("os.name").startsWith("Windows") ? "D:/" : "/usr/etc";
+        entityModelService.exportSchemeAppraisal(templateId,filePath,fileName,response);
+        FileInputStream inputStream = null;
+        OutputStream outputStream = null;
+        try {
+            // 向客户端输出
+            File file = new File(filePath+fileName+".doc");
+            inputStream = new FileInputStream(file);
+            // 设置请求头
+            response.setContentType("application/octet-stream");
+            response.addHeader("Content-Disposition", "attachment;filename=" + new String((fileName.replaceAll(" ", "")+".doc").getBytes(), "iso8859-1"));
+            outputStream = response.getOutputStream();
+            byte [] buffer = new byte [1024];
+            int r;
+            while ((r = inputStream.read(buffer)) >= 0) {
+                outputStream.write(buffer, 0, r);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                inputStream.close();
+                outputStream.close();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        File file = new File(filePath+fileName+".doc");
+        file.delete(); // 移除文件
     }
 }

@@ -133,25 +133,26 @@ public class ValueServiceImpl extends ServiceImpl<ValueMapper, ValueModel> imple
         List<ValueAttribute> valueAttributes = new ArrayList<>();
         List<ValueModel> valueModels = (List<ValueModel>) redisUtils.get(RedisKeyPrefix.VALUE);
         List<AttributeModel> attributeModels = (List<AttributeModel>) redisUtils.get(RedisKeyPrefix.ATTRIBUTE);
-
-        valueModels.stream().forEach(valueModel -> {
-            ValueAttribute valueAttribute = new ValueAttribute();
-            if (valueModel.getEntityId().equals(entityId)) {
-                List<AttributeModel> resultList = CollUtil.filter(attributeModels, attributeModel -> attributeModel.getAttributeId().equals(valueModel.getAttributeId()));
-                resultList.stream().forEach(attributeModel -> {
-                    valueAttribute.setValue(valueModel.getValue());
-                    valueAttribute.setAttributeId(attributeModel.getAttributeId());
-                    valueAttribute.setAttributeName(attributeModel.getAttributeName());
-                });
-                if (!StringUtils.isEmpty(keyWord)) {
-                    if (valueAttribute.getValue().contains(keyWord) || valueAttribute.getAttributeName().contains(keyWord)) {
+        if (valueModels != null) {
+            valueModels.stream().forEach(valueModel -> {
+                ValueAttribute valueAttribute = new ValueAttribute();
+                if (valueModel.getEntityId().equals(entityId)) {
+                    List<AttributeModel> resultList = CollUtil.filter(attributeModels, attributeModel -> attributeModel.getAttributeId().equals(valueModel.getAttributeId()));
+                    resultList.stream().forEach(attributeModel -> {
+                        valueAttribute.setValue(valueModel.getValue());
+                        valueAttribute.setAttributeId(attributeModel.getAttributeId());
+                        valueAttribute.setAttributeName(attributeModel.getAttributeName());
+                    });
+                    if (!StringUtils.isEmpty(keyWord)) {
+                        if (valueAttribute.getValue().contains(keyWord) || valueAttribute.getAttributeName().contains(keyWord)) {
+                            valueAttributes.add(valueAttribute);
+                        }
+                    } else {
                         valueAttributes.add(valueAttribute);
                     }
-                } else {
-                    valueAttributes.add(valueAttribute);
                 }
-            }
-        });
+            });
+        }
         Map<String, Object> requestParams = new HashMap<>();
         requestParams.put("pageNumber", pageNumber);
         requestParams.put("pageSize", pageSize);
