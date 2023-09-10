@@ -13,5 +13,9 @@
 		<sql id="Base_Column_List">
             id, entity_historyid, baseline_id
 		</sql>
+	<select id="findEntityHistoryIdByBaseLineId" resultType="java.lang.String">
+		select entity_historyid from entity_baseline where  baseline_id = #{id}
+	</select>
+
 
 </mapper>

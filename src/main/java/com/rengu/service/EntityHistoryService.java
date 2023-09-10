@@ -43,5 +43,15 @@ public interface EntityHistoryService extends IService<EntityHistoryModel> {
      List<EntityHistoryRelationship> getRelatedEntities(String entityHistoryId, String entityType);
 
 
+    /**
+     * 查除当前实体以外的所有实体
+     * @param entityId
+     * @param excludedEntityHistoryId
+     * @return
+     */
+    List<EntityHistoryModel> getEntityHistoryByEntityId(String entityId, String excludedEntityHistoryId);
+
+
+
     void deleteByEntityId(String id);
 }

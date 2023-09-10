@@ -22,4 +22,10 @@ public interface EntityBaselineMapper extends BaseMapper<EntityBaselineModel> {
 			"JOIN entity_history eh ON eb.entity_historyid = eh.entity_historyid " +
 			"WHERE eb.baseline_id = #{baselineId}")
 	List<EntityInfo> findEntityInfoByBaselineId(@Param("baselineId") Integer baselineId);
+
+
+
+	List<String> findEntityHistoryIdByBaseLineId(Integer id);
+
+
 		}

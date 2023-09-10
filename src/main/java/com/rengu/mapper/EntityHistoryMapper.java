@@ -55,7 +55,22 @@ public interface EntityHistoryMapper extends BaseMapper<EntityHistoryModel> {
     void updateBatchIsTopById(@Param("entityHistories") List<EntityHistoryModel> entityHistories);
 
 
+    @Select("SELECT * FROM entity_history WHERE entity_id = #{entityId} AND entity_historyid != #{entityHistoryid}")
+    List<EntityHistoryModel> getEntityHistoryByEntityId(@Param("entityId") String entityId, @Param("entityHistoryid") String entityHistoryid);
 
+
+
+    @Select(" SELECT * FROM entity_history WHERE entity_historyid = #{entityHistoryid}")
+   EntityHistoryModel getEntityHistoryByEntityHistoryId(String  entityHistoryid);
+
+
+
+
+    void updateOtherIsTop(String entityId,String entityHistoryid);
+
+
+
+    void updateOtherChanges(String entityId,String entityHistoryid);
 
 
 }

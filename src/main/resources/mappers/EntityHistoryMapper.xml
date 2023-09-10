@@ -28,8 +28,20 @@
 
     </update>
 
+    <update id="updateOtherIsTop">
+        UPDATE entity_history
+        SET isTop = 0
+        WHERE entity_id = #{entityId} and entity_historyid !=  #{entityHistoryid}
+    </update>
+    <update id="updateOtherChanges">
+        UPDATE entity_history
+        SET changes = '暂无变更内容'
+        WHERE entity_id = #{entityId} and entity_historyid !=  #{entityHistoryid}
+    </update>
+
+
     <select id="getValueAttribute" resultType="com.rengu.entity.vo.ValueAttributeEntityVo">
-        SELECT ah.attribute_name, vh.value, eh.entity_name
+        SELECT DISTINCT  ah.attribute_name, vh.value, eh.entity_name
         FROM value_history vh
                  JOIN entity_history eh ON vh.entity_historyid = eh.entity_id
                  JOIN attribute_history ah ON vh.attribute_id = ah.attribute_id
@@ -75,6 +87,14 @@
             AND eh.entity_type LIKE CONCAT('%', #{entityType}, '%')
         </if>
     </select>
+
+
+
+<!--    <select id="getEntityHistoryByEntityId" resultType="com.rengu.entity.EntityHistoryModel">-->
+<!--        SELECT *-->
+<!--        FROM entity_history-->
+<!--        WHERE entity_id = #{entityId} AND entity_historyid != #{entityHistoryid}-->
+<!--    </select>-->
 
 
 </mapper>
