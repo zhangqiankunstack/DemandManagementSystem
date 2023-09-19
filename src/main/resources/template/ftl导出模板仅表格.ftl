@@ -711,60 +711,6 @@
                 <w:pPr>
                     <w:listPr>
                         <w:ilvl w:val="0"/>
-                        <w:ilfo w:val="2"/>
-                        <wx:t wx:val="2."/>
-                        <wx:font wx:val="Times New Roman"/>
-                    </w:listPr>
-                </w:pPr>
-                <w:r>
-                    <w:rPr>
-                        <w:rFonts w:hint="fareast"/>
-                        <wx:font wx:val="宋体"/>
-                    </w:rPr>
-                    <w:t>任务与活动需求追溯矩阵</w:t>
-                </w:r>
-            </w:p>
-            <w:p wsp:rsidR="00D0370F" wsp:rsidRDefault="001B1C47" wsp:rsidP="0004039F">
-                <w:pPr>
-                    <w:jc w:val="center"/>
-                </w:pPr>
-                <w:r wsp:rsidRPr="001D58EB">
-                    <w:rPr>
-                        <w:noProof/>
-                    </w:rPr>
-                    <w:pict>
-                        <v:shapetype id="_x0000_t75" coordsize="21600,21600" o:spt="75" o:preferrelative="t"
-                                     path="m@4@5l@4@11@9@11@9@5xe" filled="f" stroked="f">
-                            <v:stroke joinstyle="miter"/>
-                            <v:formulas>
-                                <v:f eqn="if lineDrawn pixelLineWidth 0"/>
-                                <v:f eqn="sum @0 1 0"/>
-                                <v:f eqn="sum 0 0 @1"/>
-                                <v:f eqn="prod @2 1 2"/>
-                                <v:f eqn="prod @3 21600 pixelWidth"/>
-                                <v:f eqn="prod @3 21600 pixelHeight"/>
-                                <v:f eqn="sum @0 0 1"/>
-                                <v:f eqn="prod @6 1 2"/>
-                                <v:f eqn="prod @7 21600 pixelWidth"/>
-                                <v:f eqn="sum @8 21600 0"/>
-                                <v:f eqn="prod @7 21600 pixelHeight"/>
-                                <v:f eqn="sum @10 21600 0"/>
-                            </v:formulas>
-                            <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/>
-                            <o:lock v:ext="edit" aspectratio="t"/>
-                        </v:shapetype>
-                        <w:binData w:name="wordml://1rd.png" xml:space="preserve">${(image1)!}</w:binData>
-                        <v:shape id="图片 1" o:spid="_x0000_i1025" type="#_x0000_t75"
-                                 style="width:209.55pt;height:323.1pt;visibility:visible;mso-wrap-style:square">
-                            <v:imagedata src="wordml://1rd.png" o:title=""/>
-                        </v:shape>
-                    </w:pict>
-                </w:r>
-            </w:p>
-            <w:p wsp:rsidR="00000000" wsp:rsidRDefault="00000000">
-                <w:pPr>
-                    <w:listPr>
-                        <w:ilvl w:val="0"/>
                         <w:ilfo w:val="1"/>
                         <wx:t wx:val="二、"/>
                         <wx:font wx:val="Times New Roman"/>
@@ -910,63 +856,6 @@
                     </w:tr>
                 </#list>
             </w:tbl>
-            <w:p wsp:rsidR="00000000" wsp:rsidRDefault="00000000">
-                <w:pPr>
-                    <w:listPr>
-                        <w:ilvl w:val="0"/>
-                        <w:ilfo w:val="3"/>
-                        <wx:t wx:val="2."/>
-                        <wx:font wx:val="Times New Roman"/>
-                    </w:listPr>
-                    <w:tabs>
-                        <w:tab w:val="left" w:pos="312"/>
-                    </w:tabs>
-                </w:pPr>
-                <w:r>
-                    <w:rPr>
-                        <w:rFonts w:hint="fareast"/>
-                        <wx:font wx:val="宋体"/>
-                    </w:rPr>
-                    <w:t>能力与系统需求追溯矩阵</w:t>
-                </w:r>
-            </w:p>
-            <w:p wsp:rsidR="00D0370F" wsp:rsidRDefault="001B1C47" wsp:rsidP="0004039F">
-                <w:pPr>
-                    <w:jc w:val="center"/>
-                </w:pPr>
-                <w:r wsp:rsidRPr="001D58EB">
-                    <w:rPr>
-                        <w:noProof/>
-                    </w:rPr>
-                    <w:pict>
-                        <v:shapetype id="_x0000_t75" coordsize="21600,21600" o:spt="75" o:preferrelative="t"
-                                     path="m@4@5l@4@11@9@11@9@5xe" filled="f" stroked="f">
-                            <v:stroke joinstyle="miter"/>
-                            <v:formulas>
-                                <v:f eqn="if lineDrawn pixelLineWidth 0"/>
-                                <v:f eqn="sum @0 1 0"/>
-                                <v:f eqn="sum 0 0 @1"/>
-                                <v:f eqn="prod @2 1 2"/>
-                                <v:f eqn="prod @3 21600 pixelWidth"/>
-                                <v:f eqn="prod @3 21600 pixelHeight"/>
-                                <v:f eqn="sum @0 0 1"/>
-                                <v:f eqn="prod @6 1 2"/>
-                                <v:f eqn="prod @7 21600 pixelWidth"/>
-                                <v:f eqn="sum @8 21600 0"/>
-                                <v:f eqn="prod @7 21600 pixelHeight"/>
-                                <v:f eqn="sum @10 21600 0"/>
-                            </v:formulas>
-                            <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/>
-                            <o:lock v:ext="edit" aspectratio="t"/>
-                        </v:shapetype>
-                        <w:binData w:name="wordml://2rd.png" xml:space="preserve">${(image2)!}</w:binData>
-                        <v:shape id="图片 2" o:spid="_x0000_i1025" type="#_x0000_t75"
-                                 style="width:209.55pt;height:323.1pt;visibility:visible;mso-wrap-style:square">
-                            <v:imagedata src="wordml://2rd.png" o:title=""/>
-                        </v:shape>
-                    </w:pict>
-                </w:r>
-            </w:p>
             <w:p wsp:rsidR="00000000" wsp:rsidRDefault="00000000">
                 <w:pPr>
                     <w:listPr>
@@ -1248,89 +1137,7 @@
                     </w:tr>
                 </#list>
             </w:tbl>
-            <w:p wsp:rsidR="00167208" wsp:rsidRDefault="00000000">
-                <w:pPr>
-                    <w:listPr>
-                        <w:ilvl w:val="0"/>
-                        <w:ilfo w:val="4"/>
-                        <wx:t wx:val="3."/>
-                        <wx:font wx:val="Times New Roman"/>
-                    </w:listPr>
-                    <w:tabs>
-                        <w:tab w:val="left" w:pos="312"/>
-                    </w:tabs>
-                </w:pPr>
-                <w:r>
-                    <w:rPr>
-                        <w:rFonts w:hint="fareast"/>
-                        <wx:font wx:val="宋体"/>
-                    </w:rPr>
-                    <w:t>系统</w:t>
-                </w:r>
-                <w:r>
-                    <w:rPr>
-                        <w:rFonts w:hint="fareast"/>
-                    </w:rPr>
-                    <w:t>-</w:t>
-                </w:r>
-                <w:r>
-                    <w:rPr>
-                        <w:rFonts w:hint="fareast"/>
-                        <wx:font wx:val="宋体"/>
-                    </w:rPr>
-                    <w:t>系统功能与活动</w:t>
-                </w:r>
-                <w:r>
-                    <w:rPr>
-                        <w:rFonts w:hint="fareast"/>
-                    </w:rPr>
-                    <w:t>-</w:t>
-                </w:r>
-                <w:r>
-                    <w:rPr>
-                        <w:rFonts w:hint="fareast"/>
-                        <wx:font wx:val="宋体"/>
-                    </w:rPr>
-                    <w:t>能力追溯矩阵</w:t>
-                </w:r>
-            </w:p>
-            <w:p wsp:rsidR="00D0370F" wsp:rsidRDefault="001B1C47" wsp:rsidP="0004039F">
-                <w:pPr>
-                    <w:jc w:val="center"/>
-                </w:pPr>
-                <w:r wsp:rsidRPr="001D58EB">
-                    <w:rPr>
-                        <w:noProof/>
-                    </w:rPr>
-                    <w:pict>
-                        <v:shapetype id="_x0000_t75" coordsize="21600,21600" o:spt="75" o:preferrelative="t"
-                                     path="m@4@5l@4@11@9@11@9@5xe" filled="f" stroked="f">
-                            <v:stroke joinstyle="miter"/>
-                            <v:formulas>
-                                <v:f eqn="if lineDrawn pixelLineWidth 0"/>
-                                <v:f eqn="sum @0 1 0"/>
-                                <v:f eqn="sum 0 0 @1"/>
-                                <v:f eqn="prod @2 1 2"/>
-                                <v:f eqn="prod @3 21600 pixelWidth"/>
-                                <v:f eqn="prod @3 21600 pixelHeight"/>
-                                <v:f eqn="sum @0 0 1"/>
-                                <v:f eqn="prod @6 1 2"/>
-                                <v:f eqn="prod @7 21600 pixelWidth"/>
-                                <v:f eqn="sum @8 21600 0"/>
-                                <v:f eqn="prod @7 21600 pixelHeight"/>
-                                <v:f eqn="sum @10 21600 0"/>
-                            </v:formulas>
-                            <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/>
-                            <o:lock v:ext="edit" aspectratio="t"/>
-                        </v:shapetype>
-                        <w:binData w:name="wordml://3rd.png" xml:space="preserve">${(image3)!}</w:binData>
-                        <v:shape id="图片 3" o:spid="_x0000_i1025" type="#_x0000_t75"
-                                 style="width:209.55pt;height:323.1pt;visibility:visible;mso-wrap-style:square">
-                            <v:imagedata src="wordml://3rd.png" o:title=""/>
-                        </v:shape>
-                    </w:pict>
-                </w:r>
-            </w:p>
+            <w:p wsp:rsidR="00167208" wsp:rsidRDefault="00000000"></w:p>
             <w:sectPr wsp:rsidR="00167208">
                 <w:pgSz w:w="11906" w:h="16838"/>
                 <w:pgMar w:top="1440" w:right="1800" w:bottom="1440" w:left="1800" w:header="851" w:footer="992"

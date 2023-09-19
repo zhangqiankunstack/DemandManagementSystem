@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.*;
+import com.rengu.entity.vo.EntityExportVo;
 import com.rengu.entity.vo.EntityQueryVo;
 import com.rengu.entity.vo.TraceVo;
 import com.rengu.mapper.EntityMapper;
@@ -15,6 +16,8 @@ import com.rengu.util.ExportMyWord;
 import com.rengu.util.FtlUtils;
 import com.rengu.util.ListPageUtil;
 
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -42,6 +45,11 @@ import java.util.Map;
  **/
 @Service
 public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> implements EntityService {
+
+    private static final Parser parser = Parser.builder().build();
+
+    private static final HtmlRenderer renderer = HtmlRenderer.builder().build();
+
     private static final String FUNCTION = "function";
     private static final String SYSTEM = "system";
     private static final String CAPABILITY = "capability";
@@ -51,6 +59,9 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
 
     @Autowired
     private RelationshipService relationshipService;
+
+    @Autowired
+    private EntityMapper entityMapper;
 
     @Autowired
     private ValueMapper valueMapper;
@@ -430,25 +441,36 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
         //获取所有任务实体列表
         LambdaQueryWrapper<EntityModel> lambda = new LambdaQueryWrapper<>();
         lambda.eq(EntityModel::getEntityType, "mission");
-        List<EntityModel> missionList = this.list(lambda);
+//        List<EntityModel> missionList = this.list(lambda);
+        List<EntityExportVo> missionList = entityMapper.getEntityWithDescriptionByType("mission");
+        missionList.stream().filter(e -> !StringUtils.isEmpty(e.getDescription()))
+                //解析前先替换掉回车换行，取到文本后再替换回来
+                .forEach(e -> e.setDescription(org.jsoup.Jsoup.parse(renderer.render(parser.parse(e.getDescription().replaceAll("\n", "#replacementForChangeLine#")))).text().replaceAll("#replacementForChangeLine#", "<w:br/>")));
+
 
         lambda.clear();
         //获取所有能力的实体列表
         lambda.eq(EntityModel::getEntityType, "capability");
-        List<EntityModel> capabilityList = this.list(lambda);
+//        List<EntityModel> capabilityList = this.list(lambda);
+        List<EntityExportVo> capabilityList = entityMapper.getEntityWithDescriptionByType("capability");
+        capabilityList.stream().filter(e -> !StringUtils.isEmpty(e.getDescription())).forEach(e -> e.setDescription(org.jsoup.Jsoup.parse(renderer.render(parser.parse(e.getDescription().replaceAll("\n", "#replacementForChangeLine#")))).text().replaceAll("#replacementForChangeLine#", "<w:br/>")));
 
         lambda.clear();
 
         //获取所有系统的实体列表
         lambda.eq(EntityModel::getEntityType, "system");
-        List<EntityModel> systemList = this.list(lambda);
+//        List<EntityModel> systemList = this.list(lambda);
+        List<EntityExportVo> systemList = entityMapper.getEntityWithDescriptionByType("system");
+        systemList.stream().filter(e -> !StringUtils.isEmpty(e.getDescription())).forEach(e -> e.setDescription(org.jsoup.Jsoup.parse(renderer.render(parser.parse(e.getDescription().replaceAll("\n", "#replacementForChangeLine#")))).text().replaceAll("#replacementForChangeLine#", "<w:br/>")));
 
         lambda.clear();
 
         //获取所有系统功能的实体列表
         lambda.eq(EntityModel::getEntityType, "function");
-        List<EntityModel> functionList = this.list(lambda);
-
+//        List<EntityModel> functionList = this.list(lambda);
+        List<EntityExportVo> functionList = entityMapper.getEntityWithDescriptionByType("function");
+        functionList.stream().filter(e -> !StringUtils.isEmpty(e.getDescription()))
+                .forEach(e -> e.setDescription(org.jsoup.Jsoup.parse(renderer.render(parser.parse(e.getDescription().replaceAll("\n", "#replacementForChangeLine#")))).text().replaceAll("#replacementForChangeLine#", "<w:br/>")));
         //获取矩阵任务需求-能力需求矩阵
         Map<String, Object> missionMap = missionAndCapabilityTrace();
         Map<String, Object> systemMap = CapabilityAndSystemTrace();//能力与系统
