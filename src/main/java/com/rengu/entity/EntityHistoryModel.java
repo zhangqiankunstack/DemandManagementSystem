@@ -40,7 +40,7 @@ public class EntityHistoryModel implements Serializable {
     private String entityType;
 
     @ApiModelProperty(value = "0是false，1是ture")
-    @TableField("isTop")
+//    @TableField("isTop")
     private Integer isTop;
 
     @ApiModelProperty(value = "变更内容")

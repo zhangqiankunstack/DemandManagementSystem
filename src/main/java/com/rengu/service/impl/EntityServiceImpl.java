@@ -89,7 +89,8 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
      */
     @Override
     public List<EntityModel> connect(HostInfoModel hostInfo, String keyWord) {
-        String databaseUrl = "jdbc:mysql://" + hostInfo.getHostIp() + ":" + hostInfo.getPort() + "/" + hostInfo.getDbName() + "?serverTimezone=GMT";
+        String databaseUrl = "jdbc:kingbase8://" + hostInfo.getHostIp() + ":" + hostInfo.getPort() + "/" + hostInfo.getDbName() + "?serverTimezone=GMT";
+//        String databaseUrl = "jdbc:mysql://" + hostInfo.getHostIp() + ":" + hostInfo.getPort() + "/" + hostInfo.getDbName() + "?serverTimezone=GMT";
         String sql = entitySql;
         try (Connection connection = DriverManager.getConnection(databaseUrl, hostInfo.getUsername(), hostInfo.getPassword())) {
             if (connection != null) {

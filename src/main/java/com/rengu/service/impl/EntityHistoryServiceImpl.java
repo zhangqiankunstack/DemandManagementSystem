@@ -147,7 +147,7 @@ public class EntityHistoryServiceImpl extends ServiceImpl<EntityHistoryMapper, E
         if (!StringUtils.isEmpty(keyWord)) {
             queryWrapper.like("entity_type", keyWord);
         }
-        queryWrapper.eq("isTop",1);
+        queryWrapper.eq("is_top",1);
         List<EntityHistoryModel> entities = this.list(queryWrapper);
         return new ListPageUtil().separatePageList(entities, requestParams);
 

@@ -65,6 +65,9 @@ public class DataBaseFactoryService {
                     case "PostgreSQL":
                         sql = "select version()";
                         break;
+                    case "kingbase8":
+                        sql = "select 1";
+                        break;
                 }
                 rs = statement.executeQuery(sql);
                 if (rs.next()) {
@@ -158,6 +161,9 @@ public class DataBaseFactoryService {
                 break;
             case "Postgresql":
                 dataBase = "org.postgresql.Driver";
+                break;
+            case "kingbase8":
+                dataBase = "com.kingbase8.Driver";
                 break;
         }
         return dataBase;

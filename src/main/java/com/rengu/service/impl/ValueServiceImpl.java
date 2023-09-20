@@ -55,7 +55,8 @@ public class ValueServiceImpl extends ServiceImpl<ValueMapper, ValueModel> imple
      */
     @Override
     public List<ValueAttribute> connect(HostInfoModel hostInfo) {
-        String databaseUrl = "jdbc:mysql://" + hostInfo.getHostIp() + ":" + hostInfo.getPort() + "/" + hostInfo.getDbName() + "?serverTimezone=GMT";
+        String databaseUrl = "jdbc:kingbase8://" + hostInfo.getHostIp() + ":" + hostInfo.getPort() + "/" + hostInfo.getDbName() + "?serverTimezone=GMT";
+//        String databaseUrl = "jdbc:mysql://" + hostInfo.getHostIp() + ":" + hostInfo.getPort() + "/" + hostInfo.getDbName() + "?serverTimezone=GMT";
         String sql = valueSql;
         try (Connection connection = DriverManager.getConnection(databaseUrl, hostInfo.getUsername(), hostInfo.getPassword())) {
             if (connection != null) {

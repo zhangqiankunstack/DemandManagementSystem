@@ -2,6 +2,7 @@ package com.rengu.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.sql.Connection;
@@ -247,7 +248,7 @@ public class DatabaseUtils {
             stmt.setString(1, valueId);
             stmt.setString(2, entityId);
             stmt.setString(3, attributeId);
-            stmt.setString(4, value);
+            stmt.setString(4, StringUtils.isEmpty(value) ? " " : value);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
