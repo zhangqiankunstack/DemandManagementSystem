@@ -3,6 +3,7 @@ package com.rengu.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rengu.entity.EntityModel;
 import com.rengu.entity.HostInfoModel;
+import com.rengu.entity.vo.EntityInfo;
 import com.rengu.entity.vo.EntityQueryVo;
 
 import javax.servlet.http.HttpServletResponse;
@@ -33,4 +34,6 @@ public interface EntityService extends IService<EntityModel> {
     void exportReport(List<String> base64List,String templateId,HttpServletResponse response);
 
     void exportSchemeAppraisal(String templateId, String filePath, String fileName, HttpServletResponse response);
+
+    List<EntityModel> fetchUnrelatedEntities(List<String> ids);
 }

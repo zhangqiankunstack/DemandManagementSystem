@@ -5,11 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.*;
-import com.rengu.entity.vo.EntityExportVo;
-import com.rengu.entity.vo.EntityQueryVo;
-import com.rengu.entity.vo.TraceVo;
+import com.rengu.entity.vo.*;
 import com.rengu.mapper.EntityMapper;
 import com.rengu.mapper.RelationshipMapper;
+import com.rengu.mapper.TemplateMapper;
 import com.rengu.mapper.ValueMapper;
 import com.rengu.service.*;
 import com.rengu.util.ExportMyWord;
@@ -32,10 +31,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName EntityServiceImpl
@@ -62,6 +59,9 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
 
     @Autowired
     private EntityMapper entityMapper;
+
+    @Autowired
+    private TemplateMapper templateMapper;
 
     @Autowired
     private ValueMapper valueMapper;
@@ -438,6 +438,15 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
      */
     @Override
     public void exportReport(List<String> base64List, String templateId, HttpServletResponse response) {
+        //获取模板以及相关文件信息
+        TemplateWithFileVo templateWithFileVo = templateMapper.getTemplateAndFileInformationByTemplateId(templateId);
+        if(templateWithFileVo == null){
+            throw new IllegalArgumentException("所传templateId找不到对应模板");
+        }
+        if(StringUtils.isEmpty(templateWithFileVo.getLocalPath())){
+            throw new IllegalArgumentException("找不到模板对应存储路径");
+        }
+
         //获取所有任务实体列表
         LambdaQueryWrapper<EntityModel> lambda = new LambdaQueryWrapper<>();
         lambda.eq(EntityModel::getEntityType, "mission");
@@ -486,7 +495,12 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
         map.put("image1", base64List.get(0));
         map.put("image2", base64List.get(1));
         map.put("image3", base64List.get(2));
-        FtlUtils.reportPeisOrgReservation(map, response);
+//        FtlUtils.reportPeisOrgReservation(map, response);
+        try {
+            FtlUtils.reportPeisOrgReservation(map, templateWithFileVo.getLocalPath(), "logs/" + templateWithFileVo.getFileName() + ".docx", templateWithFileVo.getFileName() + ".docx", response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -534,6 +548,22 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
 //        exportMyWord.createWord(mapData, "方案评审证书.ftl", filePath+fileName+".doc");
         exportMyWord.createWord(mapData, "ftl导出模板.ftl", filePath+fileName+".doc");
 
+    }
+
+    @Override
+    public List<EntityModel> fetchUnrelatedEntities(List<String> ids) {
+        Set<String> relatedEntitiesIds = new HashSet<>();
+        //获取到所有存在关联关系的实体id
+        relationshipMapper.getRelationshipsByEntityIds(ids)
+                .stream().forEach(r -> {
+                   if(ids.contains(r.getEntityId1()) || ids.contains(r.getEntityId2())){
+                       relatedEntitiesIds.add(r.getEntityId1());
+                       relatedEntitiesIds.add(r.getEntityId2());
+                   }
+                });
+        //去除掉存在关联关系的实体id
+        ids.removeAll(relatedEntitiesIds);
+        return entityMapper.selectBatchIds(ids);
     }
 
 }

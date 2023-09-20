@@ -11,6 +11,7 @@ import com.rengu.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.sql.*;
@@ -102,7 +103,7 @@ public class RelationshipServiceImpl extends ServiceImpl<RelationshipMapper, Rel
         }
         List<RelationshipModel> relationshipModels = (List<RelationshipModel>) redisUtils.get(RedisKeyPrefix.RELATIONSHIP);
         List<EntityAndEntityVo> entityAndEntityVos = new ArrayList<>();
-        if (relationshipModels != null || relationshipModels.size() > 0) {
+        if (!CollectionUtils.isEmpty(relationshipModels)) {
             List<RelationshipModel> commonRelationList = CollUtil.filter(relationshipModels, hostInfoServiceImpl.getRelationshipByParams(entityId));
 
             List<EntityModel> entityModels = (List<EntityModel>) redisUtils.get(RedisKeyPrefix.ENTITY);

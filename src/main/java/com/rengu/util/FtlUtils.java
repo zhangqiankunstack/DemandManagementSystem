@@ -20,7 +20,6 @@ public class FtlUtils {
     private static final String ENCODING = "UTF-8";
     private static Configuration cfg = new Configuration();
 
-
     /**
      * 核心方法
      *
@@ -52,7 +51,11 @@ public class FtlUtils {
 
     // 获取模板对象
     public static Template getTemplate(String templateFileName) throws IOException {
-        return cfg.getTemplate(templateFileName, ENCODING);
+        //设置绝对路径获取template
+        File templateFile = new File(templateFileName);
+        File templateDir = templateFile.getParentFile();
+        cfg.setDirectoryForTemplateLoading(templateDir);
+        return cfg.getTemplate(templateFile.getName(), ENCODING);
     }
 
     /**

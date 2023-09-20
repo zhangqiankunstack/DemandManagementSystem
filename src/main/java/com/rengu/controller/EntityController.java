@@ -1,6 +1,7 @@
 package com.rengu.controller;
 
 import com.rengu.entity.*;
+import com.rengu.entity.vo.FetchUnrelatedEntitiesQueryVo;
 import com.rengu.service.EntityService;
 import com.rengu.service.RequirementService;
 import com.rengu.util.ListPageUtil;
@@ -103,6 +104,12 @@ public class EntityController {
     @DeleteMapping("/deletedById")
     public Result deletedById(@RequestParam String id) {
         return ResultUtils.build(entityModelService.deletedById(id));
+    }
+
+    @ApiOperation("根据实体ids获取无关联关系的实体")
+    @PostMapping("/unrelated")
+    public Result fetchUnrelatedEntities(@RequestBody FetchUnrelatedEntitiesQueryVo query){
+        return ResultUtils.build(entityModelService.fetchUnrelatedEntities(query.getIds()));
     }
 
     @CrossOrigin(origins = "http://localhost",methods = {RequestMethod.POST})
