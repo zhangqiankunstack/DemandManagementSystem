@@ -130,7 +130,7 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, ReviewModel> im
     }
 
     @Override
-    public Boolean updateStatusById(Integer id, Integer status) {
+    public Boolean updateStatusById(String id, Integer status) {
         ReviewModel reviewModel = new ReviewModel();
         reviewModel.setStatus(status);
         UpdateWrapper<ReviewModel> updateWrapper = new UpdateWrapper<>();
@@ -179,14 +179,14 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, ReviewModel> im
 
         // 判断是否存在关联关系
         boolean hasRelationship = true;
-        for (String entityId : entityIds) {
-            if (!entityS.contains(entityId)) {
-                entitiesWithoutRelationship.add(entityId);
-                // 如果实体ID不在relatedEntityIds集合中，则说明没有关联关系
-                hasRelationship = false;
-
-            }
-        }
+//        for (String entityId : entityIds) {
+//            if (!entityS.contains(entityId)) {
+//                entitiesWithoutRelationship.add(entityId);
+//                // 如果实体ID不在relatedEntityIds集合中，则说明没有关联关系
+//                hasRelationship = false;
+//
+//            }
+//        }
 
         if (hasRelationship) {
 
@@ -244,7 +244,7 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, ReviewModel> im
 
 
     @Override
-    public List<EntityModel> findStart(Integer id) {
+    public List<EntityModel> findStart(String id) {
 
         List<String> entity_ids = reviewEntityMapper.selectByReviewId(id);
 
@@ -269,7 +269,7 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, ReviewModel> im
     }
 
     @Override
-    public Object saveStatusAndReview(Integer id, Integer status, List<OpinionModel> dataList) {
+    public Object saveStatusAndReview(String id, Integer status, List<OpinionModel> dataList) {
         ReviewModel reviewModel = new ReviewModel();
         reviewModel.setStatus(status);
         UpdateWrapper<ReviewModel> updateWrapper = new UpdateWrapper<>();

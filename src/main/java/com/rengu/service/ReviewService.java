@@ -27,12 +27,12 @@ public interface ReviewService extends IService<ReviewModel> {
     Boolean goBy(List<String> ids);
 
 
-    Boolean updateStatusById(Integer id, Integer status);
+    Boolean updateStatusById(String id, Integer status);
 
     public Object findEntitiesWithoutRelationship(List<String> entityIds, String name, String sponsor);
 
 
-    List<EntityModel> findStart(Integer id);
+    List<EntityModel> findStart(String id);
 
 
     List<ValueAttribute> getAttributeAndValue(String entityId, String attributeName, String value);
@@ -46,7 +46,7 @@ public interface ReviewService extends IService<ReviewModel> {
     List<FourClasses> giveSome();
 
 
-    Object saveStatusAndReview(Integer id, Integer status, List<OpinionModel> dataList);
+    Object saveStatusAndReview(String id, Integer status, List<OpinionModel> dataList);
 
 
 }

@@ -8,6 +8,8 @@ import com.rengu.util.ListPageUtil;
 import com.rengu.util.*;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName EntityController
@@ -47,10 +50,25 @@ public class EntityController {
     @ApiOperation(value = "查询元数据实体列表(物化采集)")
     @PostMapping("/findEntityModeList")
     public Result findEntityModeList(@RequestBody HostInfoModel hostInfo, @RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        List<EntityModel> entityModels = entityModelService.connect(hostInfo, keyWord);
-        if (entityModels.size() != 0) {
+//        List<EntityModel> entityModels = entityModelService.connect(hostInfo, keyWord);
+//        if (entityModels.size() != 0) {
+//            redisUtils.set(RedisKeyPrefix.ENTITY, entityModels, 7200L);
+//        }
+
+        List<EntityModel> entityModels = null;
+        //不在从远程库中获取， 防止多数数据被少量数据覆盖
+        if(!StringUtils.isEmpty(keyWord)){
+            entityModels = (List<EntityModel>) redisUtils.get(RedisKeyPrefix.ENTITY);
+            if(!CollectionUtils.isEmpty(entityModels)){
+                entityModels = entityModels.stream().filter(e -> keyWord.equals(e.getEntityType())).collect(Collectors.toList());
+            }
+        }else{
+            entityModels = entityModelService.connect(hostInfo, keyWord);
+            if (entityModels.size() != 0) {
             redisUtils.set(RedisKeyPrefix.ENTITY, entityModels, 7200L);
+            }
         }
+
         Map<String, Object> requestParams = new HashMap<>();
         requestParams.put("pageNumber", pageNumber);
         requestParams.put("pageSize", pageSize);

@@ -30,6 +30,12 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
     @Value("${server.port}")
     private String port;
 
+    @Value("${service.ip}")
+    private String serviceIp;
+
+    @Value("${service.port}")
+    private String servicePort;
+
     @Override
     public String uploadFile(MultipartFile multipartFile) {
         try {
@@ -105,9 +111,14 @@ public class RequirementServiceImpl extends ServiceImpl<RequirementMapper, Requi
 
             // 返回给前端的图片保存路径；前台可以根据返回的路径拼接完整地址，即可在浏览器上预览该图片
             String filePath = "upload/avatar" + File.separator + fileName;
-            InetAddress localHost = InetAddress.getLocalHost();
-            String ipAddress = localHost.getHostAddress();
-            String path = ipAddress + ":" + port + File.separator + filePath;
+
+//            InetAddress localHost = InetAddress.getLocalHost();
+//            String ipAddress = localHost.getHostAddress();
+//            String path = ipAddress + ":" + port + File.separator + filePath;
+
+            //修改为通过配置获取ip，需要获取到nginx的代理地址对用户提供访问
+            String path = serviceIp + ":" + servicePort + File.separator + filePath;
+
             if (path.contains("\\")) {
                 path = path.replace("\\", "/");
             }

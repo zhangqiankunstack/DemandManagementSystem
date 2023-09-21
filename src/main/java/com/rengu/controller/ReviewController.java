@@ -104,7 +104,7 @@ public class ReviewController {
 
     @PostMapping("/updateStatus")
     @ApiOperation(value = "修改评审状态")
-    public Result updateStatus(@RequestParam Integer id, @RequestParam Integer status) {
+    public Result updateStatus(@RequestParam String id, @RequestParam Integer status) {
 
         return ResultUtils.build(reviewModelService.updateStatusById(id, status));
 
@@ -127,7 +127,7 @@ public class ReviewController {
     @GetMapping("/start")
     public Result start(@RequestParam Integer pageNumber,
                         @RequestParam Integer pageSize,
-                        @RequestParam Integer id) {
+                        @RequestParam String id) {
         List<EntityModel> list = reviewModelService.findStart(id);
         Map<String, Object> requestParams = new HashMap<>();
         requestParams.put("pageNumber", pageNumber);
@@ -174,7 +174,7 @@ public class ReviewController {
 
     @PostMapping("/saveStatusAndReview")
     @ApiOperation(value = "点击保存修改状态，批量增加")
-    public Result saveStatusAndReview(@RequestParam Integer id, @RequestParam Integer status, @RequestBody List<OpinionModel> opinionList) {
+    public Result saveStatusAndReview(@RequestParam String id, @RequestParam Integer status, @RequestBody List<OpinionModel> opinionList) {
 //		reviewModelService.updateStatusById(id, status);
 //		opinionService.batchInsert(opinionList);
         reviewModelService.saveStatusAndReview(id, status, opinionList);
