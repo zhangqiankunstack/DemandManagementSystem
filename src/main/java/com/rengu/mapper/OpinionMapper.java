@@ -17,5 +17,5 @@ public interface OpinionMapper extends BaseMapper<OpinionModel> {
 
     void insertBatch(List<OpinionModel> opinionList);
 
-    List<OpinionModel> findByReviewId(Integer reviewId);
+    List<OpinionModel> findByReviewId(String reviewId);
 }

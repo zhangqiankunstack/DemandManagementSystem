@@ -155,7 +155,7 @@ public class ReviewController {
 
     @ApiOperation(value = "四个不同的集合")
     @GetMapping("/findFour")
-    public Result findFour(Integer id) {
+    public Result findFour(String id) {
 
         FourClasses fourClasses = new FourClasses();
         List<CriterionModel> listC = criterionService.list();

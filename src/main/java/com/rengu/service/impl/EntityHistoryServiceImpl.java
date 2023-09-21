@@ -60,7 +60,7 @@ public class EntityHistoryServiceImpl extends ServiceImpl<EntityHistoryMapper, E
                 // 获取该实体最新的历史记录
                 EntityHistoryModel latestHistory = baseMapper.selectOne(new QueryWrapper<EntityHistoryModel>()
                         .eq("entity_id", entityId)
-                        .orderByDesc("isTop")
+                        .orderByDesc("is_top")
                         .last("LIMIT 1"));
 
                 // 版本号自增

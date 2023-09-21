@@ -29,10 +29,10 @@
 
 	<!-- 批量插入 -->
 	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
-		INSERT INTO opinion (name, expert_opinion, status, review_id)
+		INSERT INTO opinion (id, name, expert_opinion, status, review_id)
 		VALUES
 		<foreach collection="list" item="item" index="index" separator=",">
-			(#{item.name}, #{item.expertOpinion}, #{item.status}, #{item.reviewId})
+			(#{item.id}, #{item.name}, #{item.expertOpinion}, #{item.status}, #{item.reviewId})
 		</foreach>
 	</insert>
 

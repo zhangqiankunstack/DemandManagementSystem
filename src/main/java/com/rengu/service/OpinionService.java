@@ -16,5 +16,5 @@ public interface OpinionService extends IService<OpinionModel> {
 
     public void batchInsert(List<OpinionModel> dataList);
 
-    List<OpinionModel> findByReviewId(Integer reviewId);
+    List<OpinionModel> findByReviewId(String reviewId);
 }

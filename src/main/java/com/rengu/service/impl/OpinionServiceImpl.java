@@ -26,7 +26,7 @@ public class OpinionServiceImpl extends ServiceImpl<OpinionMapper, OpinionModel>
     }
 
     @Override
-    public List<OpinionModel> findByReviewId(Integer reviewId) {
+    public List<OpinionModel> findByReviewId(String reviewId) {
         return opinionMapper.findByReviewId(reviewId);
     }
 }

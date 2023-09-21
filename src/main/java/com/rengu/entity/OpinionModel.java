@@ -39,7 +39,7 @@ public class OpinionModel implements Serializable {
     private Integer status;
 
     @ApiModelProperty(value = "流程表")
-    private Integer reviewId;
+    private String reviewId;
 
 
 }
