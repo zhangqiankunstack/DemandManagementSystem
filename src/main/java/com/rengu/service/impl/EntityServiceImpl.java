@@ -1,6 +1,7 @@
 package com.rengu.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -23,6 +24,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 
@@ -564,6 +566,9 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
                 });
         //去除掉存在关联关系的实体id
         ids.removeAll(relatedEntitiesIds);
+        if(CollectionUtils.isEmpty(ids)){
+            return new ArrayList<>();
+        }
         return entityMapper.selectBatchIds(ids);
     }
 

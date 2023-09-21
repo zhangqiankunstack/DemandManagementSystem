@@ -70,7 +70,7 @@ public class BaselineController {
 
     @PostMapping("/update")
     @ApiOperation(value = "点击修改，修改基线")
-    public Result update(@RequestParam Integer id, @RequestParam String baselineName, @RequestParam String baselineDescription, @RequestParam Integer priority) {
+    public Result update(@RequestParam String id, @RequestParam String baselineName, @RequestParam String baselineDescription, @RequestParam Integer priority) {
 
         baselineModelService.updateBaseline(id, baselineName, baselineDescription, priority);
         return ResultUtils.build("ok");

@@ -1,10 +1,12 @@
 package com.rengu.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rengu.entity.*;
 import com.rengu.entity.vo.*;
+import com.rengu.mapper.EntityMapper;
 import com.rengu.mapper.RelationshipMapper;
 import com.rengu.service.*;
 import com.rengu.util.*;
@@ -16,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName RelationshipServiceImpl
@@ -25,6 +28,12 @@ import java.util.*;
  **/
 @Service
 public class RelationshipServiceImpl extends ServiceImpl<RelationshipMapper, RelationshipModel> implements RelationshipService {
+
+    @Autowired
+    private RelationshipMapper relationshipMapper;
+
+    @Autowired
+    private EntityMapper entityMapper;
 
     @Value("${mysql.relationshipSql}")
     private String relationshipSql;
@@ -89,7 +98,35 @@ public class RelationshipServiceImpl extends ServiceImpl<RelationshipMapper, Rel
 
     @Override
     public Map<String, Object> getAllRelationship(String entityId, String keyWord, Integer pageNumber, Integer pageSize) {
-        List<EntityRelationship> entityRelationships = hostInfoService.getEntityRelationships(entityId, keyWord);
+//        List<EntityRelationship> entityRelationships = hostInfoService.getEntityRelationships(entityId, keyWord);
+        List<String> ids = new ArrayList<>();
+        List<RelationshipModel> relationshipsByEntityIds = relationshipMapper.getRelationshipsByEntityIds(Collections.singletonList(entityId));
+        Map<String, RelationshipModel> entityRelationshipMap = new HashMap<>();
+        relationshipsByEntityIds.stream().forEach(r -> {
+            if(entityId.equals(r.getEntityId1())){
+                ids.add(r.getEntityId2());
+                entityRelationshipMap.put(r.getEntityId2(), r);
+            }else{
+                ids.add(r.getEntityId1());
+                entityRelationshipMap.put(r.getEntityId1(), r);
+            }
+        });
+        LambdaQueryWrapper<EntityModel> wrapper = new LambdaQueryWrapper<EntityModel>().in(EntityModel::getEntityId, ids);
+        if(!StringUtils.isEmpty(keyWord)){
+            wrapper.and(entityModelLambdaQueryWrapper -> entityModelLambdaQueryWrapper.eq(EntityModel::getEntityType, keyWord));
+        }
+        List<EntityRelationship> entityRelationships = entityMapper.selectList(wrapper)
+                .stream().map(e -> {
+                    EntityRelationship entityRelationship = new EntityRelationship();
+                    entityRelationship.setEntityId1(e.getEntityId());
+                    entityRelationship.setEntityName1(e.getEntityName());
+                    entityRelationship.setEntityType(e.getEntityType());
+                    RelationshipModel relationshipModel = entityRelationshipMap.get(e.getEntityId());
+                    entityRelationship.setRelationshipId(relationshipModel.getRelationshipId());
+                    entityRelationship.setRelationshipType(relationshipModel.getRelationshipType());
+                    return entityRelationship;
+                }).collect(Collectors.toList());
+
         Map<String, Object> requestParams = new HashMap<>();
         requestParams.put("pageNumber", pageNumber);
         requestParams.put("pageSize", pageSize);

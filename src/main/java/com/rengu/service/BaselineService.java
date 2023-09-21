@@ -21,7 +21,7 @@ public interface BaselineService extends IService<BaselineModel> {
         public void addBaseline(String baselineName, String baselineDescription,Integer priority);
 
 
-        public void updateBaseline(Integer id, String baselineName, String baselineDescription, Integer priority);
+        public void updateBaseline(String id, String baselineName, String baselineDescription, Integer priority);
 
 
         public ToJson allForDownload(Integer id);

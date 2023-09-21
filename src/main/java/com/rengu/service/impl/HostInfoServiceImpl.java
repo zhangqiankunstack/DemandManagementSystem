@@ -187,6 +187,10 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
 
 //        commonEntityList.stream().forEach(entityModel -> {
         for (EntityModel entityModel : commonEntityList) {
+            //清空该entity的相关关联表数据
+            relationshipService.remove(new LambdaQueryWrapper<RelationshipModel>().eq(RelationshipModel::getEntityId1, entityModel.getEntityId()).or().eq(RelationshipModel::getEntityId2, entityModel.getEntityId()));
+            valueService.remove(new LambdaQueryWrapper<ValueModel>().eq(ValueModel::getEntityId, entityModel.getEntityId()));
+
             entityService.saveOrUpdate(entityModel);
             List<RelationshipModel> commonRelationList = CollUtil.filter(relationship, getRelationshipByParams(entityModel.getEntityId()));
             relationshipService.saveOrUpdateBatch(commonRelationList);

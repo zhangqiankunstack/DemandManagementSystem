@@ -76,7 +76,7 @@ public class BaselineServiceImpl extends ServiceImpl<BaselineMapper, BaselineMod
 	}
 
     @Override
-    public void updateBaseline(Integer id, String baselineName, String baselineDescription, Integer priority) {
+    public void updateBaseline(String id, String baselineName, String baselineDescription, Integer priority) {
         BaselineModel baseline = new BaselineModel();
         baseline.setId(id);
         baseline.setBaselineName(baselineName);

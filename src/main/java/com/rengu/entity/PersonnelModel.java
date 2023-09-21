@@ -26,8 +26,8 @@ public class PersonnelModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    @TableId(value = "id", type = IdType.UUID)
+    private String id;
 
     @ApiModelProperty(value = "专家姓名")
     private String name;
