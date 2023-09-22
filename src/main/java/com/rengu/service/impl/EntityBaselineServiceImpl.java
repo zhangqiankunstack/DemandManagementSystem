@@ -23,7 +23,7 @@ import java.util.List;
 	@Autowired
 	private EntityBaselineMapper entityBaselineMapper;
 	@Override
-	public List<EntityInfo> findEntityInfoByBaselineId(Integer baselineId) {
+	public List<EntityInfo> findEntityInfoByBaselineId(String baselineId) {
 		List<EntityInfo> entityInfoByBaselineId = entityBaselineMapper.findEntityInfoByBaselineId(baselineId);
 		return entityInfoByBaselineId;
 	}

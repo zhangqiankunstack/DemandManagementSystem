@@ -80,7 +80,7 @@ public class BaselineController {
 
     @ApiOperation(value = "查询流程表")
     @GetMapping("/list")
-    public Result list(Integer id) {
+    public Result list(String id) {
         BaselineModel byId = baselineModelService.getById(id);
         return ResultUtils.build(byId);
     }
@@ -88,7 +88,7 @@ public class BaselineController {
 
     @ApiOperation(value = "查询流程表-实体属性")
     @GetMapping("/listForInfo")
-    public Result listForInfo(@RequestParam Integer id, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+    public Result listForInfo(@RequestParam String id, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
 
         List<EntityInfo> entityInfoByBaselineId = entityBaselineService.findEntityInfoByBaselineId(id);
 

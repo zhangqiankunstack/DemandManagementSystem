@@ -1,11 +1,14 @@
 package com.rengu.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rengu.entity.EntityHistoryModel;
 import com.rengu.entity.HostInfoModel;
+import com.rengu.entity.RelationshipHistoryModel;
 import com.rengu.entity.Result;
 import com.rengu.entity.vo.*;
+import com.rengu.mapper.RelationshipHistoryMapper;
 import com.rengu.service.EntityHistoryService;
 import com.rengu.util.ListPageUtil;
 import com.rengu.util.ResultUtils;
@@ -14,12 +17,15 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName EntityHistoryController
@@ -34,6 +40,9 @@ public class EntityHistoryController {
 
     @Autowired
     public EntityHistoryService entityHistoryModelService;
+
+    @Autowired
+    private RelationshipHistoryMapper relationshipHistoryMapper;
 
     @ApiOperation("分页模糊查询历史实体列表（本地数据）isTop为1及置顶")
     @GetMapping("/getAllEntityHistory")
@@ -83,8 +92,32 @@ public class EntityHistoryController {
 
     @ApiOperation("查询历史关联关系")
     @GetMapping("/getAllRelationship")
-    public Result getAllRelationship(@RequestParam String entityHistoryId, @RequestParam(required = false) String entityType, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        List<EntityHistoryRelationship> relatedEntities = entityHistoryModelService.getRelatedEntities(entityHistoryId, entityType);
+    public Result getAllRelationship(@RequestParam String entityHistoryId, @RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+//        List<EntityHistoryRelationship> relatedEntities = entityHistoryModelService.getRelatedEntities(entityHistoryId, entityType);
+        List<EntityHistoryRelationship> relatedEntities = new ArrayList<>();
+
+        //获取到所有对的etityHistory
+        Map<String, EntityHistoryModel> entityHistoryMap = entityHistoryModelService.list().stream().collect(Collectors.toMap(EntityHistoryModel::getEntityHistoryid, Function.identity()));
+        relationshipHistoryMapper.selectList(new LambdaQueryWrapper<RelationshipHistoryModel>().eq(RelationshipHistoryModel::getEntityHistoryId1, entityHistoryId)
+                .or(wrapper -> wrapper.eq(RelationshipHistoryModel::getEntityHistoryId2, entityHistoryId))).stream().forEach(r ->{
+                    EntityHistoryModel entity1 = entityHistoryMap.get(r.getEntityHistoryId1());
+                    EntityHistoryModel entity2 = entityHistoryMap.get(r.getEntityHistoryId2());
+                    EntityHistoryRelationship result = new EntityHistoryRelationship();
+                    if(entityHistoryId.equals(r.getEntityHistoryId1()) && entity2 != null && (StringUtils.isEmpty(keyWord) || entity2.getEntityType().equals(keyWord))){
+                        result.setEntityId1(entity2.getEntityHistoryid());
+                        result.setEntityName1(entity2.getEntityName());
+                        result.setEntityType(entity2.getEntityType());
+                        result.setRelationshipType(r.getRelationshipType());
+                        relatedEntities.add(result);
+                    }else if(entityHistoryId.equals(r.getEntityHistoryId2()) && entity1 != null && (StringUtils.isEmpty(keyWord) || entity2.getEntityType().equals(keyWord))){
+                        result.setEntityId1(entity1.getEntityHistoryid());
+                        result.setEntityName1(entity1.getEntityName());
+                        result.setEntityType(entity1.getEntityType());
+                        result.setRelationshipType(r.getRelationshipType());
+                        relatedEntities.add(result);
+                    }
+                });
+
 
         Map<String, Object> requestParams = new HashMap<>();
         requestParams.put("pageNumber", pageNumber);

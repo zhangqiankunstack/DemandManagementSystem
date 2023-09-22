@@ -17,7 +17,7 @@ import java.util.List;
  **/
 public interface EntityBaselineService extends IService<EntityBaselineModel> {
 
-        List<EntityInfo> findEntityInfoByBaselineId(Integer baselineId);
+        List<EntityInfo> findEntityInfoByBaselineId(String baselineId);
 
 
 }

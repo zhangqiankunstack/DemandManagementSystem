@@ -1,5 +1,6 @@
 package com.rengu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName ReviewServiceImpl
@@ -285,14 +288,19 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, ReviewModel> im
         entityHistoryService.copyDataToEntityHistory(entity_ids);
         EntityQueryVo entityQueryVo = entityService.queryEntities(entity_ids);
 
+        //获取到刚插入的entityHistory
+        Map<String, EntityHistoryModel> entityHistoryMap = entityHistoryService
+                .list(new LambdaQueryWrapper<EntityHistoryModel>().in(EntityHistoryModel::getEntityId, entity_ids).eq(EntityHistoryModel::getIsTop, 1))
+                .stream().collect(Collectors.toMap(EntityHistoryModel::getEntityId, Function.identity()));
+
         List<String> attributeIdList = entityQueryVo.getAttributeIdList();
         attributeHistoryService.copyDataToAttributeHistory(attributeIdList);
 
         List<String> valueIdList = entityQueryVo.getValueIdList();
-        valueHistoryService.copyDataToValueHistory(valueIdList);
+        valueHistoryService.copyDataToValueHistory(valueIdList, entityHistoryMap);
 
         List<String> relationshipIdList = entityQueryVo.getRelationshipIdList();
-        relationshipHistoryService.copyDataToRelationshipHistory(relationshipIdList);
+        relationshipHistoryService.copyDataToRelationshipHistory(relationshipIdList, entityHistoryMap);
 
         return true;
     }

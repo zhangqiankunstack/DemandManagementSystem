@@ -2,6 +2,7 @@ package com.rengu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.rengu.entity.EntityHistoryModel;
 import com.rengu.entity.ValueHistoryModel;
 import com.rengu.entity.ValueModel;
 import com.rengu.mapper.AttributeHistoryMapper;
@@ -37,16 +38,20 @@ public class ValueHistoryServiceImpl extends ServiceImpl<ValueHistoryMapper, Val
     private AttributeHistoryMapper attributeHistoryMapper;
 
     @Override
-    public void copyDataToValueHistory(List<String> valueIds) {
+    public void copyDataToValueHistory(List<String> valueIds, Map<String, EntityHistoryModel> entityHistoryMap) {
         // 查询第一个表的数据
         List<ValueModel> values = valueMapper.selectBatchIds(valueIds);
 
         // 遍历第一个表的数据，将其添加到第二个表中
         for (ValueModel value : values) {
+            //获取到entityHistory
+            EntityHistoryModel entityHistory = entityHistoryMap.get(value.getEntityId());
             ValueHistoryModel valueHistory = new ValueHistoryModel();
             valueHistory.setValue(value.getValue());
             valueHistory.setAttributeId(value.getAttributeId());
-            valueHistory.setEntityHistoryid(value.getEntityId());
+//            valueHistory.setEntityHistoryid(value.getEntityId());
+            //存下EntityHistory的id，而不是entiyId
+            valueHistory.setEntityHistoryid(entityHistory.getEntityHistoryid());
             baseMapper.insert(valueHistory);
 
         }

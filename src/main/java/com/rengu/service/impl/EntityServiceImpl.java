@@ -34,6 +34,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -556,11 +557,14 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
     @Override
     public List<EntityModel> fetchUnrelatedEntities(List<String> ids) {
         Set<String> relatedEntitiesIds = new HashSet<>();
+        Map<String, EntityModel> entityMap = this.list().stream().collect(Collectors.toMap(EntityModel::getEntityId, Function.identity()));
         //获取到所有存在关联关系的实体id
         relationshipMapper.getRelationshipsByEntityIds(ids)
                 .stream().forEach(r -> {
-                   if(ids.contains(r.getEntityId1()) || ids.contains(r.getEntityId2())){
+                   if(ids.contains(r.getEntityId1()) && entityMap.get(r.getEntityId2()) != null){
                        relatedEntitiesIds.add(r.getEntityId1());
+                   }
+                   if(ids.contains(r.getEntityId2()) && entityMap.get(r.getEntityId1()) != null){
                        relatedEntitiesIds.add(r.getEntityId2());
                    }
                 });

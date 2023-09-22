@@ -99,6 +99,7 @@ public class RelationshipServiceImpl extends ServiceImpl<RelationshipMapper, Rel
     @Override
     public Map<String, Object> getAllRelationship(String entityId, String keyWord, Integer pageNumber, Integer pageSize) {
 //        List<EntityRelationship> entityRelationships = hostInfoService.getEntityRelationships(entityId, keyWord);
+        List<EntityRelationship> entityRelationships = new ArrayList<>();
         List<String> ids = new ArrayList<>();
         List<RelationshipModel> relationshipsByEntityIds = relationshipMapper.getRelationshipsByEntityIds(Collections.singletonList(entityId));
         Map<String, RelationshipModel> entityRelationshipMap = new HashMap<>();
@@ -111,21 +112,23 @@ public class RelationshipServiceImpl extends ServiceImpl<RelationshipMapper, Rel
                 entityRelationshipMap.put(r.getEntityId1(), r);
             }
         });
-        LambdaQueryWrapper<EntityModel> wrapper = new LambdaQueryWrapper<EntityModel>().in(EntityModel::getEntityId, ids);
-        if(!StringUtils.isEmpty(keyWord)){
-            wrapper.and(entityModelLambdaQueryWrapper -> entityModelLambdaQueryWrapper.eq(EntityModel::getEntityType, keyWord));
+        if(!CollectionUtils.isEmpty(ids)){
+            LambdaQueryWrapper<EntityModel> wrapper = new LambdaQueryWrapper<EntityModel>().in(EntityModel::getEntityId, ids);
+            if(!StringUtils.isEmpty(keyWord)){
+                wrapper.and(entityModelLambdaQueryWrapper -> entityModelLambdaQueryWrapper.eq(EntityModel::getEntityType, keyWord));
+            }
+             entityRelationships = entityMapper.selectList(wrapper)
+                    .stream().map(e -> {
+                        EntityRelationship entityRelationship = new EntityRelationship();
+                        entityRelationship.setEntityId1(e.getEntityId());
+                        entityRelationship.setEntityName1(e.getEntityName());
+                        entityRelationship.setEntityType(e.getEntityType());
+                        RelationshipModel relationshipModel = entityRelationshipMap.get(e.getEntityId());
+                        entityRelationship.setRelationshipId(relationshipModel.getRelationshipId());
+                        entityRelationship.setRelationshipType(relationshipModel.getRelationshipType());
+                        return entityRelationship;
+                    }).collect(Collectors.toList());
         }
-        List<EntityRelationship> entityRelationships = entityMapper.selectList(wrapper)
-                .stream().map(e -> {
-                    EntityRelationship entityRelationship = new EntityRelationship();
-                    entityRelationship.setEntityId1(e.getEntityId());
-                    entityRelationship.setEntityName1(e.getEntityName());
-                    entityRelationship.setEntityType(e.getEntityType());
-                    RelationshipModel relationshipModel = entityRelationshipMap.get(e.getEntityId());
-                    entityRelationship.setRelationshipId(relationshipModel.getRelationshipId());
-                    entityRelationship.setRelationshipType(relationshipModel.getRelationshipType());
-                    return entityRelationship;
-                }).collect(Collectors.toList());
 
         Map<String, Object> requestParams = new HashMap<>();
         requestParams.put("pageNumber", pageNumber);
@@ -150,14 +153,21 @@ public class RelationshipServiceImpl extends ServiceImpl<RelationshipMapper, Rel
                 EntityAndEntityVo entityAndEntityVo = new EntityAndEntityVo();
                 if (entityModels.size() > 0 || entityModels != null) {
                     entityModels.stream().forEachOrdered(entityModel -> {
-                        if (entityModel.getEntityId().equals(relationshipModel.getEntityId1())) {
+//                        if (entityModel.getEntityId().equals(relationshipModel.getEntityId1())) {
+//                            entityAndEntityVo.setEntity1_name(entityModel.getEntityName());
+//                        }
+//                        if (entityModel.getEntityId().equals(relationshipModel.getEntityId2())) {
+//                            entityAndEntityVo.setEntity2_name(entityModel.getEntityName());
+//                            entityAndEntityVo.setEntityType(entityModel.getEntityType());
+//                            entityAndEntityVo.setRelationship_type(relationshipModel.getRelationshipType());
+//                        }
+                        if((!entityModel.getEntityId().equals(entityId))
+                                && (entityModel.getEntityId().equals(relationshipModel.getEntityId1()) || entityModel.getEntityId().equals(relationshipModel.getEntityId2()))){
                             entityAndEntityVo.setEntity1_name(entityModel.getEntityName());
-                        }
-                        if (entityModel.getEntityId().equals(relationshipModel.getEntityId2())) {
-                            entityAndEntityVo.setEntity2_name(entityModel.getEntityName());
                             entityAndEntityVo.setEntityType(entityModel.getEntityType());
                             entityAndEntityVo.setRelationship_type(relationshipModel.getRelationshipType());
                         }
+
                     });
                     if (!StringUtils.isEmpty(keyWord)) {
                         if (entityAndEntityVo.getEntityType().equals(keyWord)) {

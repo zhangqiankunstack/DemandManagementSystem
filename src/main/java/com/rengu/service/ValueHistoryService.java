@@ -1,6 +1,7 @@
 package com.rengu.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.rengu.entity.EntityHistoryModel;
 import com.rengu.entity.ValueHistoryModel;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Map;
  * @Date 2023/08/08 14:37
  **/
 public interface ValueHistoryService extends IService<ValueHistoryModel> {
-    public void copyDataToValueHistory(List<String> valueIds);
+    public void copyDataToValueHistory(List<String> valueIds, Map<String, EntityHistoryModel> entityHistoryMap);
 
     void deleteByEntityHisId(String entityHisId);
 
