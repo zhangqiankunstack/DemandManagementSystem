@@ -30,7 +30,7 @@
 
     <update id="updateOtherIsTop">
         UPDATE entity_history
-        SET isTop = 0
+        SET is_top = 0
         WHERE entity_id = #{entityId} and entity_historyid !=  #{entityHistoryid}
     </update>
     <update id="updateOtherChanges">

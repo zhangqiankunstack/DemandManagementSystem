@@ -104,7 +104,7 @@ public class BaselineController {
 
     @ApiOperation(value = "下载")
     @GetMapping("/download")
-    public Result download(Integer id) throws JsonProcessingException {
+    public Result download(String id) throws JsonProcessingException {
         ToJson toJson = baselineModelService.allForDownload(id);
         ObjectMapper Obj = new ObjectMapper();
 
@@ -116,7 +116,7 @@ public class BaselineController {
 
     @ApiOperation(value = "下载测试版")
     @GetMapping("/downloadTest")
-    public Result downloadTest(Integer id) throws JsonProcessingException {
+    public Result downloadTest(String id) throws JsonProcessingException {
         ToJson toJson = baselineModelService.allForDownload(id);
 //        ObjectMapper Obj = new ObjectMapper();
 //

@@ -25,7 +25,7 @@ public interface EntityBaselineMapper extends BaseMapper<EntityBaselineModel> {
 
 
 
-	List<String> findEntityHistoryIdByBaseLineId(Integer id);
+	List<String> findEntityHistoryIdByBaseLineId(String id);
 
 
 		}

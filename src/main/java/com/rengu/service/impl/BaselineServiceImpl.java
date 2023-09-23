@@ -91,7 +91,7 @@ public class BaselineServiceImpl extends ServiceImpl<BaselineMapper, BaselineMod
 
     //把数据转为json后实现上传
     @Override
-    public ToJson allForDownload(Integer id){
+    public ToJson allForDownload(String id){
         List<String> entityHistoryIdByBaseLineId = entityBaselineMapper.findEntityHistoryIdByBaseLineId(id);
 
         List<EntityHistoryModel> entityHistoryModelList = new ArrayList<>();

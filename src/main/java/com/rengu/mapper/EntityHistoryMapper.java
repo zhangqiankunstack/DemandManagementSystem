@@ -32,7 +32,7 @@ public interface EntityHistoryMapper extends BaseMapper<EntityHistoryModel> {
 
 
 
-    @Update("UPDATE entity_history SET isTop = #{isTop} WHERE entity_id = #{entityId} AND entity_historyid != #{excludeId}")
+    @Update("UPDATE entity_history SET is_top = #{isTop} WHERE entity_id = #{entityId} AND entity_historyid != #{excludeId}")
     void updateOtherIsTopToZero(@Param("entityId") String entityId, @Param("isTop") Integer isTop, @Param("excludeId") String excludeId);
 
 

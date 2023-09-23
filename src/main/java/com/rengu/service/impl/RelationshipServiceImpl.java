@@ -115,7 +115,7 @@ public class RelationshipServiceImpl extends ServiceImpl<RelationshipMapper, Rel
         if(!CollectionUtils.isEmpty(ids)){
             LambdaQueryWrapper<EntityModel> wrapper = new LambdaQueryWrapper<EntityModel>().in(EntityModel::getEntityId, ids);
             if(!StringUtils.isEmpty(keyWord)){
-                wrapper.and(entityModelLambdaQueryWrapper -> entityModelLambdaQueryWrapper.eq(EntityModel::getEntityType, keyWord));
+                wrapper.and(entityModelLambdaQueryWrapper -> entityModelLambdaQueryWrapper.like(EntityModel::getEntityType, keyWord));
             }
              entityRelationships = entityMapper.selectList(wrapper)
                     .stream().map(e -> {
@@ -170,7 +170,7 @@ public class RelationshipServiceImpl extends ServiceImpl<RelationshipMapper, Rel
 
                     });
                     if (!StringUtils.isEmpty(keyWord)) {
-                        if (entityAndEntityVo.getEntityType().equals(keyWord)) {
+                        if (entityAndEntityVo.getEntityType().contains(keyWord)) {
                             entityAndEntityVos.add(entityAndEntityVo);
                         }
                     } else {

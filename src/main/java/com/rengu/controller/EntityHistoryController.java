@@ -103,13 +103,13 @@ public class EntityHistoryController {
                     EntityHistoryModel entity1 = entityHistoryMap.get(r.getEntityHistoryId1());
                     EntityHistoryModel entity2 = entityHistoryMap.get(r.getEntityHistoryId2());
                     EntityHistoryRelationship result = new EntityHistoryRelationship();
-                    if(entityHistoryId.equals(r.getEntityHistoryId1()) && entity2 != null && (StringUtils.isEmpty(keyWord) || entity2.getEntityType().equals(keyWord))){
+                    if(entityHistoryId.equals(r.getEntityHistoryId1()) && entity2 != null && (StringUtils.isEmpty(keyWord) || entity2.getEntityType().contains(keyWord))){
                         result.setEntityId1(entity2.getEntityHistoryid());
                         result.setEntityName1(entity2.getEntityName());
                         result.setEntityType(entity2.getEntityType());
                         result.setRelationshipType(r.getRelationshipType());
                         relatedEntities.add(result);
-                    }else if(entityHistoryId.equals(r.getEntityHistoryId2()) && entity1 != null && (StringUtils.isEmpty(keyWord) || entity2.getEntityType().equals(keyWord))){
+                    }else if(entityHistoryId.equals(r.getEntityHistoryId2()) && entity1 != null && (StringUtils.isEmpty(keyWord) || entity1.getEntityType().contains(keyWord))){
                         result.setEntityId1(entity1.getEntityHistoryid());
                         result.setEntityName1(entity1.getEntityName());
                         result.setEntityType(entity1.getEntityType());

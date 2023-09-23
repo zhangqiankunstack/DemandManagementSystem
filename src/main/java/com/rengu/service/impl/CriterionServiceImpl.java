@@ -24,16 +24,16 @@ public class CriterionServiceImpl extends ServiceImpl<CriterionMapper, Criterion
         Page<CriterionModel> page = new Page<>();
         QueryWrapper<CriterionModel> queryWrapper = new QueryWrapper<>();
         if (criterionName != null && !criterionName.isEmpty()) {
-            queryWrapper.like("criterionName", criterionName);
+            queryWrapper.like("criterion_name", criterionName);
         }
         if (reviewPoints != null && !reviewPoints.isEmpty()) {
-            queryWrapper.like("reviewPoints", reviewPoints);
+            queryWrapper.like("review_points", reviewPoints);
         }
         if (reviewCriteria != null && !reviewCriteria.isEmpty()) {
-            queryWrapper.like("reviewCriteria", reviewCriteria);
+            queryWrapper.like("review_criteria", reviewCriteria);
         }
         if (reviewProcess != null && !reviewProcess.isEmpty()) {
-            queryWrapper.like("reviewProcess", reviewProcess);
+            queryWrapper.like("review_process", reviewProcess);
         }
         queryWrapper.orderByAsc("display");
         List<CriterionModel> data = baseMapper.page(page, queryWrapper);
