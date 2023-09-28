@@ -418,47 +418,88 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
                 // 第二遍：遍历根节点,并判断是什么类型清单
                 org.dom4j.Element rootElement = document.getRootElement();
 
-                // 如果这个xml是任务清单,任务清单没有owner
-                if (rootElement.getName().equals("missionInventory")) {
 
                     List<Element> missionList = rootElement.selectNodes("//mission");
                     if (missionList != null && missionList.size() > 0) {
-                        missionList.forEach(missionElement -> {
+                        missionList.forEach(mission -> {
+                            String missionId = mission.attributeValue("id");
+                            String missionName = mission.attributeValue("name");
+                            DatabaseUtils.insertEntity(missionId, missionName, "mission");
 
-//                            if (entitySelectedIds.contains(missionElement.attributeValue("id"))) {
-                            insertIntoAttAndValue(missionElement, missionElement.attributeValue("id"));
-//                            }
+                            insertIntoAttAndValue(mission, missionId);
+
                         });
                     }
-                    // 找到所有的作战概念
-                    List<Element> metanodes = document.selectNodes("//metanode");
-                    if (metanodes != null) {
-                        for (Element element : metanodes) {
-                            String metanodeId = element.attributeValue("id");
-                            String metanodeName = element.attributeValue("name");
-                            DatabaseUtils.insertEntity(metanodeId, metanodeName, "metanode");
 
-                            insertIntoAttAndValue(element, metanodeId);
+                List<Element> activityList = rootElement.selectNodes("//activity");
+                if (activityList != null && activityList.size() > 0) {
+                    activityList.forEach(activity -> {
+                        String activityId = activity.attributeValue("id");
+                        String activityName = activity.attributeValue("name");
+                        DatabaseUtils.insertEntity(activityId, activityName, "activity");
 
-                            List<Element> systems = element.elements();
-                            for (Element system : systems) {
-                                String systemName = system.attributeValue("name");
-                                String systemId = system.attributeValue("id");
-                                DatabaseUtils.insertEntity(systemId, systemName, "system");
+                        insertIntoAttAndValue(activity, activityId);
 
-                                insertIntoAttAndValue(system, systemId);
+                    });
+                }
 
-                                String relationshipId = DatabaseUtils.selectRelatedIds(metanodeId, systemId);
-                                if (relationshipId == null) {
-                                    relationshipId = UUID.randomUUID().toString();
-                                    DatabaseUtils.insertRelationship(relationshipId, "关联", metanodeId, systemId);
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    String ownerId = rootElement.attributeValue("owner");
-//                    if (entitySelectedIds.contains(ownerId)) {
+                List<Element> systemList = rootElement.selectNodes("//system");
+                if (systemList != null && systemList.size() > 0) {
+                    systemList.forEach(system -> {
+                        String systemId = system.attributeValue("id");
+                        String systemName = system.attributeValue("name");
+                        DatabaseUtils.insertEntity(systemId, systemName, "system");
+
+                        insertIntoAttAndValue(system, systemId);
+
+                    });
+                }
+
+                List<Element> capabilityList = rootElement.selectNodes("//capability");
+                if (capabilityList != null && capabilityList.size() > 0) {
+                    capabilityList.forEach(capability -> {
+                        String capabilityId = capability.attributeValue("id");
+                        String capabilityName = capability.attributeValue("name");
+                        DatabaseUtils.insertEntity(capabilityId, capabilityName, "capability");
+
+                        insertIntoAttAndValue(capability, capabilityId);
+
+                    });
+                }
+
+                List<Element> metanodeList = rootElement.selectNodes("//metanode");
+                if (metanodeList != null && metanodeList.size() > 0) {
+                    metanodeList.forEach(metanode -> {
+                        String metanodeId = metanode.attributeValue("id");
+                        String metanodeName = metanode.attributeValue("name");
+                        DatabaseUtils.insertEntity(metanodeId, metanodeName, "metanode");
+
+                        insertIntoAttAndValue(metanode, metanodeId);
+
+                    });
+                }
+
+            } catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            }
+        }
+
+
+        for(MultipartFile multipartFile : multipartFiles){
+
+            try{
+                // 创建SAXReader对象
+                SAXReader saxReader = new SAXReader();
+                // 读取XML文件，获取Document对象
+                org.dom4j.Document document = saxReader.read(multipartFile.getInputStream());
+
+                // 第二遍：遍历根节点,并判断是什么类型清单
+                org.dom4j.Element rootElement = document.getRootElement();
+
+                String ownerId = rootElement.attributeValue("owner");
+
+                if(!StringUtils.isEmpty(ownerId)){
                     List<Element> mainNodes = rootElement.selectNodes("./*[@id]");
                     mainNodes.forEach(child -> {
                         String relationshipId = DatabaseUtils.selectRelatedIds(ownerId, child.attributeValue("id"));
@@ -467,12 +508,12 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
                             DatabaseUtils.insertRelationship(relationshipId, "关联", ownerId, child.attributeValue("id"));
                         }
                     });
-//                    }
                 }
-            } catch (Exception e) {
-                // TODO: handle exception
+
+            }catch(Exception e){
                 e.printStackTrace();
             }
+//                    }
         }
         return null;
     }
