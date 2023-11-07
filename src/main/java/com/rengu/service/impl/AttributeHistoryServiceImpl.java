@@ -9,6 +9,7 @@ import com.rengu.mapper.AttributeMapper;
 import com.rengu.service.AttributeHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -27,25 +28,31 @@ public class AttributeHistoryServiceImpl extends ServiceImpl<AttributeHistoryMap
     @Override
     public void copyDataToAttributeHistory(List<String> ids) {
 
-        // 查询第一个表的数据
-        List<AttributeModel> attributes = attributeMapper.selectBatchIds(ids);
+        if(!CollectionUtils.isEmpty(ids)){
+            // 查询第一个表的数据
+            List<AttributeModel> attributes = attributeMapper.selectBatchIds(ids);
 
-        // 遍历第一个表的数据，将其添加到第二个表中
-        for (AttributeModel attribute : attributes) {
-            // 检查第二个表中是否已存在相同的 attribute_id
-            QueryWrapper<AttributeHistoryModel> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("attribute_id", attribute.getAttributeId());
-            int count = baseMapper.selectCount(queryWrapper);
+            // 遍历第一个表的数据，将其添加到第二个表中
+            for (AttributeModel attribute : attributes) {
+                // 检查第二个表中是否已存在相同的 attribute_id
+                QueryWrapper<AttributeHistoryModel> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("attribute_id", attribute.getAttributeId());
+                int count = baseMapper.selectCount(queryWrapper);
 
-            // 仅当第二个表中不存在相同的 attribute_id 时才进行插入操作
-            if (count == 0) {
-                AttributeHistoryModel attributeHistory = new AttributeHistoryModel();
-                attributeHistory.setAttributeId(attribute.getAttributeId());
-                attributeHistory.setAttributeName(attribute.getAttributeName());
+                // 仅当第二个表中不存在相同的 attribute_id 时才进行插入操作
+                if (count == 0) {
+                    AttributeHistoryModel attributeHistory = new AttributeHistoryModel();
+                    attributeHistory.setAttributeId(attribute.getAttributeId());
+                    attributeHistory.setAttributeName(attribute.getAttributeName());
 
-                baseMapper.insert(attributeHistory);
+                    baseMapper.insert(attributeHistory);
+                }
             }
+
         }
+
+
+
 
 
 

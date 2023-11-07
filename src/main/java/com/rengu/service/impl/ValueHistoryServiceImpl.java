@@ -15,6 +15,7 @@ import com.rengu.service.ValueHistoryService;
 import com.rengu.util.ListPageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,22 +40,26 @@ public class ValueHistoryServiceImpl extends ServiceImpl<ValueHistoryMapper, Val
 
     @Override
     public void copyDataToValueHistory(List<String> valueIds, Map<String, EntityHistoryModel> entityHistoryMap) {
-        // 查询第一个表的数据
-        List<ValueModel> values = valueMapper.selectBatchIds(valueIds);
 
-        // 遍历第一个表的数据，将其添加到第二个表中
-        for (ValueModel value : values) {
-            //获取到entityHistory
-            EntityHistoryModel entityHistory = entityHistoryMap.get(value.getEntityId());
-            ValueHistoryModel valueHistory = new ValueHistoryModel();
-            valueHistory.setValue(value.getValue());
-            valueHistory.setAttributeId(value.getAttributeId());
+        if(!CollectionUtils.isEmpty(valueIds)){
+            // 查询第一个表的数据
+            List<ValueModel> values = valueMapper.selectBatchIds(valueIds);
+
+            // 遍历第一个表的数据，将其添加到第二个表中
+            for (ValueModel value : values) {
+                //获取到entityHistory
+                EntityHistoryModel entityHistory = entityHistoryMap.get(value.getEntityId());
+                ValueHistoryModel valueHistory = new ValueHistoryModel();
+                valueHistory.setValue(value.getValue());
+                valueHistory.setAttributeId(value.getAttributeId());
 //            valueHistory.setEntityHistoryid(value.getEntityId());
-            //存下EntityHistory的id，而不是entiyId
-            valueHistory.setEntityHistoryid(entityHistory.getEntityHistoryid());
-            baseMapper.insert(valueHistory);
+                //存下EntityHistory的id，而不是entiyId
+                valueHistory.setEntityHistoryid(entityHistory.getEntityHistoryid());
+                baseMapper.insert(valueHistory);
 
+            }
         }
+
     }
 
     @Override
@@ -68,6 +73,9 @@ public class ValueHistoryServiceImpl extends ServiceImpl<ValueHistoryMapper, Val
         });
 //        this.removeByIds(allByEntityHisId);
     }
+
+
+
 
     /**
      * 通过历史id获取values
