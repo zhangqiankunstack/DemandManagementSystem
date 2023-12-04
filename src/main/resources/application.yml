@@ -1,14 +1,26 @@
 server:
+  servlet:
+    context-path: /management
   port: 8080
 
 spring:
   application:
     name: comprehensiveReqManager
   datasource:
-    url: jdbc:mysql://localhost:3306/emo?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
-    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/emo?&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    url: jdbc:kingbase8://localhost:54321/emo?serverTimezone=GMT%2B8
+    driver-class-name: com.kingbase8.Driver
     username: root
     password: root
+    hikari:
+      pool-name: spring-demo-1 #连接池名称
+      connection-timeout: 60000 #请求连接的超时时间
+      maximum-pool-size: 1 #最大连接数量
+      max-lifetime: 1800000 #连接的最长生命周期
+      keepalive-time: 1750000 #尝试保持连接的频率
+      connection-test-query: select 1 #连接验证sql
 mybatis-plus:
   mapper-locations: classpath:mappers/*.xml
   configuration:
@@ -31,19 +43,25 @@ redis:
   jedis:
   #Redis连接池配置
    pool:
-      max-active: 8 #最大连接数
+      max-active: 1 #最大连接数
       max-wait: 1ms #连接池最大阻塞等待时间
-      max-idle: 4 #连接池中的最大空闲连接
+      max-idle: 1 #连接池中的最大空闲连接
 
 mysql:
   entitySql: Select * from entity;
-  valueSql: SELECT v.attribute_id,v.entity_id,v.`value`,value_id,a.attribute_id,a.attribute_name FROM `value` v  JOIN attribute a  WHERE v.attribute_id = a.attribute_id;
+  valueSql: SELECT v.attribute_id,v.entity_id,v.value,value_id,a.attribute_id,a.attribute_name FROM value v  JOIN attribute a  ON v.attribute_id = a.attribute_id;
   attributeSql: Select * from attribute;
   relationshipSql: Select * from relationship;
 #  valueSql: Select * from value;
 
 upload:
+#  path: /usr/local/upload/avatar
   # 上传的图片保存路径（可自定义）
   path: D://upload//avatar//
+
+service:
+  ip: 127.0.0.1
+  port: 80
+
 
 

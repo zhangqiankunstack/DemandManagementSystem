@@ -21,7 +21,7 @@ public interface EntityService extends IService<EntityModel> {
 
     List<EntityModel> connect(HostInfoModel hostInfo, String keyWord);
 
-    Map<String, Object> getAllEntity(String keyWord, Integer pageNumber, Integer pageSize);
+    Map<String, Object> getAllEntity(String keyWord, Integer level, Integer pageNumber, Integer pageSize);
 
     Map<String,Object> findTrace(String type);
 
@@ -30,6 +30,8 @@ public interface EntityService extends IService<EntityModel> {
     List<Object> coverageAnalysisTrace();
 
     boolean deletedById(String id);
+
+    boolean batchDelete(List<String> ids);
 
     void exportReport(List<String> base64List,String templateId,HttpServletResponse response);
 

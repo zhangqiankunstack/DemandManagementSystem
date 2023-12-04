@@ -1,0 +1,816 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : ZQK
+ Source Server Type    : MySQL
+ Source Server Version : 80028 (8.0.28)
+ Source Host           : localhost:3306
+ Source Schema         : emo
+
+ Target Server Type    : MySQL
+ Target Server Version : 80028 (8.0.28)
+ File Encoding         : 65001
+
+ Date: 18/09/2023 10:16:22
+*/
+
+
+-- ----------------------------
+-- Table structure for attribute
+-- ----------------------------
+DROP TABLE IF EXISTS "attribute";
+CREATE TABLE "attribute"  (
+  "attribute_id" varchar(255)  NOT NULL,
+  "attribute_name" varchar(255)  NOT NULL,
+  PRIMARY KEY ("attribute_id") 
+) ;
+
+-- ----------------------------
+-- Records of attribute
+-- ----------------------------
+INSERT INTO "attribute" VALUES ('0043219c-ef6a-4168-9d8d-51aaf4b8c97b', 'First shot delay');
+INSERT INTO "attribute" VALUES ('00ae3817-ca12-4945-9527-2a6f03452585', 'Channel Comms Nodes');
+INSERT INTO "attribute" VALUES ('00fc0f99-8b41-4d81-b017-ee773b5e5cac', 'Voice frequency');
+INSERT INTO "attribute" VALUES ('016b2983-33f7-4331-a494-7c4c7bb4bd2b', 'Sample Rate');
+INSERT INTO "attribute" VALUES ('0525010b-792a-4b3d-a4f6-b7bd16cfcd80', 'Filter Tactic Checks');
+INSERT INTO "attribute" VALUES ('05e0969e-2c09-4485-be1d-c68363be0a6d', 'Scenario Specific Snorkel Schedule Table');
+INSERT INTO "attribute" VALUES ('06d38449-5917-4ffe-80bb-c1dddc5b9097', 'Comms Nodes');
+INSERT INTO "attribute" VALUES ('08bec2ab-fd57-4eab-bd37-041a1aa26fe5', 'Point Defense System List');
+INSERT INTO "attribute" VALUES ('0979d206-f540-45bf-8506-cbaf7d96c160', 'Flag');
+INSERT INTO "attribute" VALUES ('0b1496a5-696c-4eae-a1ab-e4a25c5d48b0', 'Maritime Vulnerable Component List');
+INSERT INTO "attribute" VALUES ('0c38ce01-e3d9-473c-a348-0b02aa3dee61', 'Assessment Delay');
+INSERT INTO "attribute" VALUES ('0caa6793-ad44-4a8d-9f2e-1735ec2c04cc', 'Max delay');
+INSERT INTO "attribute" VALUES ('0d4a801b-304b-402a-bdc5-cb1b44dbc665', 'Scripted Schedule');
+INSERT INTO "attribute" VALUES ('1', 'id');
+INSERT INTO "attribute" VALUES ('106c1108-d7dc-49d4-b92a-95882c00355d', 'Flag of command');
+INSERT INTO "attribute" VALUES ('108a1b3a-bfa8-49d1-9056-486e9bda5a41', 'Antennas');
+INSERT INTO "attribute" VALUES ('112f05cb-0725-4930-92dc-c6951fc3c0a1', 'Plan start time');
+INSERT INTO "attribute" VALUES ('1314b9e1-254c-4485-a056-9108863f413c', 'Track to Fire P');
+INSERT INTO "attribute" VALUES ('14290754-333a-410d-af9e-792515e2b295', 'Crew Size');
+INSERT INTO "attribute" VALUES ('15395a66-62ac-4466-9b7b-86299707db53', 'Probability of Implicit Attrition');
+INSERT INTO "attribute" VALUES ('15a606e9-c629-4056-b432-56d17e0183c2', 'MCM Systems');
+INSERT INTO "attribute" VALUES ('16d37ac0-340d-4cb1-bf0c-379d77c9e36b', 'Salvo start time');
+INSERT INTO "attribute" VALUES ('1759e3c1-010c-499d-a5b3-2fc677fb5ace', 'Maximum Shuffle Motion Repositioning Distance');
+INSERT INTO "attribute" VALUES ('1770d6ed-bb17-424c-8daf-50147ff251be', 'Geographical Filter Radius');
+INSERT INTO "attribute" VALUES ('1802a4eb-2329-4979-849c-3587f2ef98f0', 'Number of salvos');
+INSERT INTO "attribute" VALUES ('19c7ce1b-136e-45b6-8523-957be72e3ec4', 'Logistics Mode');
+INSERT INTO "attribute" VALUES ('1bb2995e-553a-4fc7-ab7c-79495d00320a', 'First shot delay');
+INSERT INTO "attribute" VALUES ('1c945b57-b269-4cb3-a92c-1b53848a70f5', 'Use hires comint vuln p');
+INSERT INTO "attribute" VALUES ('1f935ffd-c69d-4a3d-8202-2a10175d1540', 'Jammer Systems');
+INSERT INTO "attribute" VALUES ('1ff67b8e-48d3-477f-a1fa-2a0f61bc99df', 'Shock Destroy Threshhold');
+INSERT INTO "attribute" VALUES ('21b42bc7-66c0-43e7-be78-b868daf5f7b0', 'Higher Level Backup Scheme P');
+INSERT INTO "attribute" VALUES ('25703d81-491c-458a-9a9d-ac53b927ccc0', 'Nuclear p');
+INSERT INTO "attribute" VALUES ('2574cb15-43c3-47ab-bb1b-436d1a54c0b6', 'TemplatName');
+INSERT INTO "attribute" VALUES ('26f9db9a-6d9b-45e2-ab3d-e440c66f0cce', 'Geographical Filter Constraint');
+INSERT INTO "attribute" VALUES ('2709ba62-7d93-4e29-be96-6f4c45e9eafe', 'Grid Duration');
+INSERT INTO "attribute" VALUES ('27d42059-b81a-4edc-8109-b05390515c7a', 'Target Decision Time Delay Mean');
+INSERT INTO "attribute" VALUES ('28946e4b-3dee-4e86-9e45-21dd7f10b90f', 'Target Priority Object');
+INSERT INTO "attribute" VALUES ('2a7bcbdf-f080-4c50-b375-f5bca872ec5a', 'Classification Interest List');
+INSERT INTO "attribute" VALUES ('2aa2b1ea-26b7-45a2-bcf6-7730494a9b9f', 'Start sensors On');
+INSERT INTO "attribute" VALUES ('2ca9a21f-cdc6-4ea8-8935-7473ff58ceee', 'Backup Activation Min');
+INSERT INTO "attribute" VALUES ('2e8af0e1-adc4-4750-859e-e1196346d12f', 'Number of Sensor Missions');
+INSERT INTO "attribute" VALUES ('31c37472-0dc3-4963-ba96-f3332e1176e7', 'Plan start day');
+INSERT INTO "attribute" VALUES ('328fcd36-e9f8-4ec5-aa3c-43de59b59729', 'Operational State Snorkel Schedule Table');
+INSERT INTO "attribute" VALUES ('32b3c1bf-7cb1-455d-9dd3-15ba8f3648a7', 'Range Protocol');
+INSERT INTO "attribute" VALUES ('32eab839-bb4f-4f51-9a9f-dcf860359f49', 'Tactic Name');
+INSERT INTO "attribute" VALUES ('330324bb-de8c-423b-8068-6c4015cf925a', 'Maximum Weapons in Flight');
+INSERT INTO "attribute" VALUES ('33276c15-7139-44c8-950b-934ffa3e9d7c', 'Tracks with ID P');
+INSERT INTO "attribute" VALUES ('33afafe4-7b1f-4934-9473-5b73b4937907', 'TACTIC NO LONGER VALID RESPONSE DELAY');
+INSERT INTO "attribute" VALUES ('34de88bc-0d37-45ae-acc3-c40df0502abb', 'Sensor List');
+INSERT INTO "attribute" VALUES ('35b90372-cdbd-40ea-bc42-eba434a5cbb4', 'Short Term Invalid Time');
+INSERT INTO "attribute" VALUES ('394cffbc-48dc-4b9e-931b-ad9a5e272627', 'Vessel Length');
+INSERT INTO "attribute" VALUES ('3a101dbe-ca26-4634-81f5-778872d7a491', 'Backup Activation Mean');
+INSERT INTO "attribute" VALUES ('3a1d63cf-a229-414a-bc9b-40d7619ecccf', 'Datalink Bands');
+INSERT INTO "attribute" VALUES ('3a33bda6-5ecf-41e8-bd39-cef2efba7ee6', 'Cap Grid');
+INSERT INTO "attribute" VALUES ('3b2b7b0c-5ea6-4002-8a35-6cee6c3a58a2', 'Grid Axis');
+INSERT INTO "attribute" VALUES ('3b3ae616-9629-49ce-9ce2-624414167dd9', 'Filter Incoming Geographically');
+INSERT INTO "attribute" VALUES ('3d55b86d-cebc-468b-bac3-7e777d20524a', 'Attribute1');
+INSERT INTO "attribute" VALUES ('4035a8f8-b5e0-491d-9f3e-dd092134e3f6', 'Attribute1');
+INSERT INTO "attribute" VALUES ('404fe1e8-f19d-4c81-8e95-6b43672b19ab', 'Vector Update Rate');
+INSERT INTO "attribute" VALUES ('412f98df-b34b-424e-835b-09bb9f14bbfc', 'Low Res Sensor Cueing Enabled P');
+INSERT INTO "attribute" VALUES ('45220b15-63a9-47c9-b2ce-a7378125024b', 'BDA Operational Threshold');
+INSERT INTO "attribute" VALUES ('45c1d265-e66a-4f24-9b49-aa7ed0092ae7', 'Default Update Tolerance');
+INSERT INTO "attribute" VALUES ('46265408-ff70-4792-bc96-f06d221d5654', 'Refiring delay');
+INSERT INTO "attribute" VALUES ('48e0f3ea-fa3d-43f2-859a-7a01a5355fc6', 'Default Operational State');
+INSERT INTO "attribute" VALUES ('4c50bb80-1881-4ed6-9fdd-23f3155208b8', 'Plan List');
+INSERT INTO "attribute" VALUES ('4ec83530-7abc-4e4d-9d85-67e14dcd936c', 'Self Control Options Element When Outside of Defined Regions');
+INSERT INTO "attribute" VALUES ('4fab1b92-7776-4454-bcb4-572b901891f2', 'SUBCOMMANDS');
+INSERT INTO "attribute" VALUES ('4fdfb99f-b7c3-4aa9-93c6-60535cbd7189', 'Max Replenishment Distance');
+INSERT INTO "attribute" VALUES ('524b2b8b-9619-4919-9d67-ede9ba56fe28', 'Attribute1');
+INSERT INTO "attribute" VALUES ('535b263c-3a79-4deb-8195-28a2c0ce42e0', 'Maximum Weapons in Flight');
+INSERT INTO "attribute" VALUES ('54163a22-59e2-41eb-97cf-4cd8a2e9ff87', 'motion type');
+INSERT INTO "attribute" VALUES ('57ddf774-d19c-4658-8839-143e2d680c56', 'Navigation Events');
+INSERT INTO "attribute" VALUES ('58041a94-153a-42b3-ad8a-499c2ba7c266', 'Refiring delay');
+INSERT INTO "attribute" VALUES ('59b23530-5b86-47e4-a452-d1a9e8a0040b', 'Snorkel Exposure Height');
+INSERT INTO "attribute" VALUES ('5b1f3726-854f-44bc-9add-34867439e045', 'Backup Activation Min');
+INSERT INTO "attribute" VALUES ('5b9aa5f1-e5ea-4a6c-982c-3e2f5a8421cc', 'Hide Schedule');
+INSERT INTO "attribute" VALUES ('5f121a88-5f04-4a78-bcde-847e95a60bfa', 'Link Terminals');
+INSERT INTO "attribute" VALUES ('621e0789-f7d4-4dc0-836b-34126c741530', 'Command Control Options');
+INSERT INTO "attribute" VALUES ('630631b2-c17c-4e2b-9fa6-c0ae0d8d15c7', 'Backup Activation Method');
+INSERT INTO "attribute" VALUES ('64ff1da8-8dd9-40da-9323-5417036f5250', 'Range Protocol');
+INSERT INTO "attribute" VALUES ('68223be3-fad0-4e15-8212-fc226c5bac2f', 'Dammage Correlation');
+INSERT INTO "attribute" VALUES ('6899b3cc-0d1a-437b-aead-d27bd0ffaddd', 'Min Job Time');
+INSERT INTO "attribute" VALUES ('69280a92-26a4-42c2-aafd-c74eb77365f3', 'TAMPS Constraints P');
+INSERT INTO "attribute" VALUES ('6ab3cbf8-5530-4719-9433-134c48c860f6', 'Asset height');
+INSERT INTO "attribute" VALUES ('6af5b59e-e8c8-441a-bcc2-91f90f5f6e82', 'PMCA P');
+INSERT INTO "attribute" VALUES ('6bb87f1e-a719-4d9c-9a39-db45ae5d44dc', 'Launch Times');
+INSERT INTO "attribute" VALUES ('70554752-0dc7-46d5-8886-ee0cdc4f22ac', 'Min delay');
+INSERT INTO "attribute" VALUES ('710fa5fb-2865-4331-aef9-eb9b312afd60', 'Logistics Operation List');
+INSERT INTO "attribute" VALUES ('7131f701-880a-4f51-af6c-b63715cc83eb', 'Burn profile');
+INSERT INTO "attribute" VALUES ('729fc5cf-2c70-45bd-a49b-1294c26dba81', 'Min Req Prob');
+INSERT INTO "attribute" VALUES ('74717ac5-8d51-4388-ba78-5e2c632d3f49', 'Channel Comms Jammers');
+INSERT INTO "attribute" VALUES ('77ef4ed2-fb7d-4e75-a4f1-e910dbd2be9f', 'Message Types');
+INSERT INTO "attribute" VALUES ('7995286e-493c-4948-a826-1ec83c6491fd', 'Tactic Poll Can Respond');
+INSERT INTO "attribute" VALUES ('7f70f9c8-f5e5-432a-aed2-8b65227837ad', 'Long Term Invalid Time');
+INSERT INTO "attribute" VALUES ('8233f3de-9514-4272-8df6-f22bf7c943ec', 'Custom Fusion Processor Assignments');
+INSERT INTO "attribute" VALUES ('84103de7-8fce-4913-a9b7-f477b8a4c9f5', 'attribute1');
+INSERT INTO "attribute" VALUES ('85f89fc7-d4f3-49a7-9e2d-dc74c738f1e5', 'Warfare Area List');
+INSERT INTO "attribute" VALUES ('8850fcbb-cb7b-48d3-90f6-4f13f305a5d4', 'Operational State Periscope Schedule Table');
+INSERT INTO "attribute" VALUES ('890d2765-d7e4-4031-9ec7-d3d8b87d5152', 'Track to Fire P');
+INSERT INTO "attribute" VALUES ('891a34af-923f-469e-ace5-f50d42a77ac9', 'Employable Decoy List');
+INSERT INTO "attribute" VALUES ('8a562d9d-9274-4bae-afc0-e9d8ddf9264e', 'Vector Update Rate');
+INSERT INTO "attribute" VALUES ('8aa9dbf9-da11-4cd9-961a-25604462459f', 'Engagement Doctrine');
+INSERT INTO "attribute" VALUES ('8b5dcfc1-2fc7-414f-8c2c-0b7205a1e344', 'Default Update Tolerance');
+INSERT INTO "attribute" VALUES ('8bccc5ab-e2a0-4d70-99ee-21c3f208ab6d', 'Backup Activation Method');
+INSERT INTO "attribute" VALUES ('8c51e2b9-d721-4da3-afba-7cf259c35e3b', 'Attribute1');
+INSERT INTO "attribute" VALUES ('8ce46677-5327-44be-917a-5362929880d2', 'Command Delay Table');
+INSERT INTO "attribute" VALUES ('90268894-1657-4fdc-a4e3-c298368008cc', 'icon type');
+INSERT INTO "attribute" VALUES ('90854f45-abfe-4ffb-a832-2b3cbeb0a99b', 'Bell Ringer');
+INSERT INTO "attribute" VALUES ('93b6eed2-c6ab-41d7-b6b6-5965c1b93448', 'Low Res Platform Identification');
+INSERT INTO "attribute" VALUES ('945fa340-1747-4fd0-8bd7-084757cd9a10', 'Grid Launch Time');
+INSERT INTO "attribute" VALUES ('9579b2a8-ab4d-4211-96d6-aabfe5deaf50', 'IW Attack Parameters');
+INSERT INTO "attribute" VALUES ('96c7b837-0240-4d11-a6c2-cd8d7d174dc2', 'Comms Depth');
+INSERT INTO "attribute" VALUES ('97845273-a046-4500-ad1d-04cc78eaa658', 'Salvo spacing');
+INSERT INTO "attribute" VALUES ('98e247f1-c63e-44cb-b3ab-93e899474ca8', 'Periscope Depth');
+INSERT INTO "attribute" VALUES ('990f3758-e20c-4017-9ce8-0f35d44b65cb', 'Datalink energy');
+INSERT INTO "attribute" VALUES ('9c0e718a-1f92-4de5-98b5-29689bf42dd1', 'TAMPS Constraints P');
+INSERT INTO "attribute" VALUES ('9c8f0774-04c4-4914-802a-280da7ed9c19', 'Engagement Doctrine');
+INSERT INTO "attribute" VALUES ('9e87dd03-d4cc-43b2-b950-53a9fae07641', 'Maximum Weapons in Flight P');
+INSERT INTO "attribute" VALUES ('a1487f2c-7984-4450-b7ea-b2922275e6aa', 'attribute1');
+INSERT INTO "attribute" VALUES ('a381d296-fc44-4d12-b54a-ef5964754aec', 'Scripted Jamming Vulnerability List');
+INSERT INTO "attribute" VALUES ('a3cc6b0c-28c2-44fa-abb0-cbd8e6a34abe', 'Active Phase');
+INSERT INTO "attribute" VALUES ('a50f78d6-628e-487c-9303-9a46e8a47e29', 'Max Port Away Time ');
+INSERT INTO "attribute" VALUES ('a8965046-988e-4e03-9396-f2834a50bf02', 'Comp Damage Threshhold');
+INSERT INTO "attribute" VALUES ('aa707238-6e37-45b8-9bb8-2764845809db', 'Shuffle Motion Threat Evaluation Table');
+INSERT INTO "attribute" VALUES ('ae01579f-5b45-435d-8bbe-cb6901fc1fac', 'Decision Times');
+INSERT INTO "attribute" VALUES ('b11ed452-2a8f-4e30-bb8c-9cfe1f3927ef', 'Order Queues');
+INSERT INTO "attribute" VALUES ('b1b25513-2b87-41ff-bc63-8fb6f9136c39', 'PRIORITIZED COMMAND CENTER LOCATION');
+INSERT INTO "attribute" VALUES ('b1f6f954-8843-4b29-84d4-1bb4cac37462', 'Backup Activation Standard Deviation');
+INSERT INTO "attribute" VALUES ('b2637cfa-3839-43f8-951c-cf42e2703086', 'Low Res Sensor List');
+INSERT INTO "attribute" VALUES ('b39d5320-cb8b-4ad6-b862-49a6fe7358ba', 'Weapon Supply Item List');
+INSERT INTO "attribute" VALUES ('b51bfd03-76c1-43f7-811e-28cc6ce9153a', 'Component List');
+INSERT INTO "attribute" VALUES ('b5a98db0-308f-40f1-9864-7e95d2006181', 'Platform Emits P');
+INSERT INTO "attribute" VALUES ('b6d41b0b-ba1d-427c-bc49-acb947aca8a8', 'Group Resupply');
+INSERT INTO "attribute" VALUES ('b6d59f47-6f61-4590-9be4-cb31f656b4bc', 'Implicit Attrition Schedule');
+INSERT INTO "attribute" VALUES ('b7022c74-ef3e-4f58-95e4-61e0d70ea83b', 'BDA Destroyed Threshold');
+INSERT INTO "attribute" VALUES ('b74090a4-6ca6-4f77-bac2-bb3910f63dc3', 'ADDITIONAL INFOMATION');
+INSERT INTO "attribute" VALUES ('b8408e99-cb8d-4054-9847-3afaf7150ef1', 'Vulnerabilities Start On');
+INSERT INTO "attribute" VALUES ('b88be064-29a4-4c30-b718-f3c80f0cf151', 'Suspend Operations During C2 Transfer P');
+INSERT INTO "attribute" VALUES ('bb0c0aef-6623-494d-b2cb-8f62e57892ae', 'Constrain mast hits');
+INSERT INTO "attribute" VALUES ('bed9cbcf-7a0a-413a-84c1-8df6a8551625', 'Default Depth Profile');
+INSERT INTO "attribute" VALUES ('bf980dd8-adc5-4975-8537-cd9b0e25696d', 'Scenario Specific Periscope Schedule Table');
+INSERT INTO "attribute" VALUES ('c0989a9f-ea3e-4353-8536-f12fac56c704', 'Operating Medium');
+INSERT INTO "attribute" VALUES ('c160155c-82c6-454c-ade8-98dbe129fe63', 'Snorkel Depth');
+INSERT INTO "attribute" VALUES ('c48f31e1-b411-439c-ad91-faf378eb2f0f', 'Deck configuration');
+INSERT INTO "attribute" VALUES ('c523cf9f-0f8d-4ce7-a5b8-7f087df55775', 'Backup Activation Max');
+INSERT INTO "attribute" VALUES ('c557868f-a650-475d-b269-c18c80182112', 'Backup Activation Max');
+INSERT INTO "attribute" VALUES ('c82e9e61-b875-4a8d-9dce-393c97ada60a', 'Voice energy');
+INSERT INTO "attribute" VALUES ('c96e1c67-3e41-4f7b-b08e-0c108a40ccab', 'Self Control Options Element Table by Region');
+INSERT INTO "attribute" VALUES ('c9981429-89ad-4c6c-a182-42e62e9b00aa', 'Not on Death List');
+INSERT INTO "attribute" VALUES ('cd7518c5-aece-4e5b-af47-764e4dd42bfc', 'Constrain super structure hits');
+INSERT INTO "attribute" VALUES ('ce6de59c-9bfe-41e2-b941-a8d10412a9f7', 'IW Attack Parameters');
+INSERT INTO "attribute" VALUES ('ce719189-ee5f-4397-92e8-134f2c6fabf7', 'Plan end day');
+INSERT INTO "attribute" VALUES ('d08bed41-e7c1-422b-89fc-e981ac04b7c8', 'TRANSIT SPEED');
+INSERT INTO "attribute" VALUES ('d215eb80-7f8a-4b49-9eb6-bd1fe57295db', 'Activate Tactical Picture Exchange Based on Comms Schedule');
+INSERT INTO "attribute" VALUES ('d221cf96-db65-487e-ba46-758316907a8b', 'Backup Activation Mean');
+INSERT INTO "attribute" VALUES ('d54ed6f5-f0bf-411a-8a07-d8136e76bde8', 'C2 Transfer Delay');
+INSERT INTO "attribute" VALUES ('d552db8f-487a-47bb-a242-6233021108b6', 'Platform Identification');
+INSERT INTO "attribute" VALUES ('d605843a-4087-4146-9f0a-1451f7855ede', 'Backup Activation Standard Deviation');
+INSERT INTO "attribute" VALUES ('d6914834-bc58-4e7e-8fa8-78a4c21de04a', 'TemplatName');
+INSERT INTO "attribute" VALUES ('d6badb40-6cb9-4ac2-894e-2eaedd422df2', 'Resupply Role');
+INSERT INTO "attribute" VALUES ('d864b0dd-9fed-4f68-834d-dc7c3ad40ab6', 'TemplatName');
+INSERT INTO "attribute" VALUES ('d897bacb-d269-4685-a30b-07e36b10c148', 'Weapon Selector Object');
+INSERT INTO "attribute" VALUES ('db8b4ea1-a837-49b5-a5fd-74c417b7fbda', 'Intrinsic Battery Model');
+INSERT INTO "attribute" VALUES ('dbde12db-3316-4613-a491-71595f024eff', 'Maximum Weapons in Flight P');
+INSERT INTO "attribute" VALUES ('dbf82d8e-f576-4ddf-b73a-ce04419d3df2', 'Periscope Exposure Height');
+INSERT INTO "attribute" VALUES ('dc009712-9952-48ce-b99a-63e27c3c7caf', 'Voice Bands');
+INSERT INTO "attribute" VALUES ('deffe726-f36a-4cb6-985d-a22e320ec34d', 'Target Decision Time Delay Std Dev');
+INSERT INTO "attribute" VALUES ('dfeb7457-aa20-4e62-9b8e-d1a24f2354a8', 'Dial a TQ');
+INSERT INTO "attribute" VALUES ('e01d1bc9-5ba3-43a1-bfd0-63ca441ebdb7', 'VECTOR SPEED');
+INSERT INTO "attribute" VALUES ('e15dc672-bfe9-461b-b102-559900680632', 'Limit engagements');
+INSERT INTO "attribute" VALUES ('e198d01d-1a72-4fae-9bc6-0c304d6d1bdc', 'Output Elements');
+INSERT INTO "attribute" VALUES ('e4146a82-47bf-4b0b-bc34-83775ce36e18', 'Snorkle Schedule');
+INSERT INTO "attribute" VALUES ('e4907f78-3af9-4b89-bb5c-852433d907b1', 'EC Target Priority Object');
+INSERT INTO "attribute" VALUES ('e5693d12-31e4-462e-9a16-bde700d587c8', 'Periscope Schedule');
+INSERT INTO "attribute" VALUES ('e7511eaa-21bb-474e-be8f-0726958efd04', 'Controlled Search Duration');
+INSERT INTO "attribute" VALUES ('eb2ba7f4-4b86-4639-a6d2-cbb0ea16e736', 'Dynamic Jamming Signature');
+INSERT INTO "attribute" VALUES ('eb562f40-8d16-4ebd-8cb9-fc8907ff972b', 'Asset List');
+INSERT INTO "attribute" VALUES ('ebca26ec-aea0-4bca-9df3-bf06f2cdbb30', 'Datalink frequency');
+INSERT INTO "attribute" VALUES ('ed93929c-32c3-4cad-91ed-ab6510a36ea4', 'Plan start time');
+INSERT INTO "attribute" VALUES ('ef739b5e-2b1e-4412-bb73-fcca37d73ff8', 'Self Control Options Scheme');
+INSERT INTO "attribute" VALUES ('f1d27e73-8e27-4330-9d7f-08ba7b0c7b83', 'Vulnerability List');
+INSERT INTO "attribute" VALUES ('f287918c-0c75-41e2-a0e0-316878dc4e5f', 'Operational States with Schedules Synchronized to Class');
+INSERT INTO "attribute" VALUES ('f6e117da-aabd-4adb-9acb-0402996b3828', 'Tactic Poll Rate');
+INSERT INTO "attribute" VALUES ('fac0bebf-d6ae-4865-a0ab-52757cb6cf38', 'Initiate Pre Position Based on Comms Schedule');
+INSERT INTO "attribute" VALUES ('fafe8d4c-17ce-415d-8433-c19de9f1cfdf', 'Higher Level Backup Scheme P');
+INSERT INTO "attribute" VALUES ('fc0726b6-2da9-4665-b23c-2bc040e1e872', 'Assessment Delay');
+INSERT INTO "attribute" VALUES ('fc1fe25c-48e8-4c8a-bc28-67028c937ac5', 'Geographical Filter Region');
+INSERT INTO "attribute" VALUES ('fca3693e-9eb2-47c6-984e-ae3b2e002659', 'Number of Engagements');
+INSERT INTO "attribute" VALUES ('fcf1562e-b2ad-4b7d-a3d0-c7664324b23e', 'UNREP Speed');
+INSERT INTO "attribute" VALUES ('ffea4fde-6e31-430f-a1f7-eab517e3037b', 'Tactic Poll Rate');
+
+-- ----------------------------
+-- Table structure for attribute_history
+-- ----------------------------
+DROP TABLE IF EXISTS "attribute_history";
+CREATE TABLE "attribute_history"  (
+  "attribute_id" varchar(255)  NOT NULL,
+  "attribute_name" varchar(255) NOT NULL,
+  PRIMARY KEY ("attribute_id")
+); 
+
+-- ----------------------------
+-- Records of attribute_history
+-- ----------------------------
+INSERT INTO "attribute_history" VALUES ('1', 'type');
+
+-- ----------------------------
+-- Table structure for baseline
+-- ----------------------------
+DROP TABLE IF EXISTS "baseline";
+CREATE TABLE "baseline"  (
+  "id" varchar(255) NOT NULL ,
+  "baseline_name" varchar(255)  NOT NULL,
+  "baseline_description" text NULL,
+  "priority" int NULL DEFAULT NULL,
+  "created_time" datetime NULL DEFAULT NULL,
+  "modified_time" datetime NULL DEFAULT NULL,
+  PRIMARY KEY ("id")
+);
+
+-- ----------------------------
+-- Records of baseline
+-- ----------------------------
+INSERT INTO "baseline" VALUES (6, '基线测试', '基线描述', 1, '2023-08-22 12:38:58', NULL);
+
+-- ----------------------------
+-- Table structure for criterion
+-- ----------------------------
+DROP TABLE IF EXISTS "criterion";
+CREATE TABLE "criterion"  (
+  "id" varchar(255) NOT NULL,
+  "criterion_name" varchar(255) NOT NULL,
+  "review_points" text  NOT NULL,
+  "review_criteria" text  NOT NULL,
+  "review_process" text NOT NULL,
+  "display" int NOT NULL,
+  PRIMARY KEY ("id")
+) ;
+
+-- ----------------------------
+-- Records of criterion
+-- ----------------------------
+INSERT INTO "criterion" VALUES (1, '功能完整性', '确定软件是否包含项目需求文档的创建、编辑、版本控制、审批流程等基本功能', '软件功能能否满足项目需求管理的基本要求', '评估软件的功能列表或需求管理模块;针对项目需求文档的创建、编辑、审批流程等功能进行测试;确认软件是否能满足项目需求管理流程\n', 1);
+INSERT INTO "criterion" VALUES (2, '用户友好性', '评估软件的用户界面是否直观、简洁，是否易于学习和使用', '软件是否具有良好的用户体验，能否减少用户的操作困难和错误', '让团队成员使用软件，并收集他们的反馈意见;检查软件是否提供帮助文档或在线支持;评估软件的用户界面设计是否符合用户习惯', 2);
+INSERT INTO "criterion" VALUES (3, '可定制性', '检查软件是否允许自定义字段、工作流程和权限设置', '软件是否灵活，能够适应不同项目的需求管理要求', '研究软件的设置和配置选项，看是否能进行灵活的定制;确定是否支持自定义字段、工作流程和权限', 3);
+INSERT INTO "criterion" VALUES (4, '数据安全性', '确认软件是否提供访问控制和身份认证功能，以限制数据访问权限', '软件是否提供足够的数据安全措施，以保护敏感信息和客户数据', '了解软件的数据传输和存储方式，确认是否采取了加密措施;检查软件是否提供访问控制和身份认证功能', 4);
+
+-- ----------------------------
+-- Table structure for entity
+-- ----------------------------
+DROP TABLE IF EXISTS "entity";
+CREATE TABLE "entity"  (
+  "entity_id" varchar(255)  NOT NULL,
+  "entity_name" varchar(255)  NOT NULL,
+  "entity_type" varchar(255)  NOT NULL,
+  "entity_level" int NOT NULL,
+  PRIMARY KEY ("entity_id") 
+) ;
+
+-- ----------------------------
+-- Records of entity
+-- ----------------------------
+INSERT INTO "entity" VALUES ('1', 'id', 'function', 1);
+INSERT INTO "entity" VALUES ('10', '任务', 'mission', 1);
+INSERT INTO "entity" VALUES ('2', 'name', 'function', 1);
+INSERT INTO "entity" VALUES ('3', 'id', 'system', 1);
+INSERT INTO "entity" VALUES ('4', 'name', 'system', 1);
+INSERT INTO "entity" VALUES ('5', 'id', 'capability', 1);
+INSERT INTO "entity" VALUES ('6', 'name', 'capability', 1);
+INSERT INTO "entity" VALUES ('7', '活动7', 'activity', 1);
+INSERT INTO "entity" VALUES ('8', '活动8', 'activity', 1);
+INSERT INTO "entity" VALUES ('9', '任务', 'mission', 1);
+
+-- ----------------------------
+-- Table structure for entity_baseline
+-- ----------------------------
+DROP TABLE IF EXISTS "entity_baseline";
+CREATE TABLE "entity_baseline"  (
+  "id" varchar(255) NOT NULL,
+  "entity_historyid" varchar(255)  NOT NULL,
+  "baseline_id" varchar(255) NOT NULL,
+  PRIMARY KEY ("id") 
+) ;
+
+-- ----------------------------
+-- Records of entity_baseline
+-- ----------------------------
+INSERT INTO "entity_baseline" VALUES (25, '28cb13eae169984da5176c0cba652995', 6);
+INSERT INTO "entity_baseline" VALUES (26, '2a1a895e35c1f243b81515e04f55816f', 6);
+INSERT INTO "entity_baseline" VALUES (27, '71a2dd8aafae016950e9b08388c77d6d', 6);
+INSERT INTO "entity_baseline" VALUES (28, '8a202fab1d5cd8ec0cf2cdaa6b7360ff', 6);
+INSERT INTO "entity_baseline" VALUES (29, 'dd508d5feef0148774b5e466092c87e9', 6);
+INSERT INTO "entity_baseline" VALUES (30, 'f6e076563ec83b59748b6cbf2888046b', 6);
+
+-- ----------------------------
+-- Table structure for entity_history
+-- ----------------------------
+DROP TABLE IF EXISTS "entity_history";
+CREATE TABLE "entity_history"  (
+  "entity_historyid" varchar(255) NOT NULL,
+  "entity_id" varchar(255)  NOT NULL,
+  "version" varchar(255)  NOT NULL,
+  "entity_name" varchar(255)  NOT NULL,
+  "entity_type" varchar(255) NOT NULL,
+  "is_top" int NOT NULL DEFAULT 0 ,
+  "changes" varchar(255)  NULL DEFAULT NULL,
+  PRIMARY KEY ("entity_historyid") 
+) ;
+
+-- ----------------------------
+-- Records of entity_history
+-- ----------------------------
+INSERT INTO "entity_history" VALUES ('28cb13eae169984da5176c0cba652995', '1', 'v.0.0.0.2', 'id', 'mission', 0, '暂无变更内容');
+INSERT INTO "entity_history" VALUES ('2a1a895e35c1f243b81515e04f55816f', '2', 'v.0.0.0.2', 'name', 'mission', 0, '暂无变更内容');
+INSERT INTO "entity_history" VALUES ('71a2dd8aafae016950e9b08388c77d6d', '1', 'v.0.0.0.3', 'id', 'mission', 1, '暂无变更内容');
+INSERT INTO "entity_history" VALUES ('8a202fab1d5cd8ec0cf2cdaa6b7360ff', '1', 'v.0.0.0.1', 'id', 'mission', 0, '暂无变更内容');
+INSERT INTO "entity_history" VALUES ('dd508d5feef0148774b5e466092c87e9', '2', 'v.0.0.0.1', 'name', 'mission', 0, '暂无变更内容');
+INSERT INTO "entity_history" VALUES ('f6e076563ec83b59748b6cbf2888046b', '2', 'v.0.0.0.3', 'name', 'mission', 1, '暂无变更内容');
+
+-- ----------------------------
+-- Table structure for file_model
+-- ----------------------------
+DROP TABLE IF EXISTS "file_model";
+CREATE TABLE "file_model"  (
+  "id" varchar(40) NOT NULL,
+  "create_time" datetime NULL DEFAULT NULL,
+  "md5" varchar(255)  NULL DEFAULT NULL ,
+  "size" varchar(255)  NULL DEFAULT NULL,
+  "local_path" varchar(255) NULL DEFAULT NULL ,
+  "file_name" varchar(255)  NULL DEFAULT NULL ,
+  PRIMARY KEY ("id")
+) ;
+
+-- ----------------------------
+-- Records of file_model
+-- ----------------------------
+INSERT INTO "file_model" VALUES ('f5ac901a-334a-415b-9d32-7564c20bfc5a', '2023-08-17 17:03:44', NULL, '1KB', 'D:\\upload\\avatar\\files\\843a7fd5797f4b6d8962d0ef2ad5c632.txt', '1828375c8eef41399efc680d09c926c0');
+
+-- ----------------------------
+-- Table structure for host_info
+-- ----------------------------
+DROP TABLE IF EXISTS "host_info";
+CREATE TABLE "host_info"  (
+  "id" varchar(40)  NOT NULL ,
+  "host_ip" varchar(255)  NOT NULL ,
+  "port" varchar(255) NOT NULL ,
+  "username" varchar(255)  NOT NULL,
+  "password" varchar(255)  NOT NULL,
+  "another_name" varchar(255) NOT NULL ,
+  "db_type" varchar(255)  NULL DEFAULT NULL ,
+  "db_name" varchar(255)  NULL DEFAULT NULL,
+  PRIMARY KEY ("id") 
+) ;
+
+-- ----------------------------
+-- Records of host_info
+-- ----------------------------
+INSERT INTO "host_info" VALUES ('1', '127.0.0.1', '3306', 'root', 'root', 'demo', 'MySql', 'localhost-3306');
+INSERT INTO "host_info" VALUES ('3', '127.0.0.1', '3307', 'root', 'root', 'demo', 'MySql', 'localhost-3307');
+INSERT INTO "host_info" VALUES ('7', '192.168.31.80', '3306', 'root', 'root', 'model2construct', 'MySql', 'model2construct');
+
+-- ----------------------------
+-- Table structure for opinion
+-- ----------------------------
+DROP TABLE IF EXISTS "opinion";
+CREATE TABLE "opinion"  (
+  "id" varchar(255) NOT NULL ,
+  "name" varchar(200) NULL DEFAULT NULL ,
+  "expert_opinion" text NULL,
+  "status" int NULL DEFAULT NULL,
+  "review_id" varchar(255) NULL DEFAULT NULL,
+  PRIMARY KEY ("id") 
+) ;
+
+-- ----------------------------
+-- Records of opinion
+-- ----------------------------
+INSERT INTO "opinion" VALUES (1, '张三', '我觉得该项目是合适的', 0, NULL);
+INSERT INTO "opinion" VALUES (2, '杨银', '333', 1, 23);
+INSERT INTO "opinion" VALUES (3, '杨银', '111', 1, 24);
+INSERT INTO "opinion" VALUES (4, '杨银', '哇哇哇哇', 1, 25);
+INSERT INTO "opinion" VALUES (5, '杨银', 'www', 1, 27);
+INSERT INTO "opinion" VALUES (6, '杨银', '1111', 1, 28);
+INSERT INTO "opinion" VALUES (7, '杨银', '1111', 1, 28);
+INSERT INTO "opinion" VALUES (8, '杨银', '333', 1, 28);
+INSERT INTO "opinion" VALUES (9, '杨银', '222', 1, 29);
+INSERT INTO "opinion" VALUES (10, '杨银', '333', 1, 23);
+INSERT INTO "opinion" VALUES (11, '杨银', '333', 1, 23);
+INSERT INTO "opinion" VALUES (12, '杨银', '111', 1, 31);
+INSERT INTO "opinion" VALUES (13, '杨银', '111', 1, 31);
+INSERT INTO "opinion" VALUES (14, '杨银', '从第三方', 2, 26);
+INSERT INTO "opinion" VALUES (15, '杨银', '5828', 1, 33);
+INSERT INTO "opinion" VALUES (16, '杨银', '萨顶顶', 1, 1);
+INSERT INTO "opinion" VALUES (17, '杨银', '萨顶顶', 1, 1);
+INSERT INTO "opinion" VALUES (18, '杨银', '萨顶顶', 1, 1);
+INSERT INTO "opinion" VALUES (19, '杨银', '萨顶顶', 1, 1);
+INSERT INTO "opinion" VALUES (20, '杨银', '萨顶顶', 1, 1);
+INSERT INTO "opinion" VALUES (21, '杨银', '萨顶顶', 1, 1);
+INSERT INTO "opinion" VALUES (22, '杨银', '十大', 2, 2);
+INSERT INTO "opinion" VALUES (23, '杨银', '十大', 2, 3);
+INSERT INTO "opinion" VALUES (24, '张三', '通过', 1, 4);
+INSERT INTO "opinion" VALUES (25, '张三', '通过', 1, 4);
+INSERT INTO "opinion" VALUES (26, '张三', '通过', 1, 4);
+
+-- ----------------------------
+-- Table structure for personnel
+-- ----------------------------
+DROP TABLE IF EXISTS "personnel";
+CREATE TABLE "personnel"  (
+  "id" varchar(255) NOT NULL ,
+  "name" varchar(200)  NOT NULL,
+  "introduction" varchar(200) NOT NULL ,
+  "display" int NOT NULL ,
+  PRIMARY KEY ("id") 
+) ;
+
+-- ----------------------------
+-- Records of personnel
+-- ----------------------------
+INSERT INTO "personnel" VALUES (2, '张三', '测试1', 1);
+
+-- ----------------------------
+-- Table structure for relationship
+-- ----------------------------
+DROP TABLE IF EXISTS "relationship";
+CREATE TABLE "relationship"  (
+  "relationship_id" varchar(255) NOT NULL,
+  "entity_id1" varchar(255)  NOT NULL,
+  "entity_id2" varchar(255)  NOT NULL,
+  "relationship_type" varchar(255) NOT NULL,
+  PRIMARY KEY ("relationship_id") 
+) ;
+
+-- ----------------------------
+-- Records of relationship
+-- ----------------------------
+INSERT INTO "relationship" VALUES ('1', '1', '2', '组成');
+INSERT INTO "relationship" VALUES ('10', '8', '10', '任务-能力');
+INSERT INTO "relationship" VALUES ('2', '1', '3', '组成');
+INSERT INTO "relationship" VALUES ('3', '5', '7', '能力5-活动7');
+INSERT INTO "relationship" VALUES ('5', '6', '8', '能力6-活动8');
+INSERT INTO "relationship" VALUES ('6', '1', '7', '系统功能1-活动7');
+INSERT INTO "relationship" VALUES ('7', '1', '8', '系统功能1-活动8');
+INSERT INTO "relationship" VALUES ('8', '2', '7', '系统功能2-活动7');
+INSERT INTO "relationship" VALUES ('9', '5', '9', '任务-能力');
+
+-- ----------------------------
+-- Table structure for relationship_history
+-- ----------------------------
+DROP TABLE IF EXISTS "relationship_history";
+CREATE TABLE "relationship_history"  (
+  "relationship_id" varchar(255) NOT NULL,
+  "entity_history_id1" varchar(255) NOT NULL,
+  "entity_history_id2" varchar(255) NOT NULL,
+  "relationship_type" varchar(255)  NOT NULL ,
+  PRIMARY KEY ("relationship_id") 
+) ;
+
+-- ----------------------------
+-- Records of relationship_history
+-- ----------------------------
+INSERT INTO "relationship_history" VALUES ('1', '1', '2', '组成');
+INSERT INTO "relationship_history" VALUES ('2', '1', '3', '组成');
+INSERT INTO "relationship_history" VALUES ('6', '1', '7', '系统功能1-活动7');
+INSERT INTO "relationship_history" VALUES ('7', '1', '8', '系统功能1-活动8');
+INSERT INTO "relationship_history" VALUES ('8', '2', '7', '系统功能2-活动7');
+
+-- ----------------------------
+-- Table structure for requirement_model
+-- ----------------------------
+DROP TABLE IF EXISTS "requirement_model";
+CREATE TABLE "requirement_model"  (
+  "id" varchar(40)  NOT NULL ,
+  "create_time" datetime NULL DEFAULT NULL ,
+  "file_content" text  NULL ,
+  "entity_id" varchar(40) NOT NULL ,
+  PRIMARY KEY ("id") 
+);
+
+-- ----------------------------
+-- Records of requirement_model
+-- ----------------------------
+INSERT INTO "requirement_model" VALUES ('0559e768-bd80-4102-8529-c4db585a7cec', '2023-08-14 14:13:14', '**标题**\n内容\n测试\n![8ed45b7fa0a1c6430cf77e405dbe275b.jpg](192.168.31.80:8080/upload/avatar/8ed45b7fa0a1c6430cf77e405dbe275b_1692579970205.jpg)', '1');
+INSERT INTO "requirement_model" VALUES ('707a8913-672e-4346-bb7e-9c5426787769', '2023-08-21 09:07:03', '123456', '5');
+INSERT INTO "requirement_model" VALUES ('c640e92d-3492-4d55-a4a9-93fc46aa6fec', '2023-08-22 13:04:54', '1111\n![pp.1.832ea271.VNCtw_kv5EtETXpj7UJEw.jpg](192.168.31.80:8080/upload/avatar/pp.1.832ea271.VNCtw_kv5E-tETXpj7UJEw_1692680603183.jpg)\n1', '7');
+INSERT INTO "requirement_model" VALUES ('f93103cd-3c0e-4e90-ab2b-89015b6bf850', '2023-08-21 09:01:55', '测试', '3');
+
+-- ----------------------------
+-- Table structure for review
+-- ----------------------------
+DROP TABLE IF EXISTS "review";
+CREATE TABLE "review"  (
+  "id" varchar(255) NOT NULL ,
+  "name" varchar(200)  NULL DEFAULT NULL ,
+  "sponsor" varchar(200) NULL DEFAULT NULL ,
+  "type" varchar(255) NULL DEFAULT NULL ,
+  "status" int NOT NULL DEFAULT 0 ,
+  PRIMARY KEY ("id")
+) ;
+
+-- ----------------------------
+-- Records of review
+-- ----------------------------
+INSERT INTO "review" VALUES (1, 'dasdd', 'asd', '增量', 1);
+INSERT INTO "review" VALUES (2, 'ssa', 'sc', '增量', 2);
+INSERT INTO "review" VALUES (3, 'dsd', 'sad', '增量', 2);
+INSERT INTO "review" VALUES (4, '测试评审', '张三', '变更', 1);
+
+-- ----------------------------
+-- Table structure for review_entity
+-- ----------------------------
+DROP TABLE IF EXISTS "review_entity";
+CREATE TABLE "review_entity"  (
+  "id" varchar(255) NOT NULL ,
+  "review_id" varchar(255) NULL DEFAULT NULL,
+  "entity_id" varchar(255) NULL DEFAULT NULL,
+  PRIMARY KEY ("id") 
+) ;
+
+-- ----------------------------
+-- Records of review_entity
+-- ----------------------------
+INSERT INTO "review_entity" VALUES (3, 21, '111');
+INSERT INTO "review_entity" VALUES (4, 23, 'activity_id');
+INSERT INTO "review_entity" VALUES (5, 23, 'function_id');
+INSERT INTO "review_entity" VALUES (6, 23, 'node_id');
+INSERT INTO "review_entity" VALUES (7, 24, 'node_id');
+INSERT INTO "review_entity" VALUES (8, 25, 'function_id');
+INSERT INTO "review_entity" VALUES (9, 25, 'mission_id');
+INSERT INTO "review_entity" VALUES (10, 26, 'function_id');
+INSERT INTO "review_entity" VALUES (11, 26, 'mission_id');
+INSERT INTO "review_entity" VALUES (12, 27, 'function_id');
+INSERT INTO "review_entity" VALUES (13, 27, 'mission_id');
+INSERT INTO "review_entity" VALUES (14, 28, 'function_id');
+INSERT INTO "review_entity" VALUES (15, 28, 'mission_id');
+INSERT INTO "review_entity" VALUES (16, 29, 'capability_id');
+INSERT INTO "review_entity" VALUES (17, 29, 'function_id');
+INSERT INTO "review_entity" VALUES (18, 29, 'mission_id');
+INSERT INTO "review_entity" VALUES (19, 30, 'capability_id');
+INSERT INTO "review_entity" VALUES (20, 30, 'function_id');
+INSERT INTO "review_entity" VALUES (21, 30, 'mission_id');
+INSERT INTO "review_entity" VALUES (22, 31, 'mission_id');
+INSERT INTO "review_entity" VALUES (23, 32, 'mission_id');
+INSERT INTO "review_entity" VALUES (24, 33, 'mission_id');
+INSERT INTO "review_entity" VALUES (25, 34, 'function_id');
+INSERT INTO "review_entity" VALUES (26, 35, 'mission_id');
+INSERT INTO "review_entity" VALUES (27, 36, 'mission_id');
+INSERT INTO "review_entity" VALUES (28, 37, 'mission_id');
+INSERT INTO "review_entity" VALUES (29, 38, 'capability_id');
+INSERT INTO "review_entity" VALUES (30, 39, 'capability_id');
+INSERT INTO "review_entity" VALUES (31, 39, 'function_id');
+INSERT INTO "review_entity" VALUES (32, 40, 'activity_id');
+INSERT INTO "review_entity" VALUES (33, 40, 'capability_id');
+INSERT INTO "review_entity" VALUES (34, 40, 'function_id');
+INSERT INTO "review_entity" VALUES (35, 40, 'mission_id');
+INSERT INTO "review_entity" VALUES (36, 40, 'node_id');
+INSERT INTO "review_entity" VALUES (37, 40, 'system_id');
+INSERT INTO "review_entity" VALUES (38, 41, 'activity_id');
+INSERT INTO "review_entity" VALUES (39, 41, 'capability_id');
+INSERT INTO "review_entity" VALUES (40, 41, 'function_id');
+INSERT INTO "review_entity" VALUES (41, 41, 'mission_id');
+INSERT INTO "review_entity" VALUES (42, 41, 'node_id');
+INSERT INTO "review_entity" VALUES (43, 41, 'system_id');
+INSERT INTO "review_entity" VALUES (44, 42, 'function_id');
+INSERT INTO "review_entity" VALUES (45, 42, 'mission_id');
+INSERT INTO "review_entity" VALUES (46, 42, 'node_id');
+INSERT INTO "review_entity" VALUES (47, 42, 'system_id');
+INSERT INTO "review_entity" VALUES (48, 43, 'activity_id');
+INSERT INTO "review_entity" VALUES (49, 43, 'mission_id');
+INSERT INTO "review_entity" VALUES (50, 43, 'node_id');
+INSERT INTO "review_entity" VALUES (51, 43, 'system_id');
+INSERT INTO "review_entity" VALUES (52, 44, 'activity_id');
+INSERT INTO "review_entity" VALUES (53, 44, 'mission_id');
+INSERT INTO "review_entity" VALUES (54, 44, 'system_id');
+INSERT INTO "review_entity" VALUES (55, 45, 'node_id');
+INSERT INTO "review_entity" VALUES (56, 45, 'system_id');
+INSERT INTO "review_entity" VALUES (57, 46, 'node_id');
+INSERT INTO "review_entity" VALUES (58, 46, 'system_id');
+INSERT INTO "review_entity" VALUES (59, 47, 'node_id');
+INSERT INTO "review_entity" VALUES (60, 47, 'system_id');
+INSERT INTO "review_entity" VALUES (61, 48, 'node_id');
+INSERT INTO "review_entity" VALUES (62, 48, 'system_id');
+INSERT INTO "review_entity" VALUES (63, 49, 'node_id');
+INSERT INTO "review_entity" VALUES (64, 49, 'system_id');
+INSERT INTO "review_entity" VALUES (65, 50, 'activity_id');
+INSERT INTO "review_entity" VALUES (66, 50, 'system_id');
+INSERT INTO "review_entity" VALUES (67, 51, 'activity_id');
+INSERT INTO "review_entity" VALUES (68, 51, 'system_id');
+INSERT INTO "review_entity" VALUES (69, 52, 'activity_id');
+INSERT INTO "review_entity" VALUES (70, 52, 'system_id');
+INSERT INTO "review_entity" VALUES (71, 53, 'function_id');
+INSERT INTO "review_entity" VALUES (72, 1, 'capability_id');
+INSERT INTO "review_entity" VALUES (73, 1, 'function_id');
+INSERT INTO "review_entity" VALUES (74, 2, 'function_id');
+INSERT INTO "review_entity" VALUES (75, 2, 'system_id');
+INSERT INTO "review_entity" VALUES (76, 3, 'activity_id');
+INSERT INTO "review_entity" VALUES (77, 3, 'capability_id');
+INSERT INTO "review_entity" VALUES (78, 4, '1');
+INSERT INTO "review_entity" VALUES (79, 4, '2');
+
+-- ----------------------------
+-- Table structure for template_model
+-- ----------------------------
+DROP TABLE IF EXISTS "template_model";
+CREATE TABLE "template_model"  (
+  "id" varchar(40) NOT NULL ,
+  "create_time" datetime NULL DEFAULT NULL ,
+  "template_name" varchar(255)  NULL DEFAULT NULL,
+  "description" varchar(255) NULL DEFAULT NULL,
+  "file_id" varchar(40)  NULL DEFAULT NULL ,
+  PRIMARY KEY ("id") 
+) ;
+
+-- ----------------------------
+-- Records of template_model
+-- ----------------------------
+INSERT INTO "template_model" VALUES ('8a4ef583-8676-4d93-8c30-88a6be76a177', '2023-08-17 17:03:43', '名称', '描述', 'f5ac901a-334a-415b-9d32-7564c20bfc5a');
+INSERT INTO "template_model" VALUES ('b7ec1122-9957-4b06-85ae-d11b3b64ac17', '2023-08-18 17:23:42', '3333333333334', '444444444444', '0c3ba8bb-4ec2-40bf-bf8b-3cdedda78c8c');
+INSERT INTO "template_model" VALUES ('c17aa63f-4719-4dfd-9fed-3c3442ebd377', '2023-08-18 17:24:10', '大撒大撒大撒大撒', '大苏打撒旦撒旦', '6d88bb8e-0719-47b8-9d0c-f734fed7492e');
+
+-- ----------------------------
+-- Table structure for value
+-- ----------------------------
+DROP TABLE IF EXISTS "value";
+CREATE TABLE "value"  (
+  "value_id" varchar(255) NOT NULL,
+  "entity_id" varchar(255)  NOT NULL,
+  "attribute_id" varchar(255)  NOT NULL,
+  "value" text  NOT NULL,
+  PRIMARY KEY ("value_id") 
+) ;
+
+-- ----------------------------
+-- Records of value
+-- ----------------------------
+INSERT INTO "value" VALUES ('0013ca5f-d89f-49bb-b3f9-d968ac0a1141', 'f43f8326-81d3-4b31-990c-250e094bdba9', 'c523cf9f-0f8d-4ce7-a5b8-7f087df55775', '4');
+INSERT INTO "value" VALUES ('00806242-724c-4ade-a193-b057f2f4045a', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '93b6eed2-c6ab-41d7-b6b6-5965c1b93448', 'NONE');
+INSERT INTO "value" VALUES ('0115d7c5-43a2-4f7c-b87a-272e2f5cedd5', '_QAKyIDybEe6bbZdRs_Rs3w', '3d55b86d-cebc-468b-bac3-7e777d20524a', '22234');
+INSERT INTO "value" VALUES ('027cd63f-31be-4de1-bbad-7d31331a9d83', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'b51bfd03-76c1-43f7-811e-28cc6ce9153a', 'qwe');
+INSERT INTO "value" VALUES ('0392ddda-299c-42ba-be91-1615cc069220', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', '8aa9dbf9-da11-4cd9-961a-25604462459f', 'Shoot-Shoot-Look');
+INSERT INTO "value" VALUES ('045ca19e-2af9-4810-a916-e8b85d79ed67', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'c96e1c67-3e41-4f7b-b08e-0c108a40ccab', '1');
+INSERT INTO "value" VALUES ('0587410e-6ad4-411a-8082-d30bfeb7162f', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '15395a66-62ac-4466-9b7b-86299707db53', '0');
+INSERT INTO "value" VALUES ('08b5f112-9392-4364-8a7b-7ad8f64d6eff', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'b39d5320-cb8b-4ad6-b862-49a6fe7358ba', '1');
+INSERT INTO "value" VALUES ('0b38398e-d184-43c3-a820-56e2c0605cfb', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '1759e3c1-010c-499d-a5b3-2fc677fb5ace', '100');
+INSERT INTO "value" VALUES ('0bab0cb9-96ff-4e79-bb86-0de6ce175998', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'dfeb7457-aa20-4e62-9b8e-d1a24f2354a8', '1');
+INSERT INTO "value" VALUES ('0c5c11d4-d11d-409f-ac80-52e15160e856', '_zjzBwDviEe6YV9H-dG5VHQ', '4035a8f8-b5e0-491d-9f3e-dd092134e3f6', '2222');
+INSERT INTO "value" VALUES ('0d4ec66c-510e-475a-bd07-ccfc690e3fe8', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'b74090a4-6ca6-4f77-bac2-bb3910f63dc3', 'none');
+INSERT INTO "value" VALUES ('0f9068b3-06c8-47db-846f-6341e468d349', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'b6d59f47-6f61-4590-9be4-cb31f656b4bc', '123');
+INSERT INTO "value" VALUES ('1', '1', '1', '123456');
+INSERT INTO "value" VALUES ('10c6e775-b6ee-482c-a8ec-d5b3a5d4cde0', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'ef739b5e-2b1e-4412-bb73-fcca37d73ff8', 'SCRIPTED');
+INSERT INTO "value" VALUES ('11592fdc-bb4c-495f-aa32-a6281ccd8dfb', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'c0989a9f-ea3e-4353-8536-f12fac56c704', 'SUBSURFACE');
+INSERT INTO "value" VALUES ('17cb07ac-8215-4bfb-9a65-36492b001376', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '5b9aa5f1-e5ea-4a6c-982c-3e2f5a8421cc', '444');
+INSERT INTO "value" VALUES ('1a0bf6db-e9a8-43aa-80e6-5098ccad8002', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', 'ce6de59c-9bfe-41e2-b941-a8d10412a9f7', '555');
+INSERT INTO "value" VALUES ('1b4f5596-651f-4b0d-90dc-9f0d3a239a9e', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '4ec83530-7abc-4e4d-9d85-67e14dcd936c', '666');
+INSERT INTO "value" VALUES ('1dfa8ce8-c8a6-4d19-a023-5ef34c538449', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'deffe726-f36a-4cb6-985d-a22e320ec34d', '0.0027');
+INSERT INTO "value" VALUES ('1e3d5a83-650a-42c2-8348-f7864926734b', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '5f121a88-5f04-4a78-bcde-847e95a60bfa', '11');
+INSERT INTO "value" VALUES ('239ba66d-02ad-4619-a714-d7ef2fe1d829', '_7LNxIDzJEe6Lc_Su9RGabQ', 'a1487f2c-7984-4450-b7ea-b2922275e6aa', '222');
+INSERT INTO "value" VALUES ('27ee77e3-1eac-482c-b241-ab8c7e5df3af', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'f32c7e98-f703-42d4-a791-9a32c5e7fbf3', '0');
+INSERT INTO "value" VALUES ('28c429e5-8b8b-4956-8c9b-975e0758e62e', 'f43f8326-81d3-4b31-990c-250e094bdba9', 'dbde12db-3316-4613-a491-71595f024eff', '1');
+INSERT INTO "value" VALUES ('290b2a46-5b05-42c1-9821-26854df15fb9', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '8233f3de-9514-4272-8df6-f22bf7c943ec', '323');
+INSERT INTO "value" VALUES ('296b45e3-34e3-4fc3-bb4e-29dc73902179', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '412f98df-b34b-424e-835b-09bb9f14bbfc', '0');
+INSERT INTO "value" VALUES ('29b82080-1ccf-4481-be16-ad9df584b9dc', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '59b23530-5b86-47e4-a452-d1a9e8a0040b', '4');
+INSERT INTO "value" VALUES ('30564c41-af7e-41a2-9a92-41ab88f1ae29', 'f43f8326-81d3-4b31-990c-250e094bdba9', '2574cb15-43c3-47ab-bb1b-436d1a54c0b6', 'SimpleWeaponSystem');
+INSERT INTO "value" VALUES ('342700c1-2354-4f78-9af4-ef6e63f0af29', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '98e247f1-c63e-44cb-b3ab-93e899474ca8', '-50');
+INSERT INTO "value" VALUES ('36425473-8b13-49e4-ae79-151def77a186', 'f43f8326-81d3-4b31-990c-250e094bdba9', '3a101dbe-ca26-4634-81f5-778872d7a491', '4');
+INSERT INTO "value" VALUES ('36fa749a-5d25-4495-9e36-c18aa261cbba', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'ebca26ec-aea0-4bca-9df3-bf06f2cdbb30', '5000');
+INSERT INTO "value" VALUES ('38fec1fc-a79c-4998-8dcf-52336b6ae6b0', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '8a562d9d-9274-4bae-afc0-e9d8ddf9264e', '0');
+INSERT INTO "value" VALUES ('397a0d11-9b47-4e32-95ff-9ca383d58ced', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'd897bacb-d269-4685-a30b-07e36b10c148', '123');
+INSERT INTO "value" VALUES ('3bb6379b-b3fa-4506-92c5-7ebca010d7be', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'c48f31e1-b411-439c-ad91-faf378eb2f0f', '334');
+INSERT INTO "value" VALUES ('3c20c61b-633a-4367-849c-81b2bfc26194', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '729fc5cf-2c70-45bd-a49b-1294c26dba81', '0.8');
+INSERT INTO "value" VALUES ('3d267eb8-5348-45bd-8b4e-7b70b76f6ec5', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '00fc0f99-8b41-4d81-b017-ee773b5e5cac', '5000');
+INSERT INTO "value" VALUES ('3e64ed88-66ba-4acc-b96f-790a197ccdc6', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'f1d27e73-8e27-4330-9d7f-08ba7b0c7b83', '44');
+INSERT INTO "value" VALUES ('41dc0415-856f-45f4-ae35-74db15b077c4', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'eb2ba7f4-4b86-4639-a6d2-cbb0ea16e736', '123123');
+INSERT INTO "value" VALUES ('446f76c1-448e-4598-b83e-2126c43ba670', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', 'd864b0dd-9fed-4f68-834d-dc7c3ad40ab6', 'SimpleWeaponSystem');
+INSERT INTO "value" VALUES ('48fa9dbf-68c3-4ec4-9d87-ae76c63f82a4', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '8850fcbb-cb7b-48d3-90f6-4f13f305a5d4', '44');
+INSERT INTO "value" VALUES ('49350312-dae9-44c2-bd5e-a3440a6ad340', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '25703d81-491c-458a-9a9d-ac53b927ccc0', '0');
+INSERT INTO "value" VALUES ('497c93b7-1d30-4e16-87ba-eca0a2ac9d5a', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'e7511eaa-21bb-474e-be8f-0726958efd04', '1');
+INSERT INTO "value" VALUES ('4a84f6b2-add3-4421-b833-aa2c6275d333', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '1c945b57-b269-4cb3-a92c-1b53848a70f5', '0');
+INSERT INTO "value" VALUES ('4af16f4e-6ade-4481-9363-b2e7f2add705', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'fac0bebf-d6ae-4865-a0ab-52757cb6cf38', '0');
+INSERT INTO "value" VALUES ('4f5084e4-fd44-4414-be8d-ea52018495ca', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '6af5b59e-e8c8-441a-bcc2-91f90f5f6e82', '0');
+INSERT INTO "value" VALUES ('53aba8ea-6eb3-471f-a08b-47058e320cd5', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'dbf82d8e-f576-4ddf-b73a-ce04419d3df2', '4');
+INSERT INTO "value" VALUES ('5555b83b-04b7-4d3a-ab0e-d76ea5cb7388', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'bb0c0aef-6623-494d-b2cb-8f62e57892ae', '1');
+INSERT INTO "value" VALUES ('55984550-a91a-42f4-9272-daa3ab8616b7', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'ffea4fde-6e31-430f-a1f7-eab517e3037b', '0');
+INSERT INTO "value" VALUES ('57e7cb3b-73bf-41d0-8bb0-15201eb7df51', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'd215eb80-7f8a-4b49-9eb6-bd1fe57295db', '0');
+INSERT INTO "value" VALUES ('5d018823-69c5-40c1-a6d8-16580fe8ce2e', 'f43f8326-81d3-4b31-990c-250e094bdba9', '330324bb-de8c-423b-8068-6c4015cf925a', '4');
+INSERT INTO "value" VALUES ('604abe23-6cb8-4e68-a072-e6ad7d60ed25', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'aa707238-6e37-45b8-9bb8-2764845809db', '444');
+INSERT INTO "value" VALUES ('63fa9c03-f1ca-4dbf-93ed-f4a49b4f60e7', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '00ae3817-ca12-4945-9527-2a6f03452585', '123123');
+INSERT INTO "value" VALUES ('66a5c9c4-00bc-47f0-ab73-72539ab8b630', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '14290754-333a-410d-af9e-792515e2b295', '100');
+INSERT INTO "value" VALUES ('69cf3422-2d17-4526-b77d-bfad7451a022', 'f43f8326-81d3-4b31-990c-250e094bdba9', '0c38ce01-e3d9-473c-a348-0b02aa3dee61', '0');
+INSERT INTO "value" VALUES ('6a225f8f-1fef-4916-9a8f-b8b73f2f8bab', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'd6914834-bc58-4e7e-8fa8-78a4c21de04a', 'Submarine');
+INSERT INTO "value" VALUES ('6c8e3531-948f-46f9-a75f-2fb7c33416e7', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'cd7518c5-aece-4e5b-af47-764e4dd42bfc', '1');
+INSERT INTO "value" VALUES ('6f1e8487-5294-432f-bbef-a267654a9271', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'a381d296-fc44-4d12-b54a-ef5964754aec', '23');
+INSERT INTO "value" VALUES ('6fb7f36a-46eb-474a-8659-e8d13186d0cb', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '891a34af-923f-469e-ace5-f50d42a77ac9', 'sdfa');
+INSERT INTO "value" VALUES ('700617cf-b9e0-4ed7-8530-c3cffc878547', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '27d42059-b81a-4edc-8109-b05390515c7a', '0');
+INSERT INTO "value" VALUES ('7224173b-571d-4a76-bb7b-458e84d0d47b', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '45220b15-63a9-47c9-b2ce-a7378125024b', '0.1');
+INSERT INTO "value" VALUES ('75590384-005d-411f-aeec-fbb7f0432c18', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '2aa2b1ea-26b7-45a2-bcf6-7730494a9b9f', '0');
+INSERT INTO "value" VALUES ('759a4f7f-f16a-4f87-ac67-4ecc6ea9a70b', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '6ab3cbf8-5530-4719-9433-134c48c860f6', '50');
+INSERT INTO "value" VALUES ('7886e767-407b-48f7-aba8-7113fab97f1b', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'd08bed41-e7c1-422b-89fc-e981ac04b7c8', '4');
+INSERT INTO "value" VALUES ('78c56467-7310-4033-9ac8-acb3fd45f328', 'f43f8326-81d3-4b31-990c-250e094bdba9', 'fafe8d4c-17ce-415d-8433-c19de9f1cfdf', '0');
+INSERT INTO "value" VALUES ('78efbe91-2663-4dd3-a6d4-3589de09c239', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', '5b1f3726-854f-44bc-9add-34867439e045', '4');
+INSERT INTO "value" VALUES ('7a6e386a-5833-43bc-b3e4-b20a5d1ed9d9', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '990f3758-e20c-4017-9ce8-0f35d44b65cb', '100');
+INSERT INTO "value" VALUES ('7b4a7624-54f4-4956-9adb-25e33ad2cc65', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '48e0f3ea-fa3d-43f2-859a-7a01a5355fc6', 'PATROL');
+INSERT INTO "value" VALUES ('7b9a10ba-6138-4439-92b7-54f77d86a582', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '1770d6ed-bb17-424c-8daf-50147ff251be', '5');
+INSERT INTO "value" VALUES ('7c42fe18-5c91-4999-a3f8-f362a17a9b1b', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', '535b263c-3a79-4deb-8195-28a2c0ce42e0', '4');
+INSERT INTO "value" VALUES ('7e510ba4-7b40-49a7-8f51-b73c2675dae5', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '0caa6793-ad44-4a8d-9f2e-1735ec2c04cc', '0');
+INSERT INTO "value" VALUES ('7f30aed8-2ad8-4311-9a26-98a51fc9947e', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'bf980dd8-adc5-4975-8537-cd9b0e25696d', 'asdf');
+INSERT INTO "value" VALUES ('8077ba83-1704-41fe-9cd4-1bb8f40be1a5', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'dc009712-9952-48ce-b99a-63e27c3c7caf', 'ff');
+INSERT INTO "value" VALUES ('8225bc5a-64c4-4aa6-a00a-9ca9c07c8aba', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '4fdfb99f-b7c3-4aa9-93c6-60535cbd7189', '100000');
+INSERT INTO "value" VALUES ('82909956-a67f-4ab4-ad20-0531e5009dd5', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '016b2983-33f7-4331-a494-7c4c7bb4bd2b', '0.1');
+INSERT INTO "value" VALUES ('831df711-6170-4f9d-9450-3e9a9c71916d', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'a8965046-988e-4e03-9396-f2834a50bf02', '1');
+INSERT INTO "value" VALUES ('87e73f30-613e-45de-ba59-f333a08b5080', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'fcf1562e-b2ad-4b7d-a3d0-c7664324b23e', '5');
+INSERT INTO "value" VALUES ('8d52c91b-d99c-4951-b462-327b435098ac', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '1ff67b8e-48d3-477f-a1fa-2a0f61bc99df', '0.3');
+INSERT INTO "value" VALUES ('8d7a6373-a5c3-4806-ab02-f57ba40787ce', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '77ef4ed2-fb7d-4e75-a4f1-e910dbd2be9f', 'sadfasfd');
+INSERT INTO "value" VALUES ('8d8efc68-9977-4ea2-b693-106539d5e3b7', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', '21b42bc7-66c0-43e7-be78-b868daf5f7b0', '0');
+INSERT INTO "value" VALUES ('8f2a58d5-03b0-4a7e-9e15-af2a0a5e219d', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'e5693d12-31e4-462e-9a16-bde700d587c8', 'asdf');
+INSERT INTO "value" VALUES ('8fbe02c0-91c4-4282-b583-a0e6bf56bd8e', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'e4907f78-3af9-4b89-bb5c-852433d907b1', 'ff');
+INSERT INTO "value" VALUES ('91d610b3-ba05-4eb4-9b5e-0e6127cc2be2', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '15a606e9-c629-4056-b432-56d17e0183c2', '345');
+INSERT INTO "value" VALUES ('9338f4ad-607c-4a96-9fba-84348e0dc2e0', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', '58041a94-153a-42b3-ad8a-499c2ba7c266', '0.01666666666666667');
+INSERT INTO "value" VALUES ('9417355d-b119-4d51-bf42-b697d4373d5e', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'fc1fe25c-48e8-4c8a-bc28-67028c937ac5', '345345');
+INSERT INTO "value" VALUES ('951ec6b7-0a76-47c7-b8a7-f1e9a61e8094', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '3a1d63cf-a229-414a-bc9b-40d7619ecccf', '345');
+INSERT INTO "value" VALUES ('956fcd4e-2de7-4a83-aa67-085e6a950ce6', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '394cffbc-48dc-4b9e-931b-ad9a5e272627', '100');
+INSERT INTO "value" VALUES ('95a0eefc-daf1-41fc-9b00-5b71b931d6f4', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'd6badb40-6cb9-4ac2-894e-2eaedd422df2', 'SUPPLIED');
+INSERT INTO "value" VALUES ('981aa6d0-5b08-43cf-bf0c-4b3a8950c5bb', 'f43f8326-81d3-4b31-990c-250e094bdba9', '9c8f0774-04c4-4914-802a-280da7ed9c19', 'Shoot-Shoot-Look');
+INSERT INTO "value" VALUES ('98c863b8-9f5e-4544-a6d1-33d203515361', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '96c7b837-0240-4d11-a6c2-cd8d7d174dc2', '-50');
+INSERT INTO "value" VALUES ('9c790a7f-5310-44b1-8dce-578b7e14f77d', 'f43f8326-81d3-4b31-990c-250e094bdba9', '0043219c-ef6a-4168-9d8d-51aaf4b8c97b', '0.005277777777777778');
+INSERT INTO "value" VALUES ('9db0dd68-f11a-4091-99d4-185fdc2dd022', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '70554752-0dc7-46d5-8886-ee0cdc4f22ac', '0');
+INSERT INTO "value" VALUES ('a09f63bf-57fe-4ca5-b3c1-4bcf98d11823', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'd552db8f-487a-47bb-a242-6233021108b6', 'SUBMARINE');
+INSERT INTO "value" VALUES ('a1c91bb0-e78e-46cb-acae-ddde372983c4', 'f43f8326-81d3-4b31-990c-250e094bdba9', '2ca9a21f-cdc6-4ea8-8935-7473ff58ceee', '4');
+INSERT INTO "value" VALUES ('a1d0cfef-7e4b-4f61-a284-4352a6ed9c3d', 'f43f8326-81d3-4b31-990c-250e094bdba9', '69280a92-26a4-42c2-aafd-c74eb77365f3', '0');
+INSERT INTO "value" VALUES ('b41be4f5-41b2-4fd7-8875-98ef233c86b4', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'b5a98db0-308f-40f1-9864-7e95d2006181', '0');
+INSERT INTO "value" VALUES ('b86c2797-1522-472c-8177-52c936f0ce8e', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', '64ff1da8-8dd9-40da-9323-5417036f5250', 'Standard');
+INSERT INTO "value" VALUES ('bf7c98c4-2ae0-4ddb-b578-ffa6b57066e1', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'b6d41b0b-ba1d-427c-bc49-acb947aca8a8', '1');
+INSERT INTO "value" VALUES ('c35fc3ba-dab8-42b8-b23a-16a99f3c94b3', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '8b5dcfc1-2fc7-414f-8c2c-0b7205a1e344', '5');
+INSERT INTO "value" VALUES ('c7cb30d3-d6b4-4047-aa4d-8f57d22d85b7', '_6Px1oD1jEe6oZPMjqx0BzQ', '84103de7-8fce-4913-a9b7-f477b8a4c9f5', '111');
+INSERT INTO "value" VALUES ('cb193ccb-e7a1-4cb3-a95d-b3b790d8a246', 'f43f8326-81d3-4b31-990c-250e094bdba9', 'd605843a-4087-4146-9f0a-1451f7855ede', '0');
+INSERT INTO "value" VALUES ('cdc3d78b-186f-4b94-ad11-f73402f3331c', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '68223be3-fad0-4e15-8212-fc226c5bac2f', '0');
+INSERT INTO "value" VALUES ('cdf040dd-7d0b-418c-bbb5-3aeed9bab711', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'c160155c-82c6-454c-ade8-98dbe129fe63', '-50');
+INSERT INTO "value" VALUES ('ce854ab3-f302-433a-a1c6-f01c027af533', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '6899b3cc-0d1a-437b-aead-d27bd0ffaddd', '0');
+INSERT INTO "value" VALUES ('cee0d365-b03c-41ca-b506-634577c61bca', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '90268894-1657-4fdc-a4e3-c298368008cc', 'SUBSURFACE - CONVENTIONAL');
+INSERT INTO "value" VALUES ('d34aa69d-a5de-4146-84fa-446eb596390d', '_0x8P4DviEe6YV9H-dG5VHQ', '524b2b8b-9619-4919-9d67-ede9ba56fe28', '342');
+INSERT INTO "value" VALUES ('d560ca4f-4109-4157-98f5-31da37284ebd', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', 'fc0726b6-2da9-4665-b23c-2bc040e1e872', '0');
+INSERT INTO "value" VALUES ('d8ebbd64-8420-4bc7-b332-fee191f140c2', 'f43f8326-81d3-4b31-990c-250e094bdba9', '630631b2-c17c-4e2b-9fa6-c0ae0d8d15c7', 'Uniform');
+INSERT INTO "value" VALUES ('d9ae8694-2b7b-46df-a9d5-b17867053656', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'e01d1bc9-5ba3-43a1-bfd0-63ca441ebdb7', '10');
+INSERT INTO "value" VALUES ('dabe986c-d0f0-48c8-a0c8-c92a5a7c9aff', 'f43f8326-81d3-4b31-990c-250e094bdba9', '32b3c1bf-7cb1-455d-9dd3-15ba8f3648a7', 'Standard');
+INSERT INTO "value" VALUES ('dbb6ec2e-7e6d-4e07-880d-40cff1041cff', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'c82e9e61-b875-4a8d-9dce-393c97ada60a', '100');
+INSERT INTO "value" VALUES ('dea6a131-b7e9-4c45-be98-99c15d99fa22', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'bed9cbcf-7a0a-413a-84c1-8df6a8551625', 'None');
+INSERT INTO "value" VALUES ('df50ae2f-4c13-44d0-827a-d1fbf518dcbb', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', '9c0e718a-1f92-4de5-98b5-29689bf42dd1', '0');
+INSERT INTO "value" VALUES ('e33acf3b-881b-425f-8d91-87b8fecfaf78', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', '9e87dd03-d4cc-43b2-b950-53a9fae07641', '1');
+INSERT INTO "value" VALUES ('e4a8c510-bbf4-417c-8977-df95419c3be5', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', '890d2765-d7e4-4031-9ec7-d3d8b87d5152', '0');
+INSERT INTO "value" VALUES ('e5b1b218-bb76-4940-ba9c-516a80d0c32d', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', '8bccc5ab-e2a0-4d70-99ee-21c3f208ab6d', 'Uniform');
+INSERT INTO "value" VALUES ('e65b8d43-9fd2-48cc-8824-9feda63444ed', '_X67O4D1vEe6nh5jCk_jNOg', '8c51e2b9-d721-4da3-afba-7cf259c35e3b', '123');
+INSERT INTO "value" VALUES ('e67b3c6b-5fd0-423f-9c67-29e0a8215aba', 'f43f8326-81d3-4b31-990c-250e094bdba9', '46265408-ff70-4792-bc96-f06d221d5654', '0.01666666666666667');
+INSERT INTO "value" VALUES ('eaf49986-9705-4be7-849b-8ec38c8ca612', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '0979d206-f540-45bf-8506-cbaf7d96c160', 'BLUE');
+INSERT INTO "value" VALUES ('eb75844c-f190-4d7c-93d0-ca70dcd6ae9a', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', 'c557868f-a650-475d-b269-c18c80182112', '4');
+INSERT INTO "value" VALUES ('ec2d9211-6667-452e-848e-e3323ed09851', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '19c7ce1b-136e-45b6-8523-957be72e3ec4', 'NEWSBOY');
+INSERT INTO "value" VALUES ('f0025be5-769b-404e-85c0-60163a2c944e', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'b7022c74-ef3e-4f58-95e4-61e0d70ea83b', '0.99');
+INSERT INTO "value" VALUES ('f0bfb88d-4301-4bce-9dab-82af9d8132ba', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '3b3ae616-9629-49ce-9ce2-624414167dd9', '0');
+INSERT INTO "value" VALUES ('f18ea6cc-8955-42e5-961e-6c61f1ae943d', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', 'd221cf96-db65-487e-ba46-758316907a8b', '4');
+INSERT INTO "value" VALUES ('f1b91281-5562-4ff8-a807-1b159ca34ab3', 'f43f8326-81d3-4b31-990c-250e094bdba9', '1314b9e1-254c-4485-a056-9108863f413c', '0');
+INSERT INTO "value" VALUES ('f2847e43-3a4d-44b2-8065-e8140e88b8d5', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'a50f78d6-628e-487c-9303-9a46e8a47e29', '36');
+INSERT INTO "value" VALUES ('f5b90221-a950-405d-9fe2-071832eb2230', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', 'b1f6f954-8843-4b29-84d4-1bb4cac37462', '0');
+INSERT INTO "value" VALUES ('f8944c39-1361-49e0-bdaf-08a4185c5f18', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', '26f9db9a-6d9b-45e2-ab3d-e440c66f0cce', 'RADIUS');
+INSERT INTO "value" VALUES ('fb525b5d-5140-4b13-9f93-02372699324d', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'e198d01d-1a72-4fae-9bc6-0c304d6d1bdc', '一般融合');
+INSERT INTO "value" VALUES ('fdc74119-4876-411c-b696-2a6dfd234ac6', '343ae1b4-aeca-49cc-9bd1-5a34834a3c30', 'b8408e99-cb8d-4054-9847-3afaf7150ef1', '1');
+INSERT INTO "value" VALUES ('ff583efb-5abd-4d55-aec1-2f9080bd603f', '3c6b2df0-ba0f-47d9-94f2-3c3eeafbede9', '1bb2995e-553a-4fc7-ab7c-79495d00320a', '0.005277777777777778');
+
+-- ----------------------------
+-- Table structure for value_history
+-- ----------------------------
+DROP TABLE IF EXISTS "value_history";
+CREATE TABLE "value_history"  (
+  "value_id" varchar(255)  NOT NULL,
+  "entity_historyid" varchar(255)  NOT NULL,
+  "attribute_id" varchar(255) NOT NULL,
+  "value" text NOT NULL,
+  PRIMARY KEY ("value_id") 
+) ;
+
+-- ----------------------------
+-- Records of value_history
+-- ----------------------------
+INSERT INTO "value_history" VALUES ('11789346157211060b00ad3dc949cc15', '1', '1', '123456');
+INSERT INTO "value_history" VALUES ('2', 'capability_id', '1', 's2');
+INSERT INTO "value_history" VALUES ('7f9c75b327e4ba5f689578ecd3a6502c', '1', '1', '123456');
+INSERT INTO "value_history" VALUES ('95c4d6222068d1c6273ece0ff1a0624e', '1', '1', '123456');
+

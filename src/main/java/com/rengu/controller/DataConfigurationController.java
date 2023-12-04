@@ -95,6 +95,12 @@ public class DataConfigurationController {
         return ResultUtils.build(hostInfoService.importTaskXml(multipartFile));
     }
 
+    @ApiOperation("上传任务清单")
+    @PostMapping(value = "/upload/task")
+    public Result uploadTask(@RequestParam(value = "files") MultipartFile files){
+        return ResultUtils.build(hostInfoService.uploadTask(files));
+    }
+
     /**
      * 导出 方案评审证书
      * @param reviewId 评审ID

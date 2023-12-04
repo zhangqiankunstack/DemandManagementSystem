@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface ValueAttributeMapper {
-    @Select("SELECT v.value, v.attribute_id,a.attribute_name " +
+    @Select("SELECT v.value, v.attribute_id,a.attribute_name, v.value_id as valueId " +
             "FROM value v " +
             "JOIN entity e ON v.entity_id = e.entity_id " +
             "JOIN attribute a ON v.attribute_id = a.attribute_id " +

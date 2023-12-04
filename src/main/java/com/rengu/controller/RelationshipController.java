@@ -59,4 +59,10 @@ public class RelationshipController {
         return ResultUtils.build(relationshipModelService.getAllRelationship(entityId, keyWord, pageNumber, pageSize));
     }
 
+    @ApiOperation("删除关联关系")
+    @DeleteMapping("/delete")
+    public Result deleteRelationship(@RequestBody List<String> ids){
+        return ResultUtils.build(relationshipModelService.removeByIds(ids));
+    }
+
 }

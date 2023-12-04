@@ -127,7 +127,7 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
     }
 
     @Override
-    public Map<String, Object> getAllEntity(String keyWord, Integer pageNumber, Integer pageSize) {
+    public Map<String, Object> getAllEntity(String keyWord, Integer level, Integer pageNumber, Integer pageSize) {
         Map<String, Object> requestParams = new HashMap<>();
         requestParams.put("pageNumber", pageNumber);
         requestParams.put("pageSize", pageSize);
@@ -135,7 +135,12 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
         if (!StringUtils.isEmpty(keyWord)) {
             queryWrapper.like("entity_type", keyWord);
         }
-        List<EntityModel> entities = this.list(queryWrapper);
+
+        //实体层级
+        if(level != null){
+            queryWrapper.eq("entity_level", level);
+
+        }        List<EntityModel> entities = this.list(queryWrapper);
         return new ListPageUtil().separatePageList(entities, requestParams);
     }
 
@@ -143,10 +148,10 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
     public Map<String, Object> findTrace(String type) {
         Map<String, Object> map = null;
         if (type.equals("1")) {
-            map = missionAndCapabilityTrace();//任务与能力
+            map = missionAndCapabilityTrace();//任务与能力  //1203改为活动和能力
         }
         if (type.equals("2")) {
-            map = CapabilityAndSystemTrace();//能力与系统
+            map = CapabilityAndSystemTrace();//能力与系统 //1203改为能力和功能
         }
         return map;
     }
@@ -190,7 +195,7 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
 
         query.clear();
 
-        query.eq("entity_type", CAPABILITY);
+        query.eq("entity_type", ACTIVITY);
         List<EntityModel> capabilities = this.list(query);//行能力
         List<TraceVo> capTraceVos = new ArrayList<>();
         capabilities.stream().forEach(capability -> {
@@ -199,11 +204,11 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
             List<EntityModel> activityEntities = new ArrayList<>();
             commonRelationList.stream().forEach(relationshipModel -> {
                 EntityModel entityModel1 = this.getById(relationshipModel.getEntityId1());
-                if (relationshipModel.getEntityId1() != capability.getEntityId() && entityModel1 != null && entityModel1.getEntityType().equals(ACTIVITY)) {
+                if (relationshipModel.getEntityId1() != capability.getEntityId() && entityModel1 != null && entityModel1.getEntityType().equals(CAPABILITY)) {
                     activityEntities.add(this.getById(relationshipModel.getEntityId1()));
                 }
                 EntityModel entityModel2 = this.getById(relationshipModel.getEntityId2());
-                if (relationshipModel.getEntityId2() != capability.getEntityId() && entityModel2 != null && entityModel2.getEntityType().equals(ACTIVITY) && !activityEntities.contains(entityModel2)) {
+                if (relationshipModel.getEntityId2() != capability.getEntityId() && entityModel2 != null && entityModel2.getEntityType().equals(CAPABILITY) && !activityEntities.contains(entityModel2)) {
                     activityEntities.add(this.getById(relationshipModel.getEntityId2()));
                 }
             });
@@ -277,6 +282,16 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
         return this.removeById(id);
     }
 
+    @Override
+    public boolean batchDelete(List<String> ids) {
+        for(String id : ids){
+            if(!deletedById(id)){
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     // //列
     //        sysTraceVos.stream().forEach(sysTraceVo -> {
@@ -309,12 +324,13 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
      *
      * @return
      */
+    //1203 改为了活动和function
     public Map<String, Object> CapabilityAndSystemTrace() {
         QueryWrapper<EntityModel> queryWrap = new QueryWrapper<>();
         queryWrap.eq("entity_type", "capability");
         List<EntityModel> capabilities = this.list(queryWrap);//行(能力)
         queryWrap.clear();
-        queryWrap.eq("entity_type", SYSTEM);
+        queryWrap.eq("entity_type", "function");
         List<EntityModel> systems = this.list(queryWrap);//列（系统）
         List<List<Boolean>> listList = new ArrayList<>();
         systems.stream().forEach(system -> {
@@ -340,7 +356,7 @@ public class EntityServiceImpl extends ServiceImpl<EntityMapper, EntityModel> im
      */
     public Map<String, Object> missionAndCapabilityTrace() {
         QueryWrapper<EntityModel> queryWrap = new QueryWrapper<>();
-        queryWrap.eq("entity_type", "mission");
+        queryWrap.eq("entity_type", "activity");
         List<EntityModel> missions = this.list(queryWrap);//行
         queryWrap.clear();
         queryWrap.eq("entity_type", "capability");

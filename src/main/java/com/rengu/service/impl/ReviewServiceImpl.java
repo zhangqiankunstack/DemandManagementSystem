@@ -289,9 +289,19 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, ReviewModel> im
         EntityQueryVo entityQueryVo = entityService.queryEntities(entity_ids);
 
         //获取到刚插入的entityHistory
+        //1。。此处需要考虑修改，是否将entity_ids传入in 条件语句中，如果放入的话，这里只能获取到这次评审所选中的entity
+        //这样的话，就会导致如果比如我有活动1-功能1的关系，  活动1和功能1都是version1， 一旦功能1发生更新，变为version2
+        //则功能1处将看不到与活动1的关系，但是活动1还能看到与功能1的关系，是与version1之间的关系。
+        //2。。如果需要的话，需要同解决一个问题，就是比如当功能1发生更新，会又插入一条新的与活动1的relationship
+        //如此，当查看version1的活动1的时候，会看到两条与功能1的关系
+        //但是又不能再插入version2的功能1的时候，修改掉version1的活动1的那条与version1的功能1的关系
+        //因为version1的功能1还要能够看到与version1的活动1之间的关系
         Map<String, EntityHistoryModel> entityHistoryMap = entityHistoryService
                 .list(new LambdaQueryWrapper<EntityHistoryModel>().in(EntityHistoryModel::getEntityId, entity_ids).eq(EntityHistoryModel::getIsTop, 1))
                 .stream().collect(Collectors.toMap(EntityHistoryModel::getEntityId, Function.identity()));
+//        Map<String, EntityHistoryModel> entityHistoryMap = entityHistoryService
+//                .list(new LambdaQueryWrapper<EntityHistoryModel>().eq(EntityHistoryModel::getIsTop, 1))
+//                .stream().collect(Collectors.toMap(EntityHistoryModel::getEntityId, Function.identity()));
 
         List<String> attributeIdList = entityQueryVo.getAttributeIdList();
         attributeHistoryService.copyDataToAttributeHistory(attributeIdList);

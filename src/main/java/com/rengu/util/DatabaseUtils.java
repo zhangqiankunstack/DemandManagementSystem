@@ -24,6 +24,8 @@ public class DatabaseUtils {
 
     private static String MY_SQL_IP = "";
 
+    private static Connection conn;
+
     @Value("${spring.datasource.username}")
     private String userName;
 
@@ -68,12 +70,12 @@ public class DatabaseUtils {
 
         deleteAllEntityId(entityId);
 
-        Connection conn = null;
+//        Connection conn = null;
         PreparedStatement stmt = null;
         try {
             // 设置连接字符集编码为UTF-8,防止插入数据出现中文乱码
             String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
-            conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
+            conn = conn == null ? DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD) : conn;
             String insertEntityQuery = "INSERT INTO entity (entity_id, entity_name, entity_type) VALUES (?, ?, ?)";
             stmt = conn.prepareStatement(insertEntityQuery);
             stmt.setString(1, entityId);
@@ -84,7 +86,7 @@ public class DatabaseUtils {
             e.printStackTrace();
         } finally {
             closePreparedStatement(stmt);
-            closeConnection(conn);
+//            closeConnection(conn);
         }
     }
 
@@ -94,10 +96,11 @@ public class DatabaseUtils {
         }
         String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
         ;
-        Connection conn = null;
+//        Connection conn = null;
         PreparedStatement stmt = null;
         try {
-            conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
+//            conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
+            conn = conn == null ? DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD) : conn;
 
 
             String deleteEntityQuery = "DELETE FROM entity WHERE entity_id = ?";
@@ -161,7 +164,8 @@ public class DatabaseUtils {
         try {
             // 设置连接字符集编码为UTF-8,防止插入数据出现中文乱码
             String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
-            conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
+//            conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
+            conn = conn == null ? DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD) : conn;
             // 插入到relationship表中
             String insertRelationshipQuery = "INSERT INTO relationship (relationship_id, entity_id1, entity_id2, relationship_type) VALUES (?, ?, ?, ?)";
             stmt = conn.prepareStatement(insertRelationshipQuery);
@@ -174,7 +178,7 @@ public class DatabaseUtils {
             e.printStackTrace();
         } finally {
             closePreparedStatement(stmt);
-            closeConnection(conn);
+//            closeConnection(conn);
         }
     }
 
@@ -212,12 +216,12 @@ public class DatabaseUtils {
         if (DB_URL.equals("")) {
             getMySQLParam();
         }
-        Connection conn = null;
+//        Connection conn = null;
         PreparedStatement stmt = null;
         try {
             // 设置连接字符集编码为UTF-8,防止插入数据出现中文乱码
             String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
-            conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
+            conn = conn == null ? DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD) : conn;
             // 插入到arrribute表中
             String insertAttributeQuery = "INSERT INTO attribute (attribute_id, attribute_name) VALUES (?, ?)";
             stmt = conn.prepareStatement(insertAttributeQuery);
@@ -228,7 +232,7 @@ public class DatabaseUtils {
             e.printStackTrace();
         } finally {
             closePreparedStatement(stmt);
-            closeConnection(conn);
+//            closeConnection(conn);
         }
     }
 
@@ -236,12 +240,13 @@ public class DatabaseUtils {
         if (DB_URL.equals("")) {
             getMySQLParam();
         }
-        Connection conn = null;
+//        Connection conn = null;
         PreparedStatement stmt = null;
         try {
             // 设置连接字符集编码为UTF-8,防止插入数据出现中文乱码
             String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
-            conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
+//            conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
+            conn = conn == null ? DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD) : conn;
             // 插入到value表中
             String insertValueQuery = "INSERT INTO value (value_id, entity_id, attribute_id, value) VALUES (?, ?, ?, ?)";
             stmt = conn.prepareStatement(insertValueQuery);
@@ -254,7 +259,7 @@ public class DatabaseUtils {
             e.printStackTrace();
         } finally {
             closePreparedStatement(stmt);
-            closeConnection(conn);
+//            closeConnection(conn);
         }
     }
 
@@ -423,7 +428,8 @@ public class DatabaseUtils {
         try {
             // 设置连接字符集编码为UTF-8,防止插入数据出现中文乱码
             String connectionString = DB_URL + "?useUnicode=true&characterEncoding=" + DB_CHARSET + "&serverTimezone=GMT%2B8";
-            conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
+//            conn = DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD);
+            conn = conn == null ? DriverManager.getConnection(connectionString, DB_USERNAME, DB_PASSWORD) : conn;
             // 插入到arrribute表中
             String selectAttributeQuery = "SELECT * FROM relationship WHERE (entity_id1 = ? and entity_id2 = ?) or (entity_id1 = ? and entity_id2 = ?)";
             stmt = conn.prepareStatement(selectAttributeQuery);
@@ -443,7 +449,7 @@ public class DatabaseUtils {
             e.printStackTrace();
         } finally {
             closePreparedStatement(stmt);
-            closeConnection(conn);
+//            closeConnection(conn);
         }
         return null;
     }

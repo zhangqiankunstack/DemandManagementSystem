@@ -78,8 +78,8 @@ public class EntityController {
 
     @ApiOperation("分页模糊查询实体列表（本地数据）")
     @GetMapping("/getAllEntity")
-    public Result getAllEntity(@RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
-        return ResultUtils.build(entityModelService.getAllEntity(keyWord, pageNumber, pageSize));
+    public Result getAllEntity(@RequestParam(required = false) String keyWord, @RequestParam(required = false) Integer leve, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        return ResultUtils.build(entityModelService.getAllEntity(keyWord, leve, pageNumber, pageSize));
     }
 
     @ApiOperation("根据实体id查询需求描述")
@@ -122,6 +122,12 @@ public class EntityController {
     @DeleteMapping("/deletedById")
     public Result deletedById(@RequestParam String id) {
         return ResultUtils.build(entityModelService.deletedById(id));
+    }
+
+    @ApiOperation("批量删除")
+    @DeleteMapping("/batch/delete")
+    public Result batchDelete(@RequestBody List<String> ids){
+        return ResultUtils.build(entityModelService.batchDelete(ids));
     }
 
     @ApiOperation("根据实体ids获取无关联关系的实体")
@@ -169,5 +175,19 @@ public class EntityController {
         }
         File file = new File(filePath+fileName+".doc");
         file.delete(); // 移除文件
+    }
+
+    @ApiOperation("修改实体名称和类型")
+    @PostMapping("/modify")
+    public Result modifyEntity(@RequestParam("entityId") String entityId, @RequestParam(value = "entityName", required = false) String entityName,
+                               @RequestParam(value = "entityType", required = false)String entityType){
+        EntityModel entity = entityModelService.getById(entityId);
+        if(!StringUtils.isEmpty(entityName)){
+            entity.setEntityName(entityName);
+        }
+        if(!StringUtils.isEmpty(entityType)){
+            entity.setEntityType(entityType);
+        }
+        return ResultUtils.build(entityModelService.saveOrUpdate(entity));
     }
 }

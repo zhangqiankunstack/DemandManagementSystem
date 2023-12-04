@@ -2,6 +2,9 @@ package com.rengu.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Filter;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,10 +18,13 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,6 +50,9 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
     private ValueService valueService;
     @Autowired
     private AttributeService attributeService;
+
+    @Autowired
+    private RequirementService  requirementService;
 
     /**
      * 查询数据
@@ -192,6 +201,7 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
 //            valueService.remove(new LambdaQueryWrapper<ValueModel>().eq(ValueModel::getEntityId, entityModel.getEntityId()));
 
             entityService.saveOrUpdate(entityModel);
+            //此处应该与xml导入保持一致，即先将该实体的值全部删除，而不是使用saveOrUpdate，否则的话残留的将永远无法被删除
             List<RelationshipModel> commonRelationList = CollUtil.filter(relationship, getRelationshipByParams(entityModel.getEntityId()));
             relationshipService.saveOrUpdateBatch(commonRelationList);
             List<ValueModel> commonValues = CollUtil.filter(valueModels, getValueModelByParams(entityModel.getEntityId()));
@@ -518,6 +528,111 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
         return null;
     }
 
+    @Transactional
+    @Override
+    public Object uploadTask(MultipartFile file) {
+        StringBuilder json = new StringBuilder();
+        try {
+            String line;
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
+//            while(!(StringUtils.isEmpty(line = reader.readLine()))){
+//                json.append(line);
+//            }
+            InputStream inputStream = file.getInputStream();
+            //300k
+            byte[] bytes = new byte[1024 * 300];
+            int byteNumber;
+            while((byteNumber = inputStream.read(bytes)) > 0){
+                json.append(new String(bytes, 0, byteNumber, "UTF-8"));
+            }
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.err.println(json);
+        JSONObject root = JSON.parseObject(json.toString());
+        JSONArray nodes = root.getJSONArray("nodes");
+        JSONArray links = root.getJSONArray("links");
+
+        //遍历所有节点
+        for(int i = 0; i < nodes.size(); i++){
+            JSONObject node = nodes.getJSONObject(i);
+            String nodeId = node.getString("id");
+            EntityModel entity = new EntityModel();
+            entity.setEntityId(nodeId);
+            entity.setEntityType(node.getString("type"));
+            entity.setEntityName(StringUtils.isEmpty(node.getString("name")) ? " " : node.getString("name"));
+            entity.setEntityLevel(node.getInteger("level") == null ? 1 : node.getInteger("level"));
+            entityService.saveOrUpdate(entity);
+
+            //保存需求描述
+            String description = node.getString("description");
+            if(!StringUtils.isEmpty(description)){
+                RequirementModel requirement = new RequirementModel();
+                requirement.setEntityId(nodeId);
+                requirement.setId(UUID.randomUUID().toString());
+                requirement.setFileContent(description);
+                requirementService.save(requirement);
+            }
+            
+            JSONArray attrs = node.getJSONArray("attr");
+            //遍历属性
+            for(int j = 0; j < attrs.size(); j++){
+                JSONObject attr = attrs.getJSONObject(j);
+                String attrName = StringUtils.isEmpty(attr.getString("attrName")) ? " " : attr.getString("attrName");
+                String attrValue = StringUtils.isEmpty(attr.getString("attrValue")) ? " " : attr.getString("attrValue");
+                String attributeId = UUID.randomUUID().toString();
+                AttributeModel attribute = new AttributeModel();
+                List<AttributeModel> hitAttributeResult = attributeService.list(new LambdaQueryWrapper<AttributeModel>().eq(AttributeModel::getAttributeName, attrName));
+                if(!CollectionUtils.isEmpty(hitAttributeResult)){
+                    attributeId = hitAttributeResult.get(0).getAttributeId();
+                }else{
+                    attribute.setAttributeName(attrName);
+                    attribute.setAttributeId(attributeId);
+                    attributeService.saveOrUpdate(attribute);
+                }
+                //插卡一下该attribute下的value有没有，不重复添加
+                List<ValueModel> hitValueResult = valueService.list(new LambdaQueryWrapper<ValueModel>().eq(ValueModel::getAttributeId, attributeId).eq(ValueModel::getEntityId, nodeId));
+                if(!CollectionUtils.isEmpty(hitValueResult)){
+                    ValueModel value = hitValueResult.get(0);
+                    System.err.println("value ===== " + JSON.toJSONString(value));
+                    value.setValue(attrValue);
+                    valueService.saveOrUpdate(value);
+                }else{
+                    ValueModel value = new ValueModel();
+                    value.setEntityId(nodeId);
+                    value.setAttributeId(attributeId);
+                    value.setValueId(UUID.randomUUID().toString());
+                    value.setValue(attrValue);
+                    valueService.saveOrUpdate(value);
+                }
+            }
+        }
+
+        for(int i = 0; i < links.size(); i++){
+            JSONObject link = links.getJSONObject(i);
+            String sourceId = link.getString("source");
+            String targetId = link.getString("target");
+            if(entityService.getById(sourceId) == null || entityService.getById(targetId) == null){
+                continue;
+            }
+            if(!CollectionUtils.isEmpty(relationshipService.list(new LambdaQueryWrapper<RelationshipModel>()
+                    .eq(RelationshipModel::getEntityId1, sourceId).eq(RelationshipModel::getEntityId2, targetId)))
+                    || !CollectionUtils.isEmpty(relationshipService.list(new LambdaQueryWrapper<RelationshipModel>()
+                    .eq(RelationshipModel::getEntityId1, targetId).eq(RelationshipModel::getEntityId2, sourceId)))){
+                continue;
+            }
+            RelationshipModel relationship = new RelationshipModel();
+            relationship.setRelationshipId(UUID.randomUUID().toString());
+            relationship.setRelationshipType("关联");
+            relationship.setEntityId1(sourceId);
+            relationship.setEntityId2(targetId);
+            relationshipService.saveOrUpdate(relationship);
+        }
+
+        return null;
+    }
+
     @Override
     public void exportSchemeAppraisal(String name, String filePath, String fileName, HttpServletResponse response) {
         ExportMyWord exportMyWord = new ExportMyWord();
@@ -555,7 +670,6 @@ public class HostInfoServiceImpl extends ServiceImpl<HostInfoMapper, HostInfoMod
 //        mapData.put("reviewDeptName",null); // 评审组长部门   reviewDeptName
         exportMyWord.createWord(mapData, "方案评审证书.ftl", filePath+fileName+".doc");
     }
-
 
     /**
      * 定义Lambda表达式，判断RelationshipModel对象的EntityId1或EntityId2是否与目标ID满足其一相同

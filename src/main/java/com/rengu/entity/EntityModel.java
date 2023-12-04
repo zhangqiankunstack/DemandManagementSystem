@@ -28,5 +28,7 @@ public class EntityModel implements Serializable {
 
     private String entityType;
 
+    private Integer entityLevel;
+
 
 }

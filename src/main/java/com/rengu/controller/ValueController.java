@@ -1,9 +1,13 @@
 package com.rengu.controller;
 
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.rengu.entity.AttributeModel;
 import com.rengu.entity.HostInfoModel;
 import com.rengu.entity.Result;
+import com.rengu.entity.ValueModel;
 import com.rengu.entity.vo.ValueAttribute;
+import com.rengu.service.AttributeService;
 import com.rengu.service.ValueService;
 import com.rengu.util.ListPageUtil;
 import com.rengu.util.ResultUtils;
@@ -29,6 +33,9 @@ public class ValueController {
 
     @Autowired
     public ValueService valueModelService;
+
+    @Autowired
+    public AttributeService attributeService;
 
     /**
      * 采集任务展示属性值（未入库数据接口）
@@ -60,5 +67,40 @@ public class ValueController {
     @GetMapping("/getAllValueInfo")
     public Result getAllValueInfo(@RequestParam String entityId, @RequestParam(required = false) String keyWord, @RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
         return ResultUtils.build(valueModelService.getAllValueInfo(entityId, keyWord, pageNumber, pageSize));
+    }
+
+    @ApiOperation("删除属性")
+    @DeleteMapping("/delete")
+    public Result deleteAttributeValue(@RequestBody List<String> ids){
+        return ResultUtils.build(valueModelService.removeByIds(ids));
+    }
+
+    @ApiOperation("修改属性名或值")
+    @PostMapping("/modify")
+    public Result modifyAttribute(@RequestParam(value = "attributeId", required = false) String attributeId, @RequestParam(value = "attributeName", required = false) String attributeName,
+                                  @RequestParam(value = "valueId", required = false) String valueId, @RequestParam(value = "valueName", required = false) String valueName){
+        if(StringUtils.isBlank(attributeId) && StringUtils.isBlank(valueId)){
+            return ResultUtils.build(false);
+        }
+        if(StringUtils.isNotBlank(attributeId) && StringUtils.isNotBlank(attributeName)){
+            AttributeModel attribute = new AttributeModel();
+            attribute.setAttributeId(attributeId);
+            attribute.setAttributeName(attributeName);
+            boolean save = attributeService.saveOrUpdate(attribute);
+            if(!save){
+                return ResultUtils.build(false);
+            }
+        }
+        
+        if(StringUtils.isNotBlank(valueId) && StringUtils.isNotBlank(valueName)){
+            ValueModel value = valueModelService.getById(valueId);
+            if(value == null){
+                return ResultUtils.build(false);
+            }
+            value.setValue(valueName);
+            valueModelService.saveOrUpdate(value);
+        }
+
+        return ResultUtils.build(true);
     }
 }

@@ -45,6 +45,8 @@ public interface HostInfoService extends IService<HostInfoModel> {
      * @param response
      */
     void exportSchemeAppraisal(String reviewId, String filePath, String fileName, HttpServletResponse response);
+
+    Object uploadTask(MultipartFile file);
 }
 
 

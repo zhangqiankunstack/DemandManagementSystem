@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class ValueAttribute extends AttributeModel {
 
+    private String valueId;
     private String value;
 
     private AttributeModel attribute;
